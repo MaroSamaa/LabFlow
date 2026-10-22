@@ -1,7 +1,7 @@
 <!-- Header with logo, project name and group name -->
 <p align="center">
   <!-- Project Logo -->
-  <img src="" alt="Project Logo" width="150" height="150">
+  <img src="LabFlow/src/images/LabFlowLogo.png" alt="LabFlow Logo" width="150" height="150">
 </p>
 
 <!-- Project Title -->
