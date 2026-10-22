@@ -18,3 +18,12 @@ Run:
 ```
 java -cp "bin;lib/*" Main
 ```
+#### Linux/MacOS
+Compile the source code:
+```
+javac -cp "lib/*" -d bin $(find src -name "*.java")
+```
+Run:
+```
+java -cp "bin:lib/*" Main
+```
