@@ -8,6 +8,8 @@ git clone https://github.com/MaroSamaa/TestCondiviso
 ```
 
 ### CLI
+⚠️ Make sure to be in the project's root directory (check by seeing if the 'src', 'bin' and 'lib' folders are directly in the directory you moved to) before doing any of the following.
+
 #### WINDOWS
 
 Compile the source code:
