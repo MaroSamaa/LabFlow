@@ -19,7 +19,7 @@ git clone https://github.com/MaroSamaa/TestCondiviso
 ```
 
 ### CLI
-⚠️ Make sure to be in the project's root directory (check by seeing if the 'src', 'bin' and 'lib' folders are directly in the directory you moved to) before doing any of the following.
+⚠️ Make sure to be in the project's ('LabFlow') root directory (check by seeing if the 'src', 'bin' and 'lib' folders are directly in the directory you moved to) before doing any of the following.
 
 #### WINDOWS
 
@@ -43,3 +43,5 @@ java -cp "bin:lib/*" Main
 ### IDE
 Open the project folder then navigate to
 Src->Main.java and run the program.
+
+## 📜 Documentation
