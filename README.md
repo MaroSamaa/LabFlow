@@ -1,5 +1,16 @@
-# LabFlow
-Progetto Labflow del gruppo The Beauty and The Beast
+<!-- Header with logo, project name and group name -->
+<p align="center">
+  <!-- Project Logo -->
+  <img src="" alt="Project Logo" width="150" height="150">
+</p>
+
+<!-- Project Title -->
+<h1 align="center">LabFlow</h1>
+
+<!-- Group name -->
+<p align="center"">
+  <i>A Project by The Beauty And The Beast</i>
+</p>
 
 ## 🚀 Compile and Run
 Download the repository ZIP file and extract it or clone the repositry directly in the CLI by typing:
