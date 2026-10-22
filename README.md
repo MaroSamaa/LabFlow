@@ -27,3 +27,6 @@ Run:
 ```
 java -cp "bin:lib/*" Main
 ```
+### IDE
+Open the project folder then navigate to
+Src->Main.java and run the program.
