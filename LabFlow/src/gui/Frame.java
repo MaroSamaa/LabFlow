@@ -34,6 +34,7 @@ public class Frame extends JFrame
         setVisible(true);
     }
 
+    //  "CARD SWITCH" METHODS
     public void showSettings()
     {
         lm.show(parentPanel, "SETTINGS");
