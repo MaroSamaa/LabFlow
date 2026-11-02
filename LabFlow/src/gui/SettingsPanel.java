@@ -53,7 +53,7 @@ public class SettingsPanel extends JPanel
         JPanel creditPanel = new JPanel();
         creditPanel.setLayout(new BoxLayout(creditPanel, BoxLayout.Y_AXIS));
 
-        JLabel authorLabel = new JLabel("");    //INSERT HTML CODE HERE
+        JLabel authorLabel = new JLabel("\"<html><center>Authors:<br>Marini Enrico<br>Visone Sara</center></html>\"");    
         
         //  Logo label implementation
         JLabel logoLabel = new JLabel();
