@@ -1,16 +1,18 @@
 package concurrent;
 
-public class User extends Thread 
+public class User implements Runnable 
 {
+
+    private String name;
 
     public User(String name)
     {
-        super(name);    //The thread will have the name of the user
+        this.name = name;
     }
 
     public void run()
     {
-        
+        Thread.currentThread().setName(name);
     }
 
 }
