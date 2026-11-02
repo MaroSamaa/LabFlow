@@ -22,7 +22,7 @@ public class Frame extends JFrame
         //setSize(1500,500);     //To set a fixed window starting size
         //setResizable(false);   //To set the window to not be resizable (if the extention of tables continues)
         
-        parentPanel.add(mainViewPanel,"MAIN_VIEW");
+        parentPanel.add(mainViewPanel,"MAIN");
         parentPanel.add(settingsPanel, "SETTINGS");
 
         lm.first(parentPanel);
@@ -39,6 +39,6 @@ public class Frame extends JFrame
 
     public void showMainView()
     {
-        lm.show(parentPanel, "MAINVIEW");
+        lm.show(parentPanel, "MAIN");
     }
 }
