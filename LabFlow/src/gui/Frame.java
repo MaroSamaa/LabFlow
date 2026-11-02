@@ -23,6 +23,7 @@ public class Frame extends JFrame
         //setResizable(false);   //To set the window to not be resizable (if the extention of tables continues)
         
         settingsPanel = new SettingsPanel(this);
+        mainViewPanel = new MainViewPanel(this);
 
         parentPanel.add(mainViewPanel,"MAIN");
         parentPanel.add(settingsPanel, "SETTINGS");
