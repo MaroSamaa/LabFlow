@@ -9,7 +9,7 @@ public class ControlPanel extends JPanel
 {
     private static final int BTN_DIMENTION = 30;
 
-    public ControlPanel()
+    public ControlPanel(Frame frame)
     {
         setLayout(new BorderLayout());
 
@@ -59,7 +59,25 @@ public class ControlPanel extends JPanel
         loadBtn.setFocusPainted(false);         
         loadBtn.setBorderPainted(false);        
 
+        //  ADDING ACTION LISTENERS TO BUTTONS
 
+        saveBtn.addActionListener((ActionEvent) ->
+        {
+            //Temporary placeholder instead of the actiual saving action
+            System.out.println("Save pressed");
+        });
+
+        loadBtn.addActionListener((ActionEvent) ->
+        {
+            //Temporary placeholder instead of the actiual loading action
+            System.out.println("Load pressed");
+        });
+
+        //  On settings btn push visualize the settings panel
+        settingsBtn.addActionListener((ActionEvent) ->
+        {
+            frame.showSettings();
+        });
 
     }
 }
