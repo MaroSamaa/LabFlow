@@ -17,7 +17,7 @@ public class ControlPanel extends JPanel
         JButton loadBtn = new JButton();
         JButton settingsBtn = new JButton();
 
-        //  SETTING BUTTON IMAGE ICONS
+        //--------SETTING BUTTONS IMAGE ICONS--------
         //  Set Image for settingsBtn
         try 
         {
@@ -59,7 +59,7 @@ public class ControlPanel extends JPanel
         loadBtn.setFocusPainted(false);         
         loadBtn.setBorderPainted(false);        
 
-        //  ADDING ACTION LISTENERS TO BUTTONS
+        //--------ADD ACTION LISTENERS TO BUTTONS--------
 
         saveBtn.addActionListener((ActionEvent) ->
         {
@@ -78,6 +78,18 @@ public class ControlPanel extends JPanel
         {
             frame.showSettings();
         });
+
+
+        //--------ASSEMBLY OF THE CONTROL PANEL--------
+
+        add(settingsBtn, BorderLayout.WEST);    //put the settingsBtn to the left
+
+        //  Put the Save and Load Buttons together to the right
+        JPanel saveAndLoadPanel = new JPanel();
+        saveAndLoadPanel.add(saveBtn);
+        saveAndLoadPanel.add(loadBtn);
+        add(saveAndLoadPanel, BorderLayout.EAST);
+
 
     }
 }
