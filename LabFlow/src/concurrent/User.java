@@ -12,7 +12,7 @@ public class User implements Runnable
 
     public void run()
     {
-        Thread.currentThread().setName(name);
+        Thread.currentThread().setName(name); //Set the user name as the thread name 
     }
 
 }
