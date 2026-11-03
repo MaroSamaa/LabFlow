@@ -2,9 +2,13 @@ package concurrent;
 
 public class RequestTask implements Runnable
 {
-    public RequestTask()
+    private LabMonitor monitor;
+    private Request request;
+
+    public RequestTask(Request request, LabMonitor monitor)
     {
-        
+        this.monitor = monitor;
+        this.request = request;
     }
 
     @Override 
