@@ -28,4 +28,9 @@ public class Equipment
     {
         return status;
     }
+
+    public void setStatus(EquipmentStatus toSet)
+    {
+        this.status = toSet;
+    }
 }
