@@ -25,10 +25,15 @@ public class RequestTask implements Runnable
 
             monitor.releaseEquipment(request);  //  Return the equipment to the lab so it can be used by someone else
 
-        }catch(InterruptedException e)
+        }
+        catch(InterruptedException e)
         {
             Thread.currentThread().interrupt(); //  Reset the interrupted flag "manually" to true (java forgets it was interrupted)
             System.out.println("ERROR: thread has been interrupted");   //to be replaced with event log message integration
+        }
+        catch(IllegalStateException e)
+        {
+            System.out.println(e.getMessage()); //to be replaced with event log message integration
         }
     };
 }
