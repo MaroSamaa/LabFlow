@@ -26,7 +26,7 @@ public class LabMonitor
         equipment.add(toAdd);
     }
 
-    public synchronized void releaseEquipment(Request request)
+    public synchronized void releaseEquipment(Request request) throws IllegalStateException
     {
         //  Ensure that the request is active so that no closed or pending request can try and release an equipment they "don't own"  
         if (request.getStatus() != RequestStatus.ACTIVE)
