@@ -30,20 +30,24 @@ public class LabMonitor
 
     }
 
-    public synchronized Equipment requestEquipment(String type) throws InterruptedException
+    public synchronized void requestEquipment(Request request) throws InterruptedException
     {
-        Equipment requestedEquipment = findAvailableEquipment(type);
+        Equipment requestedEquipment = findAvailableEquipment(request.getEquipmentType());
 
         while(requestedEquipment == null)
         {
-            System.out.println(Thread.currentThread().getName() + " waiting for: " + type); //to be replaced with event log message integration
-
+            request.setStatus(RequestStatus.PENDING);
+            System.out.println(Thread.currentThread().getName() + " waiting for: " + request.getEquipmentType()); //to be replaced with event log message integration
+            
             wait(); //  Make the thread exit the lock
 
-            requestedEquipment = findAvailableEquipment(type);  //  when awaken retry the search 
+            requestedEquipment = findAvailableEquipment(request.getEquipmentType());  //  when awaken retry the search 
         }
+
         requestedEquipment.setStatus(EquipmentStatus.IN_USE);
-        return requestedEquipment;
+        request.setStatus(RequestStatus.BORROWING);
+        System.out.println(Thread.currentThread().getName() + " ha ottenuto lo strumento: " + requestedEquipment.getCode()); //to be replaced with event log message integration
+        request.setRequestedEquipment(requestedEquipment);
     }
 
     private Equipment findAvailableEquipment(String type)
