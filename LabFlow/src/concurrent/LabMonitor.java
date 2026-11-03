@@ -7,6 +7,7 @@ public class LabMonitor
 {
     private final static int MAX_EQUIP = 4;
     private final static String MSG_FULL = "ERROR: Couldn't add equipment, max number has been reached";
+    private final static String MSG_REQUEST_NOT_ACTIVE = "ERROR: The request isn't active, current request status is: ";
 
     List<Equipment> equipment;
 
@@ -25,16 +26,27 @@ public class LabMonitor
         equipment.add(toAdd);
     }
 
-    public synchronized void releaseEquipment()
+    public synchronized void releaseEquipment(Request request)
     {
+        //  Ensure that the request is active so that no closed or pending request can try and release an equipment they "don't own"  
+        if (request.getStatus() != RequestStatus.ACTIVE)
+        {
+            throw new IllegalStateException(MSG_REQUEST_NOT_ACTIVE + request.getStatus());
+        }
 
+        Equipment toRelease = request.getRequestedEquipment();
+        toRelease.setStatus(EquipmentStatus.AVAILABLE);
+        request.setStatus(RequestStatus.CLOSED);
+        System.out.println(Thread.currentThread().getName() + " gave back " + toRelease.getCode()); //to be replaced with event log message integration
+
+        notifyAll();    //Notify all waiting threads the fastest to awake gets the equipment 
     }
 
     public synchronized void requestEquipment(Request request) throws InterruptedException
     {
         Equipment requestedEquipment = findAvailableEquipment(request.getEquipmentType());
 
-        while(requestedEquipment == null)
+        while(requestedEquipment == null)   //  Continue trying until you (eventually) can use the equipment
         {
             request.setStatus(RequestStatus.PENDING);
             System.out.println(Thread.currentThread().getName() + " waiting for: " + request.getEquipmentType()); //to be replaced with event log message integration
@@ -45,8 +57,8 @@ public class LabMonitor
         }
 
         requestedEquipment.setStatus(EquipmentStatus.IN_USE);
-        request.setStatus(RequestStatus.BORROWING);
-        System.out.println(Thread.currentThread().getName() + " ha ottenuto lo strumento: " + requestedEquipment.getCode()); //to be replaced with event log message integration
+        request.setStatus(RequestStatus.ACTIVE);
+        System.out.println(Thread.currentThread().getName() + " obtained: " + requestedEquipment.getCode()); //to be replaced with event log message integration
         request.setRequestedEquipment(requestedEquipment);
     }
 
