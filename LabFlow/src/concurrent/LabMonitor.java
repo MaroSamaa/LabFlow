@@ -20,7 +20,7 @@ public class LabMonitor
     {
         if(equipment.size() >= MAX_EQUIP)
         {
-            //Illegal State because more of MAX_EQUIP would be a "wrong" state
+            //  Illegal State because more of MAX_EQUIP would be a "wrong" state
             throw new IllegalStateException(MSG_FULL);
         }
         equipment.add(toAdd);
@@ -71,7 +71,7 @@ public class LabMonitor
                 return eq;
             }
         }
-        return null;    //if an available equipment of the same type wasn't found return null
+        return null;    //  if an available equipment of the same type wasn't found return null
     }
 
 }
