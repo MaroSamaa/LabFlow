@@ -31,5 +31,5 @@ public class RequestTask implements Runnable
             System.out.println("ERROR: thread has been interrupted");   //to be replaced with event log message integration
         }
     };
-    }
 }
+
