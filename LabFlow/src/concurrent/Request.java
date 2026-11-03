@@ -2,12 +2,14 @@ package concurrent;
 
 public class Request 
 {
+    private User user;
     private Equipment requestedEquipment;
     private String equipmentType;
     private RequestStatus status;
 
-    public Request(String equipmentType)
+    public Request(User user,String equipmentType)
     {
+        this.user = user;
         this.equipmentType = equipmentType;
         this.status = RequestStatus.PENDING; //  A new request shall always start as pending
         this.requestedEquipment = null;
@@ -28,6 +30,11 @@ public class Request
     public String getEquipmentType()
     {
         return equipmentType;
+    }
+
+    public User getUser()
+    {
+        return user;
     }
 
     public Equipment getRequestedEquipment()
