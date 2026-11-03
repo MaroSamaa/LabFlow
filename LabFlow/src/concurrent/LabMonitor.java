@@ -49,7 +49,6 @@ public class LabMonitor
         while(requestedEquipment == null)   //  Continue trying until you (eventually) can use the equipment
         {
             request.setStatus(RequestStatus.PENDING);
-            System.out.println(request.getUser().getName() + " waiting for: " + request.getEquipmentType()); //to be replaced with event log message integration
             
             wait(); //  Make the thread exit the lock
 
