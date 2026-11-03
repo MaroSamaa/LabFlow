@@ -41,7 +41,7 @@ public class LabMonitor
     {
         for(Equipment eq : equipment)
         {
-            if(eq.getStatus() == EquipmentStatus.AVAILABLE && type.equalsIgnoreCase(eq.getName()))
+            if(eq.getStatus() == EquipmentStatus.AVAILABLE && type.equalsIgnoreCase(eq.getType()))
             {
                 return eq;
             }

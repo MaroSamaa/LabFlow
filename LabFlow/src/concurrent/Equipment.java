@@ -3,20 +3,20 @@ package concurrent;
 public class Equipment 
 {
     private EquipmentStatus status;
-    private String name;
+    private String type;
     private String code;
 
-    public Equipment(String name, String code)
+    public Equipment(String type, String code)
     {
-        this.name = name;
+        this.type = type;
         this.code = code;
         status = EquipmentStatus.AVAILABLE; //Each equipment shall start as available
     }
 
     //  Getters
-    public String getName()
+    public String getType()
     {
-        return name;
+        return type;
     }
 
     public String getCode()
