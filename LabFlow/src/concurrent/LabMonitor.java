@@ -24,4 +24,29 @@ public class LabMonitor
         }
         equipment.add(toAdd);
     }
+
+    public synchronized void releaseEquipment()
+    {
+
+    }
+
+    public synchronized Equipment requestEquipment(String type)
+    {
+        Equipment requestedEquipment;
+
+
+    }
+
+    private Equipment findAvailableEquipment(String type)
+    {
+        for(Equipment eq : equipment)
+        {
+            if(eq.getStatus() == EquipmentStatus.AVAILABLE && type.equalsIgnoreCase(eq.getName()))
+            {
+                return eq;
+            }
+        }
+        return null;    //if an available equipment of the same type wasn't found return null
+    }
+
 }
