@@ -30,11 +30,20 @@ public class LabMonitor
 
     }
 
-    public synchronized Equipment requestEquipment(String type)
+    public synchronized Equipment requestEquipment(String type) throws InterruptedException
     {
-        Equipment requestedEquipment;
+        Equipment requestedEquipment = findAvailableEquipment(type);
 
+        while(requestedEquipment == null)
+        {
+            System.out.println(Thread.currentThread().getName() + " waiting for: " + type); //to be replaced with event log message integration
 
+            wait(); //  Make the thread exit the lock
+
+            requestedEquipment = findAvailableEquipment(type);  //  when awaken retry the search 
+        }
+        requestedEquipment.setStatus(EquipmentStatus.IN_USE);
+        return requestedEquipment;
     }
 
     private Equipment findAvailableEquipment(String type)
