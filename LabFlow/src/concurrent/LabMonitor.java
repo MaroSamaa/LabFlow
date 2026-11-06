@@ -19,7 +19,7 @@ public class LabMonitor
     private final static int MAX_EQUIP = 4;
     private final static String MSG_FULL = "ERROR: Couldn't add equipment, max number has been reached";
     private final static String MSG_REQUEST_NOT_ACTIVE = "ERROR: The request isn't active, current request status is: ";
-    private final static String MSG_USER_DUPLICATE = "ERROR: The user is already registered ";
+    private final static String MSG_USER_DUPLICATE = "ERROR: A user with the same name already exists";
 
     //--------INSTANCE VARIABLES--------
 
@@ -75,9 +75,12 @@ public class LabMonitor
      */
     public synchronized void addUser(User toAdd) throws IllegalStateException
     {
-        if(users.contains(toAdd))
+        for(User u : users) //Make sure there are no user with the same name
         {
-            throw new IllegalStateException(MSG_USER_DUPLICATE);
+            if(u.getName().equalsIgnoreCase(toAdd.getName()))
+            {
+                throw new IllegalStateException(MSG_USER_DUPLICATE);
+            }
         }
         users.add(toAdd);
         System.out.println("User: " + toAdd.getName() + " added successfully"); //integrate with popup or event log
