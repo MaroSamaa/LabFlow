@@ -75,4 +75,11 @@ public class Equipment
     {
         this.status = toSet;
     }
+
+    //--------METHODS--------
+    @Override 
+    public String toString()
+    {
+        return type;
+    }
 }

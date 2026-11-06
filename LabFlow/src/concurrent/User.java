@@ -35,4 +35,11 @@ public class User
         return name;
     }
 
+    //--------METHODS--------
+    @Override 
+    public String toString()
+    {
+        return name;
+    }
+
 }
