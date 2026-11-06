@@ -5,7 +5,7 @@ public class User
 
     private String name;
     
-    public User(String name, String equipmentType, LabMonitor monitor)
+    public User(String name)
     {
         this.name = name;
     }
