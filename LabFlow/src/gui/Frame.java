@@ -1,6 +1,9 @@
 package gui;
 
 import javax.swing.*;
+
+import concurrent.LabMonitor;
+
 import java.awt.*;
 
 public class Frame extends JFrame
@@ -12,7 +15,7 @@ public class Frame extends JFrame
 
     private CardLayout lm = new CardLayout();
 
-    public Frame()
+    public Frame(LabMonitor monitor)
     {
         super("LabFlow");   //Set title of the JFrame to LabFlow
 
@@ -23,7 +26,7 @@ public class Frame extends JFrame
         //setResizable(false);   //To set the window to not be resizable (if the extention of tables continues)
         
         settingsPanel = new SettingsPanel(this);
-        mainViewPanel = new MainViewPanel(this);
+        mainViewPanel = new MainViewPanel(this,monitor);
 
         parentPanel.add(mainViewPanel,"MAIN");
         parentPanel.add(settingsPanel, "SETTINGS");
