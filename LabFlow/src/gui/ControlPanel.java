@@ -16,6 +16,8 @@ public class ControlPanel extends JPanel
         JButton saveBtn = new JButton();
         JButton loadBtn = new JButton();
         JButton settingsBtn = new JButton();
+        JButton playBtn = new JButton();
+        JButton stopBtn = new JButton();
 
         //--------SETTING BUTTONS IMAGE ICONS--------
         //  Set Image for settingsBtn
@@ -57,7 +59,37 @@ public class ControlPanel extends JPanel
         loadBtn.setBorder(null);
         loadBtn.setContentAreaFilled(false);    
         loadBtn.setFocusPainted(false);         
-        loadBtn.setBorderPainted(false);        
+        loadBtn.setBorderPainted(false);     
+        
+        //  Set Image for startBtn
+        try 
+        {
+            Image temp = ImageIO.read(getClass().getResource("/images/playIcon.png"));
+            Image playIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            playBtn.setIcon(new ImageIcon(playIcon));
+            playBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+        }
+        catch (Exception e) {System.out.println(e.getStackTrace());}
+        playBtn.setMargin(new Insets(0, 0, 0, 0));
+        playBtn.setBorder(null);
+        playBtn.setContentAreaFilled(false);    
+        playBtn.setFocusPainted(false);         
+        playBtn.setBorderPainted(false);        
+
+        //  Set Image for stopBtn
+        try 
+        {
+            Image temp = ImageIO.read(getClass().getResource("/images/stopIcon.png"));
+            Image stopIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            stopBtn.setIcon(new ImageIcon(stopIcon));
+            stopBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+        }
+        catch (Exception e) {System.out.println(e.getStackTrace());}
+        stopBtn.setMargin(new Insets(0, 0, 0, 0));
+        stopBtn.setBorder(null);
+        stopBtn.setContentAreaFilled(false);    
+        stopBtn.setFocusPainted(false);         
+        stopBtn.setBorderPainted(false);        
 
         //--------ADD ACTION LISTENERS TO BUTTONS--------
 
@@ -79,6 +111,18 @@ public class ControlPanel extends JPanel
             frame.showSettings();
         });
 
+        playBtn.addActionListener((ActionEvent) ->
+        {
+            //Temporary placeholder instead of the actual playing action
+            System.out.println("play pressed");
+        });
+
+        stopBtn.addActionListener((ActionEvent) ->
+        {
+            //Temporary placeholder instead of the actual stop action
+            System.out.println("stop pressed");
+        });
+
 
         //--------ASSEMBLY OF THE CONTROL PANEL--------
 
@@ -90,6 +134,11 @@ public class ControlPanel extends JPanel
         saveAndLoadPanel.add(loadBtn);
         add(saveAndLoadPanel, BorderLayout.EAST);
 
+        //  Put the Play and Stop Buttons together to the center
+        JPanel playAndStopPanel = new JPanel();
+        playAndStopPanel.add(playBtn);
+        playAndStopPanel.add(stopBtn);
+        add(playAndStopPanel, BorderLayout.CENTER);
 
     }
 }
