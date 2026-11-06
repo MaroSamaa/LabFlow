@@ -19,13 +19,14 @@ public class RequestPanel extends JPanel
 
         userBtn.addActionListener((ActionEvent) ->
         {
-            UserManager u = new UserManager(frame,monitor);
-            u.setVisible(true);
+            UserManager userManager = new UserManager(frame,monitor);
+            userManager.setVisible(true);
         });
 
         addRequestBtn.addActionListener((ActionEvent) ->
         {
-
+            RequestManager reqManager = new RequestManager(frame,monitor);
+            reqManager.setVisible(true);
         });
 
 
