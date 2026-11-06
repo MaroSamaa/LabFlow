@@ -24,6 +24,7 @@ public class LabMonitor
             throw new IllegalStateException(MSG_FULL);
         }
         equipment.add(toAdd);
+        System.out.println(toAdd.getType() + " ("+ toAdd.getCode() + ") added");
     }
 
     public synchronized void releaseEquipment(Request request) throws IllegalStateException
@@ -37,7 +38,7 @@ public class LabMonitor
         Equipment toRelease = request.getRequestedEquipment();
         toRelease.setStatus(EquipmentStatus.AVAILABLE);
         request.setStatus(RequestStatus.CLOSED);
-        System.out.println(request.getUser().getName() + " gave back " + toRelease.getCode()); //to be replaced with event log message integration
+        System.out.println(request.getUser().getName() + " gave back: " + toRelease.getCode()); //to be replaced with event log message integration
 
         notifyAll();    //Notify all waiting threads the fastest to awake gets the equipment 
     }
