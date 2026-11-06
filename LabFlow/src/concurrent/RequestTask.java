@@ -2,7 +2,7 @@ package concurrent;
 
 public class RequestTask implements Runnable
 {
-    private final static int WORK_TIME = 1000;  //  Variable to set the time to simulate "work with the equipment"
+    private final static int WORK_TIME = 3000;  //  Variable to set the time to simulate "work with the equipment"
 
     private LabMonitor monitor;
     private Request request;
@@ -18,7 +18,7 @@ public class RequestTask implements Runnable
     {
         try
         {
-            System.out.println("User: " + request.getUser().getName() + " made a request for: "+ request.getEquipmentType());
+            System.out.println(request.getUser().getName() + " made a request for: "+ request.getEquipmentType());
             monitor.requestEquipment(request); //   Request the equipment and wait until you get it
 
             Thread.sleep(WORK_TIME);
