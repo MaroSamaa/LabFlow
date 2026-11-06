@@ -39,10 +39,31 @@ public class RequestManager extends JDialog
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton addRequestBtn = new JButton("Insert new request");
 
-         //  addRequestBtn Actionlistener
+        //  addRequestBtn Actionlistener (@author Marini Enrico)
         addRequestBtn.addActionListener((ActionEvent) -> 
         {
-            
+            User selectedUser = (User) userCombo.getSelectedItem();
+            String selectedEquipmentType = (String) equipmentCombo.getSelectedItem();
+
+            // Check if selection is not null
+            if (selectedUser == null || selectedEquipmentType == null) 
+            {
+                JOptionPane.showMessageDialog(this, "Select a user and an equipment", "Selection Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            Request nuovaRichiesta = new Request(selectedUser, selectedEquipmentType);
+
+            RequestTask task = new RequestTask(nuovaRichiesta, monitor);
+
+            Thread threadRichiesta = new Thread(task);
+            threadRichiesta.start();
+
+            // Confirmation popup and dialog closure
+            JOptionPane.showMessageDialog(this, selectedUser.getName()+ " has successfully made a request!", "Request Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                
+            dispose(); // Close the confirmation popup and the request manager
+
         });
 
         southPanel.add(addRequestBtn);
