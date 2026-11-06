@@ -3,19 +3,48 @@ package concurrent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  @author Marini Enrico
+ *  The lab monitor class is the monitor for the management of the resources (Equipment) requested by threads(RequestTaks).
+ *  It ensures the resources get taken only when they are available (they aren't being used by anyone), if a request for a 
+ *  non available equipment is's put in queue waiting for the resource to be available.
+ *  It also implements a cap on the number of equipment that can be "stored" in the lab.  
+ * 
+ */
 public class LabMonitor 
 {
+    /**
+     * The maximum number of equipment that can be "stored" in the lab
+     */
     private final static int MAX_EQUIP = 4;
     private final static String MSG_FULL = "ERROR: Couldn't add equipment, max number has been reached";
     private final static String MSG_REQUEST_NOT_ACTIVE = "ERROR: The request isn't active, current request status is: ";
 
+    //--------INSTANCE VARIABLES--------
+
+    /**
+     * Equipment "stored" in the lab
+     */
     List<Equipment> equipment;
 
+    //---------CONSTRUCTOR--------
+
+    /**
+     * Constructor method for the LabMonitor class
+     * It initializez the equipment list as an empty arraylist of equipment.
+     */
     public LabMonitor()
     {
         equipment = new ArrayList<Equipment>();
     }
 
+    //--------METHODS--------
+
+    /**
+     * This method allows for an equipment to be added in the lab "storage"
+     * @param toAdd the equipment to be added in the lab "storage"
+     * @throws IllegalStateException if no more equipment can be "stored" in the lab
+     */
     public void addEquipment(Equipment toAdd) throws IllegalStateException
     {
         if(equipment.size() >= MAX_EQUIP)
@@ -27,6 +56,11 @@ public class LabMonitor
         System.out.println(toAdd.getType() + " ("+ toAdd.getCode() + ") added");
     }
 
+    /**
+     * This method allows for an equipment (resource) to be released (set to AVAILABLE) and a request to be concluded (set to CLOSED)
+     * @param request the request that is being conclunded
+     * @throws IllegalStateException if the request doesn't have ACTIVE status (so if there is no equipment to be released)
+     */
     public synchronized void releaseEquipment(Request request) throws IllegalStateException
     {
         //  Ensure that the request is active so that no closed or pending request can try and release an equipment they "don't own"  
@@ -43,6 +77,11 @@ public class LabMonitor
         notifyAll();    //Notify all waiting threads the fastest to awake gets the equipment 
     }
 
+    /**
+     * This method allows for the allocation of an equipment to a request
+     * @param request the request for the equipment
+     * @throws InterruptedException if thread gets interrupted
+     */
     public synchronized void requestEquipment(Request request) throws InterruptedException
     {
         Equipment requestedEquipment = findAvailableEquipment(request.getEquipmentType());
@@ -62,6 +101,12 @@ public class LabMonitor
         request.setRequestedEquipment(requestedEquipment);
     }
 
+    /**
+     * This method allows the search for an AVAILABLE equipment of a certain type
+     * @param type the type of the equipment searched
+     * @return the equipment searched if AVAILABLE
+     * @return null if the equipment searched isn't available or if it doesn't exist in the lab
+     */
     private Equipment findAvailableEquipment(String type)
     {
         for(Equipment eq : equipment)

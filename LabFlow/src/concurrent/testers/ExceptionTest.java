@@ -2,12 +2,17 @@ package concurrent.testers;
 
 import concurrent.*;
 
+/**
+ *  @author Marini Enrico
+ *  Test Class to test if the exceptions get thrown as expected.
+*/
 public class ExceptionTest 
 {
     public static void main(String[] args)
     {
         LabMonitor monitor = new LabMonitor();
-        //Trying to add more equipments than allowed by the max limit
+        
+        //  Trying to add more equipments than allowed by the max limit
         try
         {
             monitor.addEquipment(new Equipment("Oscilloscope", "OSC-01"));  
@@ -18,14 +23,11 @@ public class ExceptionTest
         }catch(IllegalStateException e){System.out.println(e.getMessage());};
 
 
-        //Trying to give back an equipment that was never obtained
+        //  Trying to give back an equipment that was never obtained
         try
         {
             Request r1 = new Request(new User("Tester"), "Oscilloscope");
             monitor.releaseEquipment(r1);
         }catch(IllegalStateException e){System.out.println(e.getMessage());};
-        
-
-
     }
 }

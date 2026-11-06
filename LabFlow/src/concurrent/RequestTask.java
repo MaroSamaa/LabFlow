@@ -1,17 +1,34 @@
 package concurrent;
 
+/**
+ * @author Marini Enrico
+ * Class that makes requests "runnable"
+ */
 public class RequestTask implements Runnable
 {
     private final static int WORK_TIME = 3000;  //  Variable to set the time to simulate "work with the equipment"
 
+    //--------INSTANCE VARIABLES--------
+
+    /**
+     * The monitor to work on
+     */
     private LabMonitor monitor;
+
+    /**
+     * The request to "execute"
+     */
     private Request request;
+
+    //--------CONSTRUCTOR--------
 
     public RequestTask(Request request, LabMonitor monitor)
     {
         this.monitor = monitor;
         this.request = request;
     }
+
+    //--------METHODS--------
 
     @Override 
     public void run()
@@ -35,6 +52,6 @@ public class RequestTask implements Runnable
         {
             System.out.println(e.getMessage()); //to be replaced with event log message integration
         }
-    };
+    }
 }
 

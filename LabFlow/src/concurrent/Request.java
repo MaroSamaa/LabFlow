@@ -1,15 +1,19 @@
 package concurrent;
 
 /**
+ *  @author Marini Enrico
  *  This class is used to create requests.
  *  A request has a status and it is made by a user that requests a type of equipment.
  */
 public class Request 
 {
+    //--------INSTANCE VARIABLES--------
+
     /**
      * The user making the request
      */
     private User user;
+
     /**
      * The equipment requested
      */
@@ -19,10 +23,13 @@ public class Request
      * The requested equipment type (the "name" of the requested equipment)
      */
     private String equipmentType;
+
     /**
      * The request status
      */
     private RequestStatus status;
+
+    //--------CONSTRUCTOR--------
 
     /**
      * Constructor method for the Request class
@@ -37,7 +44,7 @@ public class Request
         this.requestedEquipment = null;
     }
 
-    //--------Accessor methods--------
+    //--------ACCESSOR METHODS--------
 
     /**
      * Getter method for the request's status
