@@ -17,19 +17,23 @@ public class SimulationTest
     {
         LabMonitor monitor = new LabMonitor();
 
+        //  Adding equipment to the lab
         monitor.addEquipment(new Equipment("Oscilloscope", "OSC-01"));
         monitor.addEquipment(new Equipment("Oscilloscope", "OSC-02"));
         monitor.addEquipment(new Equipment("Function Generator", "FGN-01"));
 
+        //  Creating users
         User u1 = new User("Maria");
         User u2 = new User("Greta");
         User u3 = new User("Alessia");
 
+        //  Creating requests
         Request r1 = new Request(u1,"Oscilloscope");
         Request r2 = new Request(u2,"Oscilloscope");
         Request r3 = new Request(u3,"Oscilloscope");
         Request r4 = new Request(u1,"Function Generator");
 
+        //  Creating threads (one for each request)
         Thread t1 = new Thread(new RequestTask(r1, monitor));
         Thread t2 = new Thread(new RequestTask(r2, monitor));
         Thread t3 = new Thread(new RequestTask(r3, monitor));
@@ -37,6 +41,7 @@ public class SimulationTest
 
         System.out.println("Starting Simulation");
 
+        //  Starting Threads
         t1.start();
         t2.start();
         t3.start();
