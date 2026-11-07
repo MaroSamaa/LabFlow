@@ -19,8 +19,8 @@ public class MainViewPanel extends JPanel
         southPanel.setLayout(new BorderLayout());
 
         //--------ASSEMBLY OF THE SUPPORT PANELS--------
-        //  Center panel with equipment and requests/user panel
-        //centerPanel.add(new EquipmentPanel());
+        //  Center panel with equipment and requests / user panel
+        centerPanel.add(new EquipmentPanel(frame,monitor));
         centerPanel.add(new RequestPanel(frame, monitor));
 
         //  South panel with event log panel and control panel

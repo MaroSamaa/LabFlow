@@ -20,6 +20,7 @@ public class LabMonitor
     private final static String MSG_FULL = "ERROR: Couldn't add equipment, max number has been reached";
     private final static String MSG_REQUEST_NOT_ACTIVE = "ERROR: The request isn't active, current request status is: ";
     private final static String MSG_USER_DUPLICATE = "ERROR: A user with the same name already exists";
+    private final static String MSG_CODE_DUPLICATE = "ERROR: An equipment with the same code already exists";
 
     //--------INSTANCE VARIABLES--------
 
@@ -33,17 +34,30 @@ public class LabMonitor
      */
     List<User> users;
 
+    /**
+     * List of all the requests made 
+     */
+    List<Request> requests;
+
+    /**
+     * List of LabListeners 
+     */
+    List<LabListener> listeners;
+
     //---------CONSTRUCTOR--------
 
     /**
      * Constructor method for the LabMonitor class
      * It initializes the equipment list as an empty arraylist of equipment.
      * It initializes the user list as an empty arraylist of users.
+     * It initializes the request list as an empty arraylist of requests.
      */
     public LabMonitor()
     {
         equipment = new ArrayList<Equipment>();
         users = new ArrayList<User>();
+        requests = new ArrayList<Request>();
+        listeners = new ArrayList<LabListener>();
     }
 
     //--------ACCESSOR METHODS--------
@@ -64,6 +78,15 @@ public class LabMonitor
     public synchronized ArrayList<Equipment> getEquipment()
     {
         return new ArrayList<Equipment>(equipment);
+    }
+
+    /**
+     * Getter method for the request list
+     * @return a copy of the request list
+     */
+    public synchronized ArrayList<Request> getRequests()
+    {
+        return new ArrayList<Request>(requests);
     }
 
     //--------METHODS--------
@@ -98,7 +121,17 @@ public class LabMonitor
             //  Illegal State because more of MAX_EQUIP would be a "wrong" state
             throw new IllegalStateException(MSG_FULL);
         }
+
+        //  Check if another equipment in the lab's list has the same code
+        for(Equipment e : equipment)
+        {
+            if(e.getCode().equalsIgnoreCase(toAdd.getCode()))
+            {
+                throw new IllegalStateException(MSG_CODE_DUPLICATE);
+            }
+        }
         equipment.add(toAdd);
+        notifyListeners();  //Notify all listeners that an equipment has been added to the monitor
         System.out.println(toAdd.getType() + " ("+ toAdd.getCode() + ") added");
     }
 
@@ -118,6 +151,7 @@ public class LabMonitor
         Equipment toRelease = request.getRequestedEquipment();
         toRelease.setStatus(EquipmentStatus.AVAILABLE);
         request.setStatus(RequestStatus.CLOSED);
+        notifyListeners();  //Notify all the listeners about the request and equipment change of status
         System.out.println(request.getUser().getName() + " gave back: " + toRelease.getCode()); //to be replaced with event log message integration
 
         notifyAll();    //Notify all waiting threads the fastest to awake gets the equipment 
@@ -130,11 +164,15 @@ public class LabMonitor
      */
     public synchronized void requestEquipment(Request request) throws InterruptedException
     {
+        requests.add(request);  //Add the request to the requests list
+        notifyListeners();      //Notify all the listeners that a request has been added
+
         Equipment requestedEquipment = findAvailableEquipment(request.getEquipmentType());
 
         while(requestedEquipment == null)   //  Continue trying until you (eventually) can use the equipment
         {
             request.setStatus(RequestStatus.PENDING);
+            notifyListeners();  //Notify all the listeneres that a request had a Status change
             
             wait(); //  Make the thread exit the lock
 
@@ -143,6 +181,7 @@ public class LabMonitor
 
         requestedEquipment.setStatus(EquipmentStatus.IN_USE);
         request.setStatus(RequestStatus.ACTIVE);
+        notifyListeners();  //Notify all the listeneres about the request and equipment change of status
         System.out.println(request.getUser().getName() + " obtained: " + requestedEquipment.getCode()); //to be replaced with event log message integration
         request.setRequestedEquipment(requestedEquipment);
     }
@@ -163,6 +202,27 @@ public class LabMonitor
             }
         }
         return null;    //  if an available equipment of the same type wasn't found return null
+    }
+
+    /**
+     * Method to add a LabListener to the LabMonitor's list
+     * @param toAdd the LabListener to add
+     */
+    public synchronized void addLabListener(LabListener toAdd)
+    {
+        listeners.add(toAdd);
+        toAdd.onLabStateChange();   //When a new listener gets added notify about it
+    }
+
+    /**
+     * Method to notify all listeners that something in the lab changed
+     */
+    private void notifyListeners()
+    {
+        for(LabListener ls : listeners)
+        {
+            ls.onLabStateChange();
+        }
     }
 
 }
