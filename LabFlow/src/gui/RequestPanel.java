@@ -1,8 +1,6 @@
 package gui;
 
-import concurrent.LabMonitor;
-import concurrent.Request;
-
+import concurrent.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -14,14 +12,18 @@ import java.awt.*;
  * It also has two buttons, one to open the UserManager Dialog
  * and one to open the RequestManager dialog.
  */
-public class RequestPanel extends JPanel
+public class RequestPanel extends JPanel implements LabListener
 {
     private final static String[] columnNames = {"Requesting User", "Requested Equipment", "Request status"};
 
     private DefaultTableModel requestTableModel;
 
+    private LabMonitor monitor;
+
     public RequestPanel(Frame frame, LabMonitor monitor)
     {
+        this.monitor = monitor;
+        this.monitor.addLabListener(this);
         setLayout(new BorderLayout());
 
         //  Assembly of the center panel
@@ -39,9 +41,6 @@ public class RequestPanel extends JPanel
         JTable requestTable = new JTable(requestTableModel);
         JScrollPane scrollTable = new JScrollPane(requestTable);
         centerPanel.add(scrollTable);
-        updateRequestTable(monitor);
-
-        
 
         //  Buttons and actionlisteners
         JButton userBtn = new JButton("User");
@@ -50,16 +49,15 @@ public class RequestPanel extends JPanel
         //  Open and visualize UserManager 
         userBtn.addActionListener((ActionEvent) ->
         {
-            UserManager userManager = new UserManager(frame,monitor);
+            UserManager userManager = new UserManager(frame,this.monitor);
             userManager.setVisible(true);
         });
 
         //  Open and visualize RequestManager
         addRequestBtn.addActionListener((ActionEvent) ->
         {
-            RequestManager reqManager = new RequestManager(frame,monitor);
+            RequestManager reqManager = new RequestManager(frame,this.monitor);
             reqManager.setVisible(true);
-            updateRequestTable(monitor);
         });
 
         //  Assembly of the northPanel
@@ -75,9 +73,8 @@ public class RequestPanel extends JPanel
 
     /**
      * Service method to load the table with LabMonitor request data
-     * @param monitor the referenced LabMonitor
      */
-    private void updateRequestTable(LabMonitor monitor)
+    private void updateRequestTable()
     {
         // Reset to blank table
         requestTableModel.setRowCount(0);
@@ -96,5 +93,15 @@ public class RequestPanel extends JPanel
             };
             requestTableModel.addRow(rowData);
         }
+    }
+
+    @Override 
+    public void onLabStateChange()
+    {
+        //Do updateRequestTable whenever the EDT can
+        SwingUtilities.invokeLater(()->
+        {
+            updateRequestTable();
+        });
     }
 }
