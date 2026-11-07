@@ -200,6 +200,7 @@ public class LabMonitor
     public synchronized void addLabListener(LabListener toAdd)
     {
         listeners.add(toAdd);
+        toAdd.onLabStateChange();   //When a new listener gets added notify about it
     }
 
     /**
