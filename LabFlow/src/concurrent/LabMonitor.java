@@ -33,17 +33,24 @@ public class LabMonitor
      */
     List<User> users;
 
+    /**
+     * List of all the requests made 
+     */
+    List<Request> requests;
+
     //---------CONSTRUCTOR--------
 
     /**
      * Constructor method for the LabMonitor class
      * It initializes the equipment list as an empty arraylist of equipment.
      * It initializes the user list as an empty arraylist of users.
+     * It initializes the request list as an empty arraylist of requests.
      */
     public LabMonitor()
     {
         equipment = new ArrayList<Equipment>();
         users = new ArrayList<User>();
+        requests = new ArrayList<Request>();
     }
 
     //--------ACCESSOR METHODS--------
@@ -64,6 +71,15 @@ public class LabMonitor
     public synchronized ArrayList<Equipment> getEquipment()
     {
         return new ArrayList<Equipment>(equipment);
+    }
+
+    /**
+     * Getter method for the request list
+     * @return a copy of the request list
+     */
+    public synchronized ArrayList<Request> getRequests()
+    {
+        return new ArrayList<Request>(requests);
     }
 
     //--------METHODS--------
@@ -130,6 +146,8 @@ public class LabMonitor
      */
     public synchronized void requestEquipment(Request request) throws InterruptedException
     {
+        requests.add(request);  //Add the request to the requests list
+        
         Equipment requestedEquipment = findAvailableEquipment(request.getEquipmentType());
 
         while(requestedEquipment == null)   //  Continue trying until you (eventually) can use the equipment
