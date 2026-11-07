@@ -3,6 +3,8 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 import concurrent.*;
+import concurrent.exceptions.DuplicateEquipmentCodeException;
+import concurrent.exceptions.EquipmentStorageFullException;
 
 public class EquipmentManager extends JDialog 
 {
@@ -31,7 +33,7 @@ public class EquipmentManager extends JDialog
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton addEquipmentBtn = new JButton("ADD");
 
-        // --- EVENTO DEL PULSANTE ---
+        // addEquipmentBtn action listener
         addEquipmentBtn.addActionListener((ActionEvent) -> 
         {
             String equipmentType = newEquipmentType.getText().trim();
@@ -53,7 +55,9 @@ public class EquipmentManager extends JDialog
                 JOptionPane.showMessageDialog(this, newEquipment.getCode()+ " has been added!", "New Equipment Confirmation", JOptionPane.INFORMATION_MESSAGE);
                 dispose(); // Close the confirmation popup and the equipment manager
 
-            } catch (IllegalStateException e) {JOptionPane.showMessageDialog(this, e.getMessage(), "Full Storage error", JOptionPane.ERROR_MESSAGE);}
+            } 
+            catch (EquipmentStorageFullException e) {JOptionPane.showMessageDialog(this, e.getMessage(), "Full Storage Error", JOptionPane.ERROR_MESSAGE);}
+            catch (DuplicateEquipmentCodeException e){JOptionPane.showMessageDialog(this, e.getMessage(), "Duplicate Equipment Code Error", JOptionPane.ERROR_MESSAGE);}
         });
 
         southPanel.add(addEquipmentBtn);
