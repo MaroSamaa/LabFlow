@@ -121,6 +121,7 @@ public class LabMonitor
             throw new IllegalStateException(MSG_FULL);
         }
         equipment.add(toAdd);
+        notifyListeners();  //Notify all listeners that an equipment has been added to the monitor
         System.out.println(toAdd.getType() + " ("+ toAdd.getCode() + ") added");
     }
 
