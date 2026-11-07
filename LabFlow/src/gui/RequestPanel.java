@@ -1,6 +1,8 @@
 package gui;
 
 import concurrent.*;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -9,12 +11,15 @@ import java.awt.*;
 /**
  * @author Visone Sara
  * JPanel to show all the requests made in the session.
+ * It implements LabListener to auto update the request table whenever
+ * a change in the LabMonitor happens.
  * It also has two buttons, one to open the UserManager Dialog
  * and one to open the RequestManager dialog.
  */
 public class RequestPanel extends JPanel implements LabListener
 {
     private final static String[] columnNames = {"Requesting User", "Requested Equipment", "Request status"};
+    private static final int BTN_DIMENTION = 30;
 
     private DefaultTableModel requestTableModel;
 
@@ -39,12 +44,42 @@ public class RequestPanel extends JPanel implements LabListener
             }
         };
         JTable requestTable = new JTable(requestTableModel);
-        JScrollPane scrollTable = new JScrollPane(requestTable);
+        JScrollPane scrollTable = new JScrollPane(requestTable); // Make the table scrollable
         centerPanel.add(scrollTable);
 
         //  Buttons and actionlisteners
         JButton userBtn = new JButton("User");
         JButton addRequestBtn = new JButton("Add request");
+
+        //  Set Image for userBtn
+        try 
+        {
+            Image temp = ImageIO.read(getClass().getResource("/images/userIcon.png"));
+            Image userIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            userBtn.setIcon(new ImageIcon(userIcon));
+            userBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+        }
+        catch (Exception e) {System.out.println(e.getStackTrace());}
+        userBtn.setMargin(new Insets(0, 0, 0, 0));
+        userBtn.setBorder(null);
+        userBtn.setContentAreaFilled(false);    // Remove java swing "standard" bkg
+        userBtn.setFocusPainted(false);         // Remove java swing "hover" border
+        userBtn.setBorderPainted(false);        // Remove "excess" borders
+
+        //  Set Image for requestBtn
+        try 
+        {
+            Image temp = ImageIO.read(getClass().getResource("/images/requestIcon.png"));
+            Image requestIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            addRequestBtn.setIcon(new ImageIcon(requestIcon));
+            addRequestBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+        }
+        catch (Exception e) {System.out.println(e.getStackTrace());}
+        addRequestBtn.setMargin(new Insets(0, 0, 0, 0));
+        addRequestBtn.setBorder(null);
+        addRequestBtn.setContentAreaFilled(false);    
+        addRequestBtn.setFocusPainted(false);         
+        addRequestBtn.setBorderPainted(false);        
 
         //  Open and visualize UserManager 
         userBtn.addActionListener((ActionEvent) ->
@@ -95,6 +130,9 @@ public class RequestPanel extends JPanel implements LabListener
         }
     }
 
+    /**
+     * Method to update the request table when the listener gets notified
+     */
     @Override 
     public void onLabStateChange()
     {
