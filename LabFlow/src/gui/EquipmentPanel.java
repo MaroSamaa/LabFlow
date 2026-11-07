@@ -8,62 +8,85 @@ import java.util.List;
 
 public class EquipmentPanel extends JPanel implements LabListener 
 {
+    private final static String[] columnNames = {"Type","Code","Status"};
+
     private LabMonitor monitor;
 
     private JTable equipmentTable;
 
     private DefaultTableModel tableModel;
 
-    public EquipmentPanel(LabMonitor monitor) {
+    public EquipmentPanel(Frame frame, LabMonitor monitor) 
+    {
         this.monitor = monitor;
-        
-        // Ci registriamo come ascoltatori del monitor per reagire ai cambiamenti in tempo reale
         this.monitor.addLabListener(this);
-
         setLayout(new BorderLayout());
-
-        // Definiamo le colonne della tabella degli strumenti
-        String[] columnNames = {"ID / Codice", "Tipo", "Stato"};
         
-        tableModel = new DefaultTableModel(columnNames, 0) {
+        //  Center Panel assembly (table with equipment type, code and status)
+
+        // Create the table model and don't allow direct modification 
+        tableModel = new DefaultTableModel(columnNames, 0) 
+        {
             @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Celle non modificabili direttamente
+            public boolean isCellEditable(int row, int column) 
+            {
+                return false; 
             }
         };
         
         equipmentTable = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(equipmentTable);
+        JScrollPane scrollTable = new JScrollPane(equipmentTable);  //  Make the table scrollable  
 
-        // Popoliamo subito la tabella con i dati iniziali
-        aggiornaTabella();
+        //  North panel assembly (addEquipmentBtn and panelTitle label)
+        JPanel northPanel = new JPanel(new BorderLayout());
+        JButton addEquipmentBtn = new JButton("Add equipment");
 
-        // Assemblaggio del pannello
-        add(new JLabel("Elenco Strumenti del Laboratorio", JLabel.CENTER), BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        //  Open and visualize the EquipmentManager
+        addEquipmentBtn.addActionListener((ActionEvent) ->
+        {
+            EquipmentManager equipManager = new EquipmentManager(frame,this.monitor);
+            equipManager.setVisible(true);
+        });
+
+        JLabel panelTitle = new JLabel("EQUIPMENT", JLabel.CENTER);
+        northPanel.add(panelTitle, BorderLayout.CENTER);
+        northPanel.add(addEquipmentBtn, BorderLayout.WEST);
+
+        // EquipmentPanel assembly
+        add(scrollTable, BorderLayout.CENTER);
+        add(northPanel, BorderLayout.NORTH);
     }
 
-    public void aggiornaTabella() {
+    /**
+     * Service method to load the table with LabMonitor equipment data
+     */
+    public void updateEquipmentTable() 
+    {
         tableModel.setRowCount(0);
-        List<Equipment> equipmentList = monitor.getEquipment();
+        List<Equipment> equipment = monitor.getEquipment();
 
-        for (Equipment eq : equipmentList) 
+        for (Equipment e : equipment) 
         {
             Object[] rowData = 
             {
-                eq.getType(),   // Il tipo (es. "Oscilloscopio")
-                eq.getCode(),   // O il metodo che usi per identificare lo strumento (es. getCodice())
-                eq.getStatus()  // Lo stato (DISPONIBILE, IN_USO, ecc.)
+                e.getType(),   // Equipment type
+                e.getCode(),   // Equipment code
+                e.getStatus()  // Equipment status
             };
             tableModel.addRow(rowData);
         }
     }
 
+    /**
+     * Method to update the equipment table when the listener gets notified
+     */
     @Override
     public void onLabStateChange()
     {
-        // Appena uno strumento cambia stato (es. da DISPONIBILE a IN_USO), 
-        // il monitor ci avvisa e noi aggiorniamo la tabella in modo sicuro sull'EDT
-        SwingUtilities.invokeLater(this::aggiornaTabella);
+        //Do updateEquipmentTable whenever the EDT can
+        SwingUtilities.invokeLater(() ->
+        {
+            updateEquipmentTable();
+        });
     }
 }
