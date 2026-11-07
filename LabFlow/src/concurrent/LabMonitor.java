@@ -20,6 +20,7 @@ public class LabMonitor
     private final static String MSG_FULL = "ERROR: Couldn't add equipment, max number has been reached";
     private final static String MSG_REQUEST_NOT_ACTIVE = "ERROR: The request isn't active, current request status is: ";
     private final static String MSG_USER_DUPLICATE = "ERROR: A user with the same name already exists";
+    private final static String MSG_CODE_DUPLICATE = "ERROR: An equipment with the same code already exists";
 
     //--------INSTANCE VARIABLES--------
 
@@ -119,6 +120,15 @@ public class LabMonitor
         {
             //  Illegal State because more of MAX_EQUIP would be a "wrong" state
             throw new IllegalStateException(MSG_FULL);
+        }
+
+        //  Check if another equipment in the lab's list has the same code
+        for(Equipment e : equipment)
+        {
+            if(e.getCode().equalsIgnoreCase(toAdd.getCode()))
+            {
+                throw new IllegalStateException(MSG_CODE_DUPLICATE);
+            }
         }
         equipment.add(toAdd);
         notifyListeners();  //Notify all listeners that an equipment has been added to the monitor
