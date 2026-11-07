@@ -48,6 +48,7 @@ public class RequestManager extends JDialog
             // Check if selection is not null
             if (selectedUser == null || selectedEquipmentType == null) 
             {
+                //  Warning popup if one of the selector was empty
                 JOptionPane.showMessageDialog(this, "Select a user and an equipment", "Selection Warning", JOptionPane.WARNING_MESSAGE);
                 return;
             }
