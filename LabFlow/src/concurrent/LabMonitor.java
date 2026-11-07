@@ -38,6 +38,11 @@ public class LabMonitor
      */
     List<Request> requests;
 
+    /**
+     * List of LabListeners 
+     */
+    List<LabListener> listeners;
+
     //---------CONSTRUCTOR--------
 
     /**
@@ -51,6 +56,7 @@ public class LabMonitor
         equipment = new ArrayList<Equipment>();
         users = new ArrayList<User>();
         requests = new ArrayList<Request>();
+        listeners = new ArrayList<LabListener>();
     }
 
     //--------ACCESSOR METHODS--------
@@ -134,6 +140,7 @@ public class LabMonitor
         Equipment toRelease = request.getRequestedEquipment();
         toRelease.setStatus(EquipmentStatus.AVAILABLE);
         request.setStatus(RequestStatus.CLOSED);
+        notifyListeners();  //Notify all the listeners that a request had a status change
         System.out.println(request.getUser().getName() + " gave back: " + toRelease.getCode()); //to be replaced with event log message integration
 
         notifyAll();    //Notify all waiting threads the fastest to awake gets the equipment 
@@ -147,12 +154,14 @@ public class LabMonitor
     public synchronized void requestEquipment(Request request) throws InterruptedException
     {
         requests.add(request);  //Add the request to the requests list
-        
+        notifyListeners();      //Notify all the listeners that a request has been added
+
         Equipment requestedEquipment = findAvailableEquipment(request.getEquipmentType());
 
         while(requestedEquipment == null)   //  Continue trying until you (eventually) can use the equipment
         {
             request.setStatus(RequestStatus.PENDING);
+            notifyListeners();  //Notify all the listeneres that a request had a Status change
             
             wait(); //  Make the thread exit the lock
 
@@ -161,6 +170,7 @@ public class LabMonitor
 
         requestedEquipment.setStatus(EquipmentStatus.IN_USE);
         request.setStatus(RequestStatus.ACTIVE);
+        notifyListeners();  //Notify all the listeneres that a request had a status change
         System.out.println(request.getUser().getName() + " obtained: " + requestedEquipment.getCode()); //to be replaced with event log message integration
         request.setRequestedEquipment(requestedEquipment);
     }
@@ -181,6 +191,26 @@ public class LabMonitor
             }
         }
         return null;    //  if an available equipment of the same type wasn't found return null
+    }
+
+    /**
+     * Method to add a LabListener to the LabMonitor's list
+     * @param toAdd the LabListener to add
+     */
+    public synchronized void addLabListener(LabListener toAdd)
+    {
+        listeners.add(toAdd);
+    }
+
+    /**
+     * Method to notify all listeners that something in the lab changed
+     */
+    private void notifyListeners()
+    {
+        for(LabListener ls : listeners)
+        {
+            ls.onLabStateChange();
+        }
     }
 
 }
