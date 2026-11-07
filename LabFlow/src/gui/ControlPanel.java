@@ -28,7 +28,7 @@ public class ControlPanel extends JPanel
             settingsBtn.setIcon(new ImageIcon(settingsIcon));
             settingsBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
         }
-        catch (Exception e) {System.out.println(e.getStackTrace());}
+        catch (IOException e) {System.out.println(e.getStackTrace());}
         settingsBtn.setMargin(new Insets(0, 0, 0, 0));
         settingsBtn.setBorder(null);
         settingsBtn.setContentAreaFilled(false);    // Remove java swing "standard" bkg
@@ -69,7 +69,7 @@ public class ControlPanel extends JPanel
             playBtn.setIcon(new ImageIcon(playIcon));
             playBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
         }
-        catch (Exception e) {System.out.println(e.getStackTrace());}
+        catch (IOException e) {System.out.println(e.getStackTrace());}
         playBtn.setMargin(new Insets(0, 0, 0, 0));
         playBtn.setBorder(null);
         playBtn.setContentAreaFilled(false);    
@@ -84,7 +84,7 @@ public class ControlPanel extends JPanel
             stopBtn.setIcon(new ImageIcon(stopIcon));
             stopBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
         }
-        catch (Exception e) {System.out.println(e.getStackTrace());}
+        catch (IOException e) {System.out.println(e.getStackTrace());}
         stopBtn.setMargin(new Insets(0, 0, 0, 0));
         stopBtn.setBorder(null);
         stopBtn.setContentAreaFilled(false);    

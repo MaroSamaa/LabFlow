@@ -1,6 +1,8 @@
 package gui;
 
 import concurrent.*;
+import concurrent.exceptions.DuplicateUserNameException;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -72,7 +74,7 @@ public class UserManager extends JDialog
                 //  Reset the text field to blank
                 newUserName.setText("");
                 
-            } catch (IllegalStateException e) 
+            } catch (DuplicateUserNameException e) 
             {
                 // Error popup if the user couldn't be added (user's name is the name of another user in the list)
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Duplicate user error", JOptionPane.ERROR_MESSAGE);

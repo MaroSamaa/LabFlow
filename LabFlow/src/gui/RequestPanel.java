@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * @author Visone Sara
@@ -59,7 +60,7 @@ public class RequestPanel extends JPanel implements LabListener
             userBtn.setIcon(new ImageIcon(userIcon));
             userBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
         }
-        catch (Exception e) {System.out.println(e.getStackTrace());}
+        catch (IOException e) {System.out.println(e.getStackTrace());}
         userBtn.setMargin(new Insets(0, 0, 0, 0));
         userBtn.setBorder(null);
         userBtn.setContentAreaFilled(false);    // Remove java swing "standard" bkg
@@ -74,7 +75,7 @@ public class RequestPanel extends JPanel implements LabListener
             addRequestBtn.setIcon(new ImageIcon(requestIcon));
             addRequestBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
         }
-        catch (Exception e) {System.out.println(e.getStackTrace());}
+        catch (IOException e) {System.out.println(e.getStackTrace());}
         addRequestBtn.setMargin(new Insets(0, 0, 0, 0));
         addRequestBtn.setBorder(null);
         addRequestBtn.setContentAreaFilled(false);    

@@ -2,6 +2,7 @@ package concurrent;
 
 import java.util.ArrayList;
 import java.util.List;
+import concurrent.exceptions.*;
 
 /**
  *  @author Marini Enrico
@@ -96,13 +97,13 @@ public class LabMonitor
      * @param toAdd the user to be registered to the lab
      * @throws IllegalStateException if the user is already registered to the lab
      */
-    public synchronized void addUser(User toAdd) throws IllegalStateException
+    public synchronized void addUser(User toAdd) throws DuplicateUserNameException
     {
         for(User u : users) //Make sure there are no user with the same name
         {
             if(u.getName().equalsIgnoreCase(toAdd.getName()))
             {
-                throw new IllegalStateException(MSG_USER_DUPLICATE);
+                throw new DuplicateUserNameException(MSG_USER_DUPLICATE);
             }
         }
         users.add(toAdd);
@@ -114,12 +115,12 @@ public class LabMonitor
      * @param toAdd the equipment to be added in the lab "storage"
      * @throws IllegalStateException if no more equipment can be "stored" in the lab
      */
-    public synchronized void addEquipment(Equipment toAdd) throws IllegalStateException
+    public synchronized void addEquipment(Equipment toAdd) throws EquipmentStorageFullException, DuplicateEquipmentCodeException
     {
         if(equipment.size() >= MAX_EQUIP)
         {
             //  Illegal State because more of MAX_EQUIP would be a "wrong" state
-            throw new IllegalStateException(MSG_FULL);
+            throw new EquipmentStorageFullException(MSG_FULL);
         }
 
         //  Check if another equipment in the lab's list has the same code
@@ -127,7 +128,7 @@ public class LabMonitor
         {
             if(e.getCode().equalsIgnoreCase(toAdd.getCode()))
             {
-                throw new IllegalStateException(MSG_CODE_DUPLICATE);
+                throw new DuplicateEquipmentCodeException(MSG_CODE_DUPLICATE);
             }
         }
         equipment.add(toAdd);
