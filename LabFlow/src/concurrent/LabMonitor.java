@@ -140,7 +140,7 @@ public class LabMonitor
         Equipment toRelease = request.getRequestedEquipment();
         toRelease.setStatus(EquipmentStatus.AVAILABLE);
         request.setStatus(RequestStatus.CLOSED);
-        notifyListeners();  //Notify all the listeners that a request had a status change
+        notifyListeners();  //Notify all the listeners about the request and equipment change of status
         System.out.println(request.getUser().getName() + " gave back: " + toRelease.getCode()); //to be replaced with event log message integration
 
         notifyAll();    //Notify all waiting threads the fastest to awake gets the equipment 
@@ -170,7 +170,7 @@ public class LabMonitor
 
         requestedEquipment.setStatus(EquipmentStatus.IN_USE);
         request.setStatus(RequestStatus.ACTIVE);
-        notifyListeners();  //Notify all the listeneres that a request had a status change
+        notifyListeners();  //Notify all the listeneres about the request and equipment change of status
         System.out.println(request.getUser().getName() + " obtained: " + requestedEquipment.getCode()); //to be replaced with event log message integration
         request.setRequestedEquipment(requestedEquipment);
     }
