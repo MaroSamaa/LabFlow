@@ -59,6 +59,7 @@ public class RequestPanel extends JPanel
         {
             RequestManager reqManager = new RequestManager(frame,monitor);
             reqManager.setVisible(true);
+            updateRequestTable(monitor);
         });
 
         //  Assembly of the northPanel
