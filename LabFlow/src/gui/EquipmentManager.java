@@ -46,7 +46,7 @@ public class EquipmentManager extends JDialog
 
             try 
             {
-                Equipment newEquipment = new Equipment(equipmentCode, equipmentType);
+                Equipment newEquipment = new Equipment(equipmentType, equipmentCode);
                 monitor.addEquipment(newEquipment);
 
                 // Confirmation popup and dialog closure
