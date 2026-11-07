@@ -95,7 +95,7 @@ public class RequestPanel extends JPanel implements LabListener
             reqManager.setVisible(true);
         });
 
-        JLabel panelTitle = new JLabel("REQUESTS");
+        JLabel panelTitle = new JLabel("REQUESTS", JLabel.CENTER);
 
         //  Assembly of the northPanel
         JPanel northPanel = new JPanel();
