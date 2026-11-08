@@ -18,7 +18,7 @@ public class LabMonitor
      * The maximum number of equipment that can be "stored" in the lab
      */
     private final static int MAX_EQUIP = 4;
-    private final static String MSG_FULL = "ERROR: Couldn't add equipment, max number has been reached";
+    private final static String MSG_FULL = "ERROR: Couldn't add equipment, max number has already been reached";
     private final static String MSG_REQUEST_NOT_ACTIVE = "ERROR: The request isn't active, current request status is: ";
     private final static String MSG_USER_DUPLICATE = "ERROR: A user with the same name already exists";
     private final static String MSG_CODE_DUPLICATE = "ERROR: An equipment with the same code already exists";
