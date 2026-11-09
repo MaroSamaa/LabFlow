@@ -126,6 +126,19 @@ public class ControlPanel extends JPanel
         //  On load btn press prompt the user to select a file and load the data into the monitor (@author Marini Enrico)
         loadBtn.addActionListener((ActionEvent) ->
         {
+
+            //  If there is information that get's potentially overritten make the user choose
+            if(!monitor.getEvents().isEmpty())
+            {
+                int userChoice = JOptionPane.showConfirmDialog(frame, "All unsaved data will be lost, are you sure you want to proceed?", "Overwrite Confirmation",JOptionPane.YES_NO_OPTION);
+                if(userChoice == JOptionPane.NO_OPTION)
+                {
+                    return;
+                }
+            }
+
+            //  If no data is present or the user chose to continue and overwrite
+
             //  Show the user a File Chooser with a custom title
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Load Lab State");
