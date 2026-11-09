@@ -289,7 +289,7 @@ public class LabMonitor
     }
 
     /**
-     * Method do load the state of the lab from a file
+     * Method to load the state of the lab from a file
      * @param file from where the data will be loaded
      * @throws IOException if something happens when reading the data
      * @throws ClassNotFoundException if the file wasn't a previously saved file
