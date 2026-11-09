@@ -19,7 +19,6 @@ public class EquipmentPanel extends JPanel implements LabListener
     public EquipmentPanel(Frame frame, LabMonitor monitor) 
     {
         this.monitor = monitor;
-        this.monitor.addLabListener(this);
         setLayout(new BorderLayout());
         
         //  Center Panel assembly (table with equipment type, code and status)
@@ -55,6 +54,8 @@ public class EquipmentPanel extends JPanel implements LabListener
         // EquipmentPanel assembly
         add(scrollTable, BorderLayout.CENTER);
         add(northPanel, BorderLayout.NORTH);
+
+        this.monitor.addLabListener(this);
     }
 
     /**

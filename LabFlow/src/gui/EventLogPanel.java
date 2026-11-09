@@ -20,7 +20,6 @@ public class EventLogPanel extends JPanel implements LabListener
     public EventLogPanel(LabMonitor monitor) 
     {
         this.monitor = monitor;
-        this.monitor.addLabListener(this); 
         setLayout(new BorderLayout());
 
         // Create the table model and don't allow direct modification 
@@ -49,8 +48,7 @@ public class EventLogPanel extends JPanel implements LabListener
         add(panelTitle, BorderLayout.NORTH);
         add(scrollTable, BorderLayout.CENTER);
 
-        // Load initial event data
-        updateEventLog();
+        this.monitor.addLabListener(this); 
     }
 
     private void updateEventLog() 

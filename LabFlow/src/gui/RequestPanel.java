@@ -29,7 +29,6 @@ public class RequestPanel extends JPanel implements LabListener
     public RequestPanel(Frame frame, LabMonitor monitor)
     {
         this.monitor = monitor;
-        this.monitor.addLabListener(this);
         setLayout(new BorderLayout());
 
         //  Assembly of the center panel
@@ -108,6 +107,8 @@ public class RequestPanel extends JPanel implements LabListener
         //  Assembly of the request panel
         add(northPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
+
+        this.monitor.addLabListener(this);
     }
 
     /**
