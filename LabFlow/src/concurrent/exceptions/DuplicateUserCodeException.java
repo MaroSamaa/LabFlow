@@ -3,9 +3,9 @@ package concurrent.exceptions;
 /**
  *  Exception to address when two users have the same name
  */
-public class DuplicateUserNameException extends RuntimeException
+public class DuplicateUserCodeException extends RuntimeException
 {
-    public DuplicateUserNameException(String msg)
+    public DuplicateUserCodeException(String msg)
     {
         super(msg);
     }
