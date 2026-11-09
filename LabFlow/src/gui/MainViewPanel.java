@@ -25,7 +25,7 @@ public class MainViewPanel extends JPanel
 
         //  South panel with event log panel and control panel
         southPanel.add(new EventLogPanel(monitor), BorderLayout.CENTER);
-        southPanel.add(new ControlPanel(frame), BorderLayout.SOUTH);
+        southPanel.add(new ControlPanel(frame,monitor), BorderLayout.SOUTH);
 
         //--------ASSEMBLY OF THE MAIN VIEW PANEL--------
         add(centerPanel, BorderLayout.CENTER);
