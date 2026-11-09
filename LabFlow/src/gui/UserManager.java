@@ -108,8 +108,8 @@ public class UserManager extends JDialog
 
 
         //  Assembly of the UserManager
-        add(southPanel, BorderLayout.CENTER);
-        add(inputPanel, BorderLayout.SOUTH);
+        add(scrollableUserList, BorderLayout.CENTER);
+        add(southPanel, BorderLayout.SOUTH);
     }
 
     /**
