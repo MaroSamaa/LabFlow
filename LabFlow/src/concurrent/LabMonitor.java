@@ -22,7 +22,7 @@ public class LabMonitor
     //  Error Messages
     private final static String MSG_FULL = "ERROR: Couldn't add equipment, max number has already been reached";
     private final static String MSG_REQUEST_NOT_ACTIVE = "ERROR: The request isn't active, current request status is: ";
-    private final static String MSG_USER_DUPLICATE = "ERROR: A user with the same name already exists";
+    private final static String MSG_USER_DUPLICATE = "ERROR: A user with the same code already exists";
     private final static String MSG_CODE_DUPLICATE = "ERROR: An equipment with the same code already exists";
 
     //--------INSTANCE VARIABLES--------
@@ -114,18 +114,18 @@ public class LabMonitor
      * @param toAdd the user to be registered to the lab
      * @throws DuplicateUserNameException if the user is already registered to the lab
      */
-    public synchronized void addUser(User toAdd) throws DuplicateUserNameException
+    public synchronized void addUser(User toAdd) throws DuplicateUserCodeException
     {
-        for(User u : users) //Make sure there are no user with the same name
+        for(User u : users) //Make sure there is no user with the same user code
         {
-            if(u.getName().equalsIgnoreCase(toAdd.getName()))
+            if(u.getCode().equalsIgnoreCase(toAdd.getCode()))
             {
-                throw new DuplicateUserNameException(MSG_USER_DUPLICATE);
+                throw new DuplicateUserCodeException(MSG_USER_DUPLICATE);
             }
         }
         users.add(toAdd);
         //  Register the user added avent and notify all listeners
-        addEvent(toAdd.getName() + " has been registered to the lab");
+        addEvent(toAdd.toString() + " has been registered to the lab");
     }
 
     /**
@@ -173,7 +173,7 @@ public class LabMonitor
         request.setStatus(RequestStatus.CLOSED);
 
         //  Register the user gave back event and notify all listeners (request and equipment changed status)
-        addEvent(request.getUser().getName() + " gave back: " + toRelease.getCode());
+        addEvent(request.getUser().toString() + " gave back: " + toRelease.getCode());
 
         notifyAll();    //Notify all waiting threads the fastest to awake gets the equipment 
     }
@@ -187,7 +187,7 @@ public class LabMonitor
     {
         requests.add(request);  //Add the request to the requests list
         //  Register the added request event and notify all listeners
-        addEvent(request.getUser().getName() + " requested: " + request.getEquipmentType());      
+        addEvent(request.getUser().toString() + " requested: " + request.getEquipmentType());      
 
         Equipment requestedEquipment = findAvailableEquipment(request.getEquipmentType());
 
@@ -205,7 +205,7 @@ public class LabMonitor
         request.setStatus(RequestStatus.ACTIVE);
 
         //  Register the user obtained event and notify all listeners (request and equipment changed status)
-        addEvent(request.getUser().getName() + " obtained: " + requestedEquipment.getCode()); 
+        addEvent(request.getUser().toString() + " obtained: " + requestedEquipment.getCode()); 
 
         request.setRequestedEquipment(requestedEquipment);
     }

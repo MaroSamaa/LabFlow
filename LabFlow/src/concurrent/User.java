@@ -2,7 +2,7 @@ package concurrent;
 
 /**
  * @author Marini Enrico
- * Class that represents a user with a given name
+ * Class that represents a user with a given name and a unique code
  */
 public class User 
 {
@@ -12,16 +12,23 @@ public class User
      * The name of the user
      */
     private String name;
+
+    /**
+     * The unique code of the user
+     */
+    private String code;
     
     //--------CONSTRUCTOR--------
 
     /**
      * Constructor method for the User class
      * @param name the name of the user
+     * @param code the unique code of the user
      */
-    public User(String name)
+    public User(String name, String code)
     {
         this.name = name;
+        this.code = code;
     }
 
     //--------ACCESSOR METHODS--------
@@ -35,11 +42,20 @@ public class User
         return name;
     }
 
+    /**
+     * Getter method for the unique code of the user
+     * @return the code of the user
+     */
+    public String getCode()
+    {
+        return code;
+    }
+
     //--------METHODS--------
     @Override 
     public String toString()
     {
-        return name;
+        return name + " (" + code + ")";
     }
 
 }

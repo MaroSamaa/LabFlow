@@ -61,7 +61,7 @@ public class RequestManager extends JDialog
             threadRichiesta.start();
 
             // Confirmation popup and dialog closure
-            JOptionPane.showMessageDialog(this, selectedUser.getName()+ " has successfully made a request!", "Request Confirmation", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, selectedUser.toString()+ " has successfully made a request!", "Request Confirmation", JOptionPane.INFORMATION_MESSAGE);
                 
             dispose(); // Close the confirmation popup and the request manager
 

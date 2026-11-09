@@ -32,15 +32,15 @@ public class ExceptionTest
         //  Trying to give back an equipment that was never obtained
         try
         {
-            Request r1 = new Request(new User("Tester"), "Oscilloscope");
+            Request r1 = new Request(new User("Tester","001"), "Oscilloscope");
             monitor.releaseEquipment(r1);
         }catch(IllegalStateException e){System.out.println(e.getMessage());}
 
         //  Trying to add two users with the same name
         try
         {
-            monitor.addUser(new User("TestName"));
-            monitor.addUser(new User("TestName"));
-        }catch(DuplicateUserNameException e){System.out.println(e.getMessage());}
+            monitor.addUser(new User("Marco","002"));
+            monitor.addUser(new User("Lucia","002"));
+        }catch(DuplicateUserCodeException e){System.out.println(e.getMessage());}
     }
 }

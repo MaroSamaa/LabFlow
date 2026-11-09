@@ -23,9 +23,9 @@ public class SimulationTest
         monitor.addEquipment(new Equipment("Function Generator", "FGN-01"));
 
         //  Creating users
-        User u1 = new User("Maria");
-        User u2 = new User("Greta");
-        User u3 = new User("Alessia");
+        User u1 = new User("Maria","001");
+        User u2 = new User("Greta","002");
+        User u3 = new User("Alessia","003");
 
         //  Creating requests
         Request r1 = new Request(u1,"Oscilloscope");
