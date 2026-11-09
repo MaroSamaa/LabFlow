@@ -125,7 +125,7 @@ public class LabMonitor
         }
         users.add(toAdd);
         //  Register the user added avent and notify all listeners
-        addEvent("User: " + toAdd.getName() + " has been registered to the lab");
+        addEvent(toAdd.getName() + " has been registered to the lab");
     }
 
     /**
