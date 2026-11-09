@@ -100,11 +100,12 @@ public class ControlPanel extends JPanel
         //  On save btn press prompt the user to select a file and write the monitor's information (@author Marini Enrico)
         saveBtn.addActionListener((ActionEvent) ->
         {
-            //  Show the user a File Chooser
+            //  Show the user a File Chooser with a custom title
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save Lab State");
-        
-            int userSelection = fileChooser.showSaveDialog(this);
+
+            //  Center the file chooser to the frame
+            int userSelection = fileChooser.showSaveDialog(frame);
         
             if(userSelection == JFileChooser.APPROVE_OPTION) 
             {
@@ -115,20 +116,22 @@ public class ControlPanel extends JPanel
                     // Chiamata al metodo del monitor che usa il try-with-resources
                     monitor.saveLabState(file);
                     
-                    JOptionPane.showMessageDialog(this,"The state of the lab has been saved","Save File Confirmation",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(frame,"The state of the lab has been saved","Save File Confirmation",JOptionPane.INFORMATION_MESSAGE);
                         
                 } 
-                catch (IOException e) {JOptionPane.showMessageDialog(this,"Error during save file writing:\n" + e.getMessage(),"Save File Error",JOptionPane.ERROR_MESSAGE);}
+                catch (IOException e) {JOptionPane.showMessageDialog(frame,"Error during save file writing:\n" + e.getMessage(),"Save File Error",JOptionPane.ERROR_MESSAGE);}
             }
         });
 
         //  On load btn press prompt the user to select a file and load the data into the monitor (@author Marini Enrico)
         loadBtn.addActionListener((ActionEvent) ->
         {
+            //  Show the user a File Chooser with a custom title
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Load Lab State");
     
-            int userSelection = fileChooser.showOpenDialog(this);
+            //  Center the file chooser to the frame
+            int userSelection = fileChooser.showOpenDialog(frame);
     
             if (userSelection == JFileChooser.APPROVE_OPTION) 
             {
@@ -139,11 +142,11 @@ public class ControlPanel extends JPanel
                     // Chiamata al metodo del monitor
                     monitor.loadLabState(file);
                     
-                    JOptionPane.showMessageDialog(this,"The state of the lab has been successfully loaded","Load File Confirmation",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(frame,"The state of the lab has been successfully loaded","Load File Confirmation",JOptionPane.INFORMATION_MESSAGE);
                         
                 } 
-                catch (IOException e){JOptionPane.showMessageDialog(this,"Error during file reading:\n" + e.getMessage(),"Loading Error",JOptionPane.ERROR_MESSAGE);}
-                catch(ClassNotFoundException e){JOptionPane.showMessageDialog(this,"Make shure to select a previously saved file\n" + e.getMessage(),"File Selection Error",JOptionPane.ERROR_MESSAGE);}
+                catch (IOException e){JOptionPane.showMessageDialog(frame,"Error during file reading:\n" + e.getMessage(),"Loading Error",JOptionPane.ERROR_MESSAGE);}
+                catch(ClassNotFoundException e){JOptionPane.showMessageDialog(frame,"Make shure to select a previously saved file\n" + e.getMessage(),"File Selection Error",JOptionPane.ERROR_MESSAGE);}
             }
         });
 
