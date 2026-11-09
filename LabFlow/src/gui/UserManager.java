@@ -1,7 +1,7 @@
 package gui;
 
 import concurrent.*;
-import concurrent.exceptions.DuplicateUserNameException;
+import concurrent.exceptions.DuplicateUserCodeException;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -24,7 +24,7 @@ public class UserManager extends JDialog
     /**
      * Textfield where the name of the new user gets written
      */
-    private JTextField newUserName;
+   // private JTextField newUserName;
 
     /**
      * Constructor method for the UserManager Class
@@ -35,7 +35,7 @@ public class UserManager extends JDialog
     {
         super(parent, "User Manager",true); //Modal = true to block the access to the frame below 
 
-        setSize(400, 300);
+        setSize(400, 350);
         setLocationRelativeTo(parent);  //Set it on top of the frame
         setLayout(new BorderLayout());
 
@@ -47,25 +47,46 @@ public class UserManager extends JDialog
         JList<String> userList = new JList<>(listModel);
         JScrollPane scrollableUserList = new JScrollPane(userList);
 
-        //  South panel (new user input)
-        JPanel southPanel = new JPanel(new BorderLayout());
+        
+        //  South Panel (textfield inputs)
+        JPanel southPanel = new JPanel();
+        southPanel.setLayout(new BorderLayout());
+
+        JPanel inputPanel = new JPanel(new GridLayout(2, 2, 10, 15));
 
         //  Title of the south panel
-        TitledBorder panelTitle = new TitledBorder("Add new user");
+        TitledBorder panelTitle = new TitledBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20),"New user creation");
         panelTitle.setTitleJustification(TitledBorder.CENTER);
         southPanel.setBorder(panelTitle);
 
-        newUserName = new JTextField(20);   //See if the intial size is needed given it's setting in center of borderLayout
+        JTextField newUserName = new JTextField(20);
+        JTextField newUserCode = new JTextField(20);
+        
+        inputPanel.add(new JLabel("New User Name:"));
+        inputPanel.add(newUserName);
+        inputPanel.add(new JLabel("New User Code:"));
+        inputPanel.add(newUserCode);
+
         JButton addUserBtn = new JButton("ADD");
 
         //  AddUserBtn actionlistener
         addUserBtn.addActionListener((ActionEvent) -> 
         {
-            String name = newUserName.getText().trim(); //  Get the string in the textfield
+            //  Get the string in the textfields
+            String userName = newUserName.getText().trim(); 
+            String userCode = newUserCode.getText().trim();
+
+            if (userName.isEmpty() || userCode.isEmpty()) //  If either of the two textfields was left empty
+            {
+                //Warning popup if either of the two textfields was left empty
+                JOptionPane.showMessageDialog(this, "Input all of the necessary data", "Input Warning",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             try 
             {
                 //  Create the new user and add it to the monitor's list
-                User newUser = new User(name);
+                User newUser = new User(userName,userCode);
                 monitor.addUser(newUser);
 
                 //  Update the shown list
@@ -73,22 +94,22 @@ public class UserManager extends JDialog
 
                 //  Reset the text field to blank
                 newUserName.setText("");
+                newUserCode.setText("");
                 
-            } catch (DuplicateUserNameException e) 
+            } catch (DuplicateUserCodeException e) 
             {
-                // Error popup if the user couldn't be added (user's name is the name of another user in the list)
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Duplicate user error", JOptionPane.ERROR_MESSAGE);
+                // Error popup if the user couldn't be added (user's code is the code of another user in the list)
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Duplicate user code error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        //  Assembly of the south panel
-        southPanel.add(new JLabel("User name: "), BorderLayout.WEST);
-        southPanel.add(newUserName, BorderLayout.CENTER);
-        southPanel.add(addUserBtn, BorderLayout.EAST);
+        southPanel.add(inputPanel, BorderLayout.CENTER);
+        southPanel.add(addUserBtn, BorderLayout.SOUTH);
+
 
         //  Assembly of the UserManager
-        add(scrollableUserList, BorderLayout.CENTER);
-        add(southPanel, BorderLayout.SOUTH);
+        add(southPanel, BorderLayout.CENTER);
+        add(inputPanel, BorderLayout.SOUTH);
     }
 
     /**
@@ -102,7 +123,7 @@ public class UserManager extends JDialog
         List<User> users = monitor.getUsers();
         for (User u : users) 
         {
-            listModel.addElement(u.getName());
+            listModel.addElement(u.toString());
         }
     }
 }
