@@ -7,6 +7,7 @@ import concurrent.LabMonitor;
 import concurrent.LabListener;
 
 import java.awt.*;
+import java.util.List;
 
 public class EventLogPanel extends JPanel implements LabListener 
 {
@@ -14,6 +15,7 @@ public class EventLogPanel extends JPanel implements LabListener
 
     private LabMonitor monitor;
     private DefaultTableModel eventTableModel;
+    private JTable eventTable; 
 
     public EventLogPanel(LabMonitor monitor) 
     {
@@ -31,7 +33,7 @@ public class EventLogPanel extends JPanel implements LabListener
             }
         };
 
-        JTable eventTable = new JTable(eventTableModel);
+        eventTable = new JTable(eventTableModel);
         
         // (CHECK IF OK) Set the time column to a fixed width
         eventTable.getColumnModel().getColumn(0).setPreferredWidth(80);
@@ -53,7 +55,23 @@ public class EventLogPanel extends JPanel implements LabListener
 
     private void updateEventLog() 
     {
+        eventTableModel.setRowCount(0); // Reset to blank table
         
+        List<String> events = monitor.getEvents();
+        
+        for (String e : events) 
+        {
+            //  Divide the message in two parts and use the space to separate them
+            String[] splitMessage = e.split(" ",2); 
+            eventTableModel.addRow(splitMessage);
+        }
+
+        // Auto-scroll down to see the latest row added
+        if (eventTable.getRowCount() > 0) 
+        {
+            int lastRow = eventTable.getRowCount() - 1;
+            eventTable.scrollRectToVisible(eventTable.getCellRect(lastRow, 0, true));
+        }
     }
 
     @Override
