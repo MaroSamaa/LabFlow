@@ -2,14 +2,18 @@ package gui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import concurrent.LabMonitor;
+
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 
 public class ControlPanel extends JPanel
 {
     private static final int BTN_DIMENTION = 30;
 
-    public ControlPanel(Frame frame)
+    public ControlPanel(Frame frame, LabMonitor monitor)
     {
         setLayout(new BorderLayout());
 
@@ -93,16 +97,70 @@ public class ControlPanel extends JPanel
 
         //--------ADD ACTION LISTENERS TO BUTTONS--------
 
+        //  On save btn press prompt the user to select a file and write the monitor's information (@author Marini Enrico)
         saveBtn.addActionListener((ActionEvent) ->
         {
-            //Temporary placeholder instead of the actiual saving action
-            System.out.println("Save pressed");
+            //  Show the user a File Chooser with a custom title
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Save Lab State");
+
+            //  Center the file chooser to the frame
+            int userSelection = fileChooser.showSaveDialog(frame);
+        
+            if(userSelection == JFileChooser.APPROVE_OPTION) 
+            {
+                File file = fileChooser.getSelectedFile();
+                
+                try 
+                {
+                    // Chiamata al metodo del monitor che usa il try-with-resources
+                    monitor.saveLabState(file);
+                    
+                    JOptionPane.showMessageDialog(frame,"The state of the lab has been saved","Save File Confirmation",JOptionPane.INFORMATION_MESSAGE);
+                        
+                } 
+                catch (IOException e) {JOptionPane.showMessageDialog(frame,"Error during save file writing:\n" + e.getMessage(),"Save File Error",JOptionPane.ERROR_MESSAGE);}
+            }
         });
 
+        //  On load btn press prompt the user to select a file and load the data into the monitor (@author Marini Enrico)
         loadBtn.addActionListener((ActionEvent) ->
         {
-            //Temporary placeholder instead of the actiual loading action
-            System.out.println("Load pressed");
+
+            //  If there is information that get's potentially overritten make the user choose
+            if(!monitor.getEvents().isEmpty())
+            {
+                int userChoice = JOptionPane.showConfirmDialog(frame, "All unsaved data will be lost, are you sure you want to proceed?", "Overwrite Confirmation",JOptionPane.YES_NO_OPTION);
+                if(userChoice == JOptionPane.NO_OPTION)
+                {
+                    return;
+                }
+            }
+
+            //  If no data is present or the user chose to continue and overwrite
+
+            //  Show the user a File Chooser with a custom title
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Load Lab State");
+    
+            //  Center the file chooser to the frame
+            int userSelection = fileChooser.showOpenDialog(frame);
+    
+            if (userSelection == JFileChooser.APPROVE_OPTION) 
+            {
+                File file = fileChooser.getSelectedFile();
+                
+                try 
+                {
+                    // Chiamata al metodo del monitor
+                    monitor.loadLabState(file);
+                    
+                    JOptionPane.showMessageDialog(frame,"The state of the lab has been successfully loaded","Load File Confirmation",JOptionPane.INFORMATION_MESSAGE);
+                        
+                } 
+                catch (IOException e){JOptionPane.showMessageDialog(frame,"Error during file reading:\n" + e.getMessage(),"Loading Error",JOptionPane.ERROR_MESSAGE);}
+                catch(ClassNotFoundException e){JOptionPane.showMessageDialog(frame,"Make shure to select a previously saved file\n" + e.getMessage(),"File Selection Error",JOptionPane.ERROR_MESSAGE);}
+            }
         });
 
         //  On settings btn push visualize the settings panel

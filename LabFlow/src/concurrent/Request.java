@@ -1,12 +1,16 @@
 package concurrent;
 
+import java.io.Serializable;
+
 /**
  *  @author Marini Enrico
  *  This class is used to create requests.
  *  A request has a status and it is made by a user that requests a type of equipment.
  */
-public class Request 
+public class Request implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+    
     //--------INSTANCE VARIABLES--------
 
     /**

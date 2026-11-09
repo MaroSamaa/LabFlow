@@ -1,11 +1,15 @@
 package concurrent;
 
+import java.io.Serializable;
+
 /**
  * @author Marini Enrico
  * Class that represents a user with a given name and a unique code
  */
-public class User 
+public class User implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+    
     //--------INSTANCE VARIABLES--------
 
     /**

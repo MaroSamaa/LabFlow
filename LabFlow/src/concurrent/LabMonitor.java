@@ -1,5 +1,11 @@
 package concurrent;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import concurrent.exceptions.*;
@@ -261,4 +267,61 @@ public class LabMonitor
         notifyListeners(); //   Notify all listeners because an event has happened
     }
 
+    //--------SAVE AND LOAD METHODS--------
+
+    /**
+     * Method to save the state of the lab.
+     * This saves on the file the user, equipment, request and event lists
+     * @param file the file where data will be written
+     * @throws IOException  if something happens when writing the data
+     */
+    public synchronized void saveLabState(File file) throws IOException
+    {
+        //  Use ObjectOutputStream to write data on the file
+        //  Try to handle closing and unexpected closing automatically
+        try (ObjectOutputStream fileWriter = new ObjectOutputStream(new FileOutputStream(file))) 
+        { 
+            fileWriter.writeObject(users);      //  Save users
+            fileWriter.writeObject(equipment);  //  Save equipment
+            fileWriter.writeObject(requests);   //  Save requests
+            fileWriter.writeObject(events);     //  Save events
+        }
+    }
+
+    /**
+     * Method to load the state of the lab from a file
+     * @param file from where the data will be loaded
+     * @throws IOException if something happens when reading the data
+     * @throws ClassNotFoundException if the file wasn't a previously saved file
+     */
+    public synchronized void loadLabState(File file) throws IOException, ClassNotFoundException 
+    {
+        //  Use ObjectInputStream to write data on the file
+        //  Try to handle closing and unexpected closing automatically
+        try (ObjectInputStream fileReader = new ObjectInputStream(new FileInputStream(file))) 
+        {
+
+            //  I suppress the warnings because i am certain of the order and type safety
+            @SuppressWarnings ("unchecked")
+            List<User> loadedUsers = (List<User>) fileReader.readObject();
+            @SuppressWarnings ("unchecked")
+            List<Equipment> loadedEquipment = (List<Equipment>) fileReader.readObject();
+            @SuppressWarnings ("unchecked")
+            List<Request> loadedRequests = (List<Request>) fileReader.readObject();
+            @SuppressWarnings ("unchecked")
+            List<String> loadedEvents = (List<String>) fileReader.readObject();
+            
+            //  Update the monitor's lists
+            users.clear();
+            users.addAll(loadedUsers);
+            equipment.clear();
+            equipment.addAll(loadedEquipment);
+            requests.clear();
+            requests.addAll(loadedRequests);
+            events.clear();
+            events.addAll(loadedEvents);
+            
+            addEvent("The file has been read, the lab is now loaded and ready");
+        }   
+    }
 }
