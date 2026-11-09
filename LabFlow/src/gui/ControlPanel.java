@@ -97,7 +97,7 @@ public class ControlPanel extends JPanel
 
         //--------ADD ACTION LISTENERS TO BUTTONS--------
 
-        //  On save btn press prompt the user to select a file and write the monitor's information
+        //  On save btn press prompt the user to select a file and write the monitor's information (@author Marini Enrico)
         saveBtn.addActionListener((ActionEvent) ->
         {
             //  Show the user a File Chooser
@@ -122,7 +122,7 @@ public class ControlPanel extends JPanel
             }
         });
 
-        //  On load btn press prompt the user to select a file and load the data into the monitor
+        //  On load btn press prompt the user to select a file and load the data into the monitor (@author Marini Enrico)
         loadBtn.addActionListener((ActionEvent) ->
         {
             JFileChooser fileChooser = new JFileChooser();
