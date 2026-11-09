@@ -35,7 +35,6 @@ public class RequestTask implements Runnable
     {
         try
         {
-            System.out.println(request.getUser().getName() + " made a request for: "+ request.getEquipmentType());
             monitor.requestEquipment(request); //   Request the equipment and wait until you get it
 
             Thread.sleep(WORK_TIME);

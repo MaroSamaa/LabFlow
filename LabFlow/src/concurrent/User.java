@@ -51,4 +51,11 @@ public class User
         return code;
     }
 
+    //--------METHODS--------
+    @Override 
+    public String toString()
+    {
+        return name + " (" + code + ")";
+    }
+
 }
