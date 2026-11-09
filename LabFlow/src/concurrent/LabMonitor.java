@@ -18,6 +18,8 @@ public class LabMonitor
      * The maximum number of equipment that can be "stored" in the lab
      */
     private final static int MAX_EQUIP = 4;
+
+    //  Error Messages
     private final static String MSG_FULL = "ERROR: Couldn't add equipment, max number has already been reached";
     private final static String MSG_REQUEST_NOT_ACTIVE = "ERROR: The request isn't active, current request status is: ";
     private final static String MSG_USER_DUPLICATE = "ERROR: A user with the same name already exists";
@@ -41,6 +43,11 @@ public class LabMonitor
     List<Request> requests;
 
     /**
+     * List of all the events that happened
+     */
+    List<String> events;
+
+    /**
      * List of LabListeners 
      */
     List<LabListener> listeners;
@@ -59,6 +66,7 @@ public class LabMonitor
         users = new ArrayList<User>();
         requests = new ArrayList<Request>();
         listeners = new ArrayList<LabListener>();
+        events = new ArrayList<String>();
     }
 
     //--------ACCESSOR METHODS--------
@@ -90,12 +98,21 @@ public class LabMonitor
         return new ArrayList<Request>(requests);
     }
 
+    /**
+     * Getter method for the event list
+     * @return a copy of the event list
+     */
+    public synchronized ArrayList<String> getEvents()
+    {
+        return new ArrayList<String>(events);
+    }
+
     //--------METHODS--------
 
     /**
      * This method allows for a user to be registered to the lab
      * @param toAdd the user to be registered to the lab
-     * @throws IllegalStateException if the user is already registered to the lab
+     * @throws DuplicateUserNameException if the user is already registered to the lab
      */
     public synchronized void addUser(User toAdd) throws DuplicateUserNameException
     {
@@ -107,13 +124,15 @@ public class LabMonitor
             }
         }
         users.add(toAdd);
-        System.out.println("User: " + toAdd.getName() + " added successfully"); //integrate with popup or event log
+        //  Register the user added avent and notify all listeners
+        addEvent("User: " + toAdd.getName() + " has been registered to the lab");
     }
 
     /**
      * This method allows for an equipment to be added in the lab "storage"
      * @param toAdd the equipment to be added in the lab "storage"
-     * @throws IllegalStateException if no more equipment can be "stored" in the lab
+     * @throws EquipmentStorageFullException if no more equipment can be "stored" in the lab
+     * @throws DuplicateEquipmentCodeException if the new equipment has the same code of another equipment already "stored"
      */
     public synchronized void addEquipment(Equipment toAdd) throws EquipmentStorageFullException, DuplicateEquipmentCodeException
     {
@@ -132,8 +151,8 @@ public class LabMonitor
             }
         }
         equipment.add(toAdd);
-        notifyListeners();  //Notify all listeners that an equipment has been added to the monitor
-        System.out.println(toAdd.getType() + " ("+ toAdd.getCode() + ") added");
+        //  Register the equipment added event and notify all listeners
+        addEvent(toAdd.getType() + " ("+ toAdd.getCode() + ") added"); 
     }
 
     /**
@@ -152,8 +171,9 @@ public class LabMonitor
         Equipment toRelease = request.getRequestedEquipment();
         toRelease.setStatus(EquipmentStatus.AVAILABLE);
         request.setStatus(RequestStatus.CLOSED);
-        notifyListeners();  //Notify all the listeners about the request and equipment change of status
-        System.out.println(request.getUser().getName() + " gave back: " + toRelease.getCode()); //to be replaced with event log message integration
+
+        //  Register the user gave back event and notify all listeners (request and equipment changed status)
+        addEvent(request.getUser().getName() + " gave back: " + toRelease.getCode());
 
         notifyAll();    //Notify all waiting threads the fastest to awake gets the equipment 
     }
@@ -166,7 +186,8 @@ public class LabMonitor
     public synchronized void requestEquipment(Request request) throws InterruptedException
     {
         requests.add(request);  //Add the request to the requests list
-        notifyListeners();      //Notify all the listeners that a request has been added
+        //  Register the added request event and notify all listeners
+        addEvent(request.getUser().getName() + " requested: " + request.getEquipmentType());      
 
         Equipment requestedEquipment = findAvailableEquipment(request.getEquipmentType());
 
@@ -182,8 +203,10 @@ public class LabMonitor
 
         requestedEquipment.setStatus(EquipmentStatus.IN_USE);
         request.setStatus(RequestStatus.ACTIVE);
-        notifyListeners();  //Notify all the listeneres about the request and equipment change of status
-        System.out.println(request.getUser().getName() + " obtained: " + requestedEquipment.getCode()); //to be replaced with event log message integration
+
+        //  Register the user obtained event and notify all listeners (request and equipment changed status)
+        addEvent(request.getUser().getName() + " obtained: " + requestedEquipment.getCode()); 
+
         request.setRequestedEquipment(requestedEquipment);
     }
 
@@ -216,7 +239,7 @@ public class LabMonitor
     }
 
     /**
-     * Method to notify all listeners that something in the lab changed
+     * Service method to notify all listeners that something in the lab changed
      */
     private void notifyListeners()
     {
@@ -224,6 +247,18 @@ public class LabMonitor
         {
             ls.onLabStateChange();
         }
+    }
+
+    /**
+     * Service method to register events and notify all listeners about the event that happened
+     * @param msg the message representing the occurred event
+     */
+    private void addEvent(String msg)
+    {
+        //  Ask the pc for the time, and don't give me the ms 
+        String timestamp = java.time.LocalTime.now().withNano(0).toString();
+        events.add(timestamp + " " + msg);
+        notifyListeners(); //   Notify all listeners because an event has happened
     }
 
 }
