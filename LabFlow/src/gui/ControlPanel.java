@@ -3,18 +3,23 @@ package gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import concurrent.LabListener;
 import concurrent.LabMonitor;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class ControlPanel extends JPanel
+public class ControlPanel extends JPanel implements LabListener
 {
     private static final int BTN_DIMENTION = 30;
 
+    private LabMonitor monitor;
+    private StatusIndicator pauseIndicator;
+
     public ControlPanel(Frame frame, LabMonitor monitor)
     {
+        this.monitor = monitor;
         setLayout(new BorderLayout());
 
         JButton saveBtn = new JButton();
@@ -22,6 +27,7 @@ public class ControlPanel extends JPanel
         JButton settingsBtn = new JButton();
         JButton playBtn = new JButton();
         JButton pauseBtn = new JButton();
+        pauseIndicator = new StatusIndicator(15);
 
         //--------SETTING BUTTONS IMAGE ICONS--------
         //  Set Image for settingsBtn
@@ -100,7 +106,7 @@ public class ControlPanel extends JPanel
         //  On save btn press prompt the user to select a file and write the monitor's information (@author Marini Enrico)
         saveBtn.addActionListener((ActionEvent) ->
         {
-            if(monitor.hasActiveRequests()) //If the monitor has active requests warn the user that they won't be saved
+            if(this.monitor.hasActiveRequests()) //If the monitor has active requests warn the user that they won't be saved
             {
                 JOptionPane.showMessageDialog(frame,"There are ACTIVE requests in the lab, these won't be saved to the save file.","Active requests won't be saved",JOptionPane.WARNING_MESSAGE);
             }
@@ -118,7 +124,7 @@ public class ControlPanel extends JPanel
                 try 
                 {
                     // Chiamata al metodo del monitor che usa il try-with-resources
-                    monitor.saveLabState(file);
+                    this.monitor.saveLabState(file);
                     
                     JOptionPane.showMessageDialog(frame,"The state of the lab has been saved","Save File Confirmation",JOptionPane.INFORMATION_MESSAGE);
                         
@@ -132,7 +138,7 @@ public class ControlPanel extends JPanel
         {
 
             //  If there is information that get's potentially overritten make the user choose
-            if(!monitor.getEvents().isEmpty())
+            if(!this.monitor.getEvents().isEmpty())
             {
                 int userChoice = JOptionPane.showConfirmDialog(frame, "All unsaved data will be lost, are you sure you want to proceed?", "Overwrite Confirmation",JOptionPane.YES_NO_OPTION);
                 if(userChoice == JOptionPane.NO_OPTION)
@@ -157,7 +163,7 @@ public class ControlPanel extends JPanel
                 try 
                 {
                     // Chiamata al metodo del monitor
-                    monitor.loadLabState(file);
+                    this.monitor.loadLabState(file);
                     
                     JOptionPane.showMessageDialog(frame,"The state of the lab has been successfully loaded","Load File Confirmation",JOptionPane.INFORMATION_MESSAGE);
                         
@@ -175,12 +181,12 @@ public class ControlPanel extends JPanel
 
         playBtn.addActionListener((ActionEvent) ->
         {
-            monitor.play();
+            this.monitor.play();
         });
 
         pauseBtn.addActionListener((ActionEvent) ->
         {
-            monitor.pause();
+            this.monitor.pause();
         });
 
 
@@ -194,11 +200,39 @@ public class ControlPanel extends JPanel
         saveAndLoadPanel.add(loadBtn);
         add(saveAndLoadPanel, BorderLayout.EAST);
 
-        //  Put the Play and Stop Buttons together to the center
-        JPanel playAndStopPanel = new JPanel();
-        playAndStopPanel.add(playBtn);
-        playAndStopPanel.add(pauseBtn);
-        add(playAndStopPanel, BorderLayout.CENTER);
+        //  Put the Play and Stop Buttons together to the center with the pause indicator in the middle of them
+        JPanel playAndPausePanel = new JPanel();
+        playAndPausePanel.add(playBtn);
+        playAndPausePanel.add(pauseIndicator);
+        playAndPausePanel.add(pauseBtn);
+        add(playAndPausePanel, BorderLayout.CENTER);
 
+        this.monitor.addLabListener(this);
     }
+
+    public void updatePauseIndicator()
+    {
+        if(monitor.isPaused())
+        {
+            pauseIndicator.setColor(Color.RED);
+        }
+        else
+        {
+            pauseIndicator.setColor(Color.GREEN);
+        }
+    }
+
+    /**
+     * Method to update the pauseIndicator when the listener gets notified
+     */
+    @Override 
+    public void onLabStateChange()
+    {
+        //Do updatePauseIndicator whenever the EDT can
+        SwingUtilities.invokeLater(()->
+        {
+            updatePauseIndicator();
+        });
+    }
+
 }
