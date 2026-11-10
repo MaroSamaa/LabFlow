@@ -100,6 +100,10 @@ public class ControlPanel extends JPanel
         //  On save btn press prompt the user to select a file and write the monitor's information (@author Marini Enrico)
         saveBtn.addActionListener((ActionEvent) ->
         {
+            if(monitor.hasActiveRequests())
+            {
+                JOptionPane.showMessageDialog(frame,"There are ACTIVE requests in the lab, these won't be saved to the save file.","Active requests won't be saved",JOptionPane.WARNING_MESSAGE);
+            }
             //  Show the user a File Chooser with a custom title
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save Lab State");
