@@ -6,6 +6,8 @@ package concurrent;
  */
 public class RequestTask implements Runnable
 {
+    public static final int DEFAULT_WORK_TIME = 3000;
+    public static final int DEFAULT_WORK_TIME_INTERVALL = 100;
 
     /*  
         Static because they are shared, volatile to ensure the consistency of the variables
@@ -17,12 +19,12 @@ public class RequestTask implements Runnable
      * Total simulated work time on an equipment before releasing it;
      * defaul value = 3000
      * */ 
-    private static volatile int workTime = 3000;
+    private static volatile int workTime = DEFAULT_WORK_TIME;
     /**
      *  Default value = 100
      *  Intervall of work time before check on the monitor's pause status
      * */ 
-    private static volatile int workTimeIntervall = 100;
+    private static volatile int workTimeIntervall = DEFAULT_WORK_TIME_INTERVALL;
 
     //--------INSTANCE VARIABLES--------
 
