@@ -152,7 +152,19 @@ public class SettingsPanel extends JPanel
         JPanel creditPanel = new JPanel();
         creditPanel.setLayout(new BoxLayout(creditPanel, BoxLayout.Y_AXIS));
 
-        JLabel authorLabel = new JLabel("<html><center>Authors:<br>Marini Enrico<br>Visone Sara</center></html>");    
+        // Credits labels
+        JLabel authorsTitleLabel = new JLabel("Authors");
+        authorsTitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel groupLabel = new JLabel("The Beauty And The Beast");
+
+        JLabel contributorsLabel = new JLabel("Contributors");
+
+        JLabel contributor1Label = new JLabel("Marini Enrico");
+        contributor1Label.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel contributor2Label = new JLabel("Visone Sara");
+        contributor2Label.setAlignmentX(Component.CENTER_ALIGNMENT);   
         
         //  Logo label implementation
         JLabel logoLabel = new JLabel();
@@ -166,19 +178,25 @@ public class SettingsPanel extends JPanel
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         logoLabel.setBorder(null);
-        
-        //  Setting the horizontal center allignments
-        logoLabel.setHorizontalAlignment(JLabel.CENTER);
-        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        authorLabel.setHorizontalAlignment(JLabel.CENTER);
-        authorLabel.setAlignmentX(Component.CENTER_ALIGNMENT); 
-        
+            
         // Assembly of the center panel with flexible spacers
         creditPanel.add(Box.createVerticalGlue()); // push to vertical center
         creditPanel.add(logoLabel);
         creditPanel.add(Box.createRigidArea(new Dimension(0, 15))); // 15px from logo to authors text
-        creditPanel.add(authorLabel);
+
+        creditPanel.add(authorsTitleLabel);
+        creditPanel.add(Box.createRigidArea(new Dimension(0, 5))); 
+
+        creditPanel.add(groupLabel);
+        creditPanel.add(Box.createRigidArea(new Dimension(0, 5))); 
+
+        creditPanel.add(contributorsLabel);
+        creditPanel.add(Box.createRigidArea(new Dimension(0, 5))); 
+
+        creditPanel.add(contributor1Label);
+        creditPanel.add(Box.createRigidArea(new Dimension(0, 3))); 
+
+        creditPanel.add(contributor2Label);
         creditPanel.add(Box.createVerticalGlue()); // Balance the lower vertical center space
 
         JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 60, 0)); // 60px of distance between parameters and credits panels
