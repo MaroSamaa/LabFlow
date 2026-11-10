@@ -171,14 +171,12 @@ public class ControlPanel extends JPanel
 
         playBtn.addActionListener((ActionEvent) ->
         {
-            //Temporary placeholder instead of the actual playing action
-            System.out.println("play pressed");
+            monitor.play();
         });
 
         stopBtn.addActionListener((ActionEvent) ->
         {
-            //Temporary placeholder instead of the actual stop action
-            System.out.println("stop pressed");
+            monitor.pause();
         });
 
 
