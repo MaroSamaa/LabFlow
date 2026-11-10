@@ -51,10 +51,8 @@ public class SettingsPanel extends JPanel
         JPanel parametersPanel = new JPanel();
         parametersPanel.setLayout(new BoxLayout(parametersPanel, BoxLayout.Y_AXIS));
 
-        //  Internal margin and centered title
-        TitledBorder parametersBorder = new TitledBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20), "Simulation Parameters");
-        parametersBorder.setTitleJustification(TitledBorder.CENTER);
-        parametersPanel.setBorder(parametersBorder);  
+        //  Internal margin 
+        parametersPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));  
 
         // Work time parameter
         JLabel workTimeLabel = new JLabel("Work Time (ms):");
@@ -112,22 +110,34 @@ public class SettingsPanel extends JPanel
             JOptionPane.showMessageDialog(this, "Simulation parameters defaults have been restored","Defaul Parameters Applied", JOptionPane.INFORMATION_MESSAGE);
         });
 
-
-        parametersPanel.add(workTimeLabel);
-        parametersPanel.add(Box.createRigidArea(new Dimension(0, 5)));  //Separator
-        parametersPanel.add(workTimeTxt);
-        parametersPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-        
-        parametersPanel.add(workTimeIntervallLabel);
-        parametersPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        parametersPanel.add(workTimeIntervallTxt);
-        
-        parametersPanel.add(Box.createVerticalGlue()); //   Push down the button panel
         JPanel parametersBtnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
         parametersBtnPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         parametersBtnPanel.add(restoreDefaultBtn);
         parametersBtnPanel.add(applyBtn);
+
+        JLabel parametersPanelTitle = new JLabel("Simulation Parameters");
+
+        parametersPanel.add(Box.createVerticalGlue());  //  "Spring on the panel ceiling"
+        parametersPanel.add(parametersPanelTitle);
+        parametersPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+
+        parametersPanel.add(workTimeLabel);
+        parametersPanel.add(Box.createRigidArea(new Dimension(0, 3)));  //  Vertical spacer
+
+        parametersPanel.add(workTimeTxt);
+        parametersPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        
+        parametersPanel.add(workTimeIntervallLabel);
+        parametersPanel.add(Box.createRigidArea(new Dimension(0, 3)));
+
+        parametersPanel.add(workTimeIntervallTxt);
+        parametersPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        
         parametersPanel.add(parametersBtnPanel);
+
+        parametersPanel.add(Box.createVerticalGlue()); //   "Spring on the panel floor"
+        
+        
 
         //  North panel assembly 
         //  Tab name 
