@@ -195,11 +195,6 @@ public class SettingsPanel extends JPanel
         //  Assembly of the SettingsPanel
         add(northPanel, BorderLayout.NORTH);
         add(verticalWrapper, BorderLayout.CENTER);
-        
-
-        //  Assembly of the SettingsPanel
-        add(northPanel, BorderLayout.NORTH);
-        add(centerPanel, BorderLayout.CENTER);
     }
 }
 
