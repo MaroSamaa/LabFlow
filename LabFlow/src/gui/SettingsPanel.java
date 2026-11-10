@@ -58,17 +58,17 @@ public class SettingsPanel extends JPanel
 
         // Work time parameter
         JLabel workTimeLabel = new JLabel("Work Time (ms):");
-        workTimeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        workTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         workTimeTxt = new JTextField(10);
-        workTimeTxt.setAlignmentX(Component.LEFT_ALIGNMENT);
+        workTimeTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         workTimeTxt.setMaximumSize(workTimeTxt.getPreferredSize().getSize()); // Don't allow for vertical stretching
         workTimeTxt.setText(String.valueOf(RequestTask.getWorkTime())); 
 
         // Work time intervall parameter
         JLabel workTimeIntervallLabel = new JLabel("Work Time Intervall (ms)");
-        workTimeIntervallLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        workTimeIntervallLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         workTimeIntervallTxt = new JTextField(10);
-        workTimeIntervallTxt.setAlignmentX(Component.LEFT_ALIGNMENT);
+        workTimeIntervallTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         workTimeIntervallTxt.setMaximumSize(workTimeIntervallTxt.getPreferredSize().getSize());
         workTimeIntervallTxt.setText(String.valueOf(RequestTask.getWorkTimeIntervall()));   
 
@@ -92,7 +92,7 @@ public class SettingsPanel extends JPanel
             } 
             catch(NumberFormatException e)
             {
-                JOptionPane.showMessageDialog(this, "ERROR: Make shure to input integer values", "Number Format Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "ERROR: Make sure to input integer values", "Number Format Error", JOptionPane.ERROR_MESSAGE);
             }
             catch(IllegalArgumentException e)
             {
