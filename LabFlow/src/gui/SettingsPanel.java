@@ -79,7 +79,7 @@ public class SettingsPanel extends JPanel
         workTimeIntervallLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         workTimeIntervallTxt = new JTextField(10);
         workTimeIntervallTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
-        workTimeIntervallLabel.setHorizontalAlignment(JTextField.CENTER);
+        workTimeIntervallTxt.setHorizontalAlignment(JTextField.CENTER);
         workTimeIntervallTxt.setMaximumSize(workTimeIntervallTxt.getPreferredSize().getSize());
         workTimeIntervallTxt.setText(String.valueOf(RequestTask.getWorkTimeIntervall()));   
 
