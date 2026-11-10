@@ -223,6 +223,22 @@ public class LabMonitor
         toAdd.onLabStateChange();   //When a new listener gets added notify about it
     }
 
+    /**
+     * Method to get if even one of the lab's requests is active
+     * @return true if at least one request's status is ACTIVE
+     */
+    public synchronized boolean hasActiveRequests()
+    {
+        for(Request r : requests)
+        {
+            if(r.getStatus() == RequestStatus.ACTIVE)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     //--------METHODS--------
 
     /**
