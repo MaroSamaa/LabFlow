@@ -144,8 +144,6 @@ public class LabMonitor
         return isPaused;
     }
 
-    //--------METHODS--------
-
     /**
      * This method allows for a user to be registered to the lab
      * @param toAdd the user to be registered to the lab
@@ -193,6 +191,41 @@ public class LabMonitor
     }
 
     /**
+     * This method allows for a request to be added in the lab's request list
+     * @param toAdd the request to add to the lab's list
+     */
+    public synchronized void addRequest(Request toAdd)
+    {
+        requests.add(toAdd);
+        //  Register the added request event and notify all listeners
+        addEvent(toAdd.getUser().toString() + " requested: " + toAdd.getEquipmentType());
+    }
+
+    /**
+     * Service method to register events and notify all listeners about the event that happened
+     * @param msg the message representing the occurred event
+     */
+    private void addEvent(String msg)
+    {
+        //  Ask the pc for the time, and don't give me the ms 
+        String timestamp = java.time.LocalTime.now().withNano(0).toString();
+        events.add(timestamp + " " + msg);
+        notifyListeners(); //   Notify all listeners because an event has happened
+    }
+
+    /**
+     * Method to add a LabListener to the LabMonitor's list
+     * @param toAdd the LabListener to add
+     */
+    public synchronized void addLabListener(LabListener toAdd)
+    {
+        listeners.add(toAdd);
+        toAdd.onLabStateChange();   //When a new listener gets added notify about it
+    }
+
+    //--------METHODS--------
+
+    /**
      * This method allows for an equipment (resource) to be released (set to AVAILABLE) and a request to be concluded (set to CLOSED)
      * @param request the request that is being conclunded
      * @throws IllegalStateException if the request doesn't have ACTIVE status (so if there is no equipment to be released)
@@ -222,11 +255,6 @@ public class LabMonitor
      */
     public synchronized void requestEquipment(Request request) throws InterruptedException
     {
-        requests.add(request);  //Add the request to the requests list
-
-        //  Register the added request event and notify all listeners
-        addEvent(request.getUser().toString() + " requested: " + request.getEquipmentType()); 
-
         //  A thread that starts when the lab is paused can deposit the request to the list but then it gets immediatly put to sleep
         while(isPaused())
         {
@@ -273,16 +301,6 @@ public class LabMonitor
     }
 
     /**
-     * Method to add a LabListener to the LabMonitor's list
-     * @param toAdd the LabListener to add
-     */
-    public synchronized void addLabListener(LabListener toAdd)
-    {
-        listeners.add(toAdd);
-        toAdd.onLabStateChange();   //When a new listener gets added notify about it
-    }
-
-    /**
      * Service method to notify all listeners that something in the lab changed
      */
     private void notifyListeners()
@@ -291,18 +309,6 @@ public class LabMonitor
         {
             ls.onLabStateChange();
         }
-    }
-
-    /**
-     * Service method to register events and notify all listeners about the event that happened
-     * @param msg the message representing the occurred event
-     */
-    private void addEvent(String msg)
-    {
-        //  Ask the pc for the time, and don't give me the ms 
-        String timestamp = java.time.LocalTime.now().withNano(0).toString();
-        events.add(timestamp + " " + msg);
-        notifyListeners(); //   Notify all listeners because an event has happened
     }
 
     //--------SAVE AND LOAD METHODS--------
@@ -401,7 +407,7 @@ public class LabMonitor
 
         //  Regenerate loaded pending threads
         regeneratePendingThreads();
-        
+
         addEvent("The file has been read, the lab is now loaded and ready");
     }
 
@@ -415,6 +421,7 @@ public class LabMonitor
             if(r.getStatus() == RequestStatus.PENDING)
             {
                 RequestTask task = new RequestTask(r, this);
+                task.setRegenerated();  //  Skip the addRequest call
                 Thread requestThread = new Thread(task);
                 requestThread.start();
             }

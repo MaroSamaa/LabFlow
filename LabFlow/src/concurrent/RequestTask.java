@@ -21,12 +21,26 @@ public class RequestTask implements Runnable
      */
     private Request request;
 
+    private boolean isRegenerated;
+
     //--------CONSTRUCTOR--------
 
     public RequestTask(Request request, LabMonitor monitor)
     {
         this.monitor = monitor;
         this.request = request;
+        isRegenerated = false;  //  Normally the request won't be regenerated
+    }
+
+    //--------ACCESSOR METHODS--------
+    public boolean isRegenerated()
+    {
+        return isRegenerated;
+    }
+
+    public void setRegenerated()
+    {
+        isRegenerated = true;
     }
 
     //--------METHODS--------
@@ -36,7 +50,12 @@ public class RequestTask implements Runnable
     {
         try
         {
-    
+            //  If the requestTask was regenerated then don't add it to the list, it would be a duplicate
+            if(!isRegenerated)
+            {
+                monitor.addRequest(request);
+            }
+            
             monitor.requestEquipment(request); //   Request the equipment and wait until you get it
 
             simulateWork();
