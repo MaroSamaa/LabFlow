@@ -74,7 +74,7 @@ public class SettingsPanel extends JPanel
 
         // ApllyBtn
         JButton applyBtn = new JButton("APPLY");
-        applyBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //applyBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         applyBtn.addActionListener((ActionEvent) -> 
         {
@@ -100,6 +100,19 @@ public class SettingsPanel extends JPanel
             }
         });
 
+        JButton restoreDefaultBtn = new JButton("RESTORE DEFAULT");
+
+        restoreDefaultBtn.addActionListener((ActionEvent) ->
+        {
+            RequestTask.setWorkTime(RequestTask.DEFAULT_WORK_TIME);
+            RequestTask.setWorkTimeIntervall(RequestTask.DEFAULT_WORK_TIME_INTERVALL);
+            workTimeTxt.setText(String.valueOf(RequestTask.getWorkTime()));
+            workTimeIntervallLabel.setText(String.valueOf(RequestTask.getWorkTimeIntervall()));
+
+            JOptionPane.showMessageDialog(this, "Simulation parameters defaults have been restored","Defaul Parameters Applied", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+
         parametersPanel.add(workTimeLabel);
         parametersPanel.add(Box.createRigidArea(new Dimension(0, 5)));  //Separator
         parametersPanel.add(workTimeTxt);
@@ -109,8 +122,12 @@ public class SettingsPanel extends JPanel
         parametersPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         parametersPanel.add(workTimeIntervallTxt);
         
-        parametersPanel.add(Box.createVerticalGlue()); //   Push down the applyB
-        parametersPanel.add(applyBtn);
+        parametersPanel.add(Box.createVerticalGlue()); //   Push down the button panel
+        JPanel parametersBtnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
+        parametersBtnPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        parametersBtnPanel.add(restoreDefaultBtn);
+        parametersBtnPanel.add(applyBtn);
+        parametersPanel.add(parametersBtnPanel);
 
         //  North panel assembly 
         //  Tab name 
