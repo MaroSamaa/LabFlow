@@ -22,7 +22,7 @@ public class User implements Serializable
      */
     private String code;
     
-    //--------CONSTRUCTOR--------
+    //--------CONSTRUCTORS--------
 
     /**
      * Constructor method for the User class
@@ -33,6 +33,16 @@ public class User implements Serializable
     {
         this.name = name;
         this.code = code;
+    }
+
+    /**
+     * Copy constructor
+     * @param other the user to copy
+     */
+    public User(User other)
+    {
+        this.name = other.getName();
+        this.code = other.getCode();
     }
 
     //--------ACCESSOR METHODS--------
