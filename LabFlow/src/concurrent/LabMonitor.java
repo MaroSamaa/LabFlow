@@ -309,20 +309,50 @@ public class LabMonitor
 
     /**
      * Method to save the state of the lab.
-     * This saves on the file the user, equipment, request and event lists
+     * This saves on the file a copy of the user, equipment, request and event lists.
+     * The lab get's paused before saving to prevent changes from happening during writing.
+     * The ACTIVE requests are saved as CANCELLED and all of the equipment they obtained gets released
      * @param file the file where data will be written
      * @throws IOException  if something happens when writing the data
      */
     public synchronized void saveLabState(File file) throws IOException
     {
+
+        if(!isPaused()) //  Pause the labmonitor before saving anything
+        {
+            pause();
+        }
+
+        //  We modify a deep copy of the lists to maintain the labMonitor's current state in the current session
+
+        //  Make all of the active request cancelled 
+        ArrayList<Request> requestsCopyToSave = getRequests();    //  Work on a deep copy 
+        for(Request r: requestsCopyToSave)
+        {
+            if(r.getStatus() == RequestStatus.ACTIVE)
+            {
+                r.setStatus(RequestStatus.CANCELLED);
+            }
+        } 
+
+        //  Reset all IN_USE equipment to AVAILABLE status
+        ArrayList<Equipment> equipmentCopyToSave = getEquipment();  //  Work on a deep copy 
+        for(Equipment e: equipmentCopyToSave)
+        {
+            if(e.getStatus() == EquipmentStatus.IN_USE)
+            {
+                e.setStatus(EquipmentStatus.AVAILABLE);
+            }
+        }
+
         //  Use ObjectOutputStream to write data on the file
         //  Try to handle closing and unexpected closing automatically
         try (ObjectOutputStream fileWriter = new ObjectOutputStream(new FileOutputStream(file))) 
         { 
-            fileWriter.writeObject(users);      //  Save users
-            fileWriter.writeObject(equipment);  //  Save equipment
-            fileWriter.writeObject(requests);   //  Save requests
-            fileWriter.writeObject(events);     //  Save events
+            fileWriter.writeObject(getUsers());             //  Save users
+            fileWriter.writeObject(equipmentCopyToSave);    //  Save equipment
+            fileWriter.writeObject(requestsCopyToSave);     //  Save requests
+            fileWriter.writeObject(getEvents());                 //  Save events
         }
     }
 
