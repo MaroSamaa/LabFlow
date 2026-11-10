@@ -3,7 +3,6 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 
 import concurrent.RequestTask;
 
@@ -116,6 +115,7 @@ public class SettingsPanel extends JPanel
         parametersBtnPanel.add(applyBtn);
 
         JLabel parametersPanelTitle = new JLabel("Simulation Parameters");
+        parametersPanelTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         parametersPanel.add(Box.createVerticalGlue());  //  "Spring on the panel ceiling"
         parametersPanel.add(parametersPanelTitle);
