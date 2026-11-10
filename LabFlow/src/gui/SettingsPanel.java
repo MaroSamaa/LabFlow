@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+
+import concurrent.RequestTask;
+
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
@@ -59,7 +62,7 @@ public class SettingsPanel extends JPanel
         workTimeTxt = new JTextField(10);
         workTimeTxt.setAlignmentX(Component.LEFT_ALIGNMENT);
         workTimeTxt.setMaximumSize(workTimeTxt.getPreferredSize().getSize()); // Don't allow for vertical stretching
-        workTimeTxt.setText(""); // TO DO: "worktime"
+        workTimeTxt.setText(String.valueOf(RequestTask.getWorkTime())); 
 
         // Work time intervall parameter
         JLabel workTimeIntervallLabel = new JLabel("Work Time Intervall (ms)");
@@ -67,7 +70,7 @@ public class SettingsPanel extends JPanel
         workTimeIntervallTxt = new JTextField(10);
         workTimeIntervallTxt.setAlignmentX(Component.LEFT_ALIGNMENT);
         workTimeIntervallTxt.setMaximumSize(workTimeIntervallTxt.getPreferredSize().getSize());
-        workTimeIntervallTxt.setText("");   //TO DO "workTimeIntervall"
+        workTimeIntervallTxt.setText(String.valueOf(RequestTask.getWorkTimeIntervall()));   
 
         // ApllyBtn
         JButton applyBtn = new JButton("APPLY");
@@ -77,17 +80,23 @@ public class SettingsPanel extends JPanel
         {
             try 
             {
-                // Read text field data
-                String newWorkTimeTxt = workTimeTxt.getText();
-                String newWorkTimeIntervallTxt = workTimeIntervallTxt.getText();
+                // Read text field data and convert them as integers
+                int newWorkTime = Integer.parseInt(workTimeTxt.getText());
+                int newWorkTimeIntervall = Integer.parseInt(workTimeIntervallTxt.getText());
                 
-                //TO DO: parse and setting
+                //  Set the values read
+                RequestTask.setWorkTime(newWorkTime);
+                RequestTask.setWorkTimeIntervall(newWorkTimeIntervall);
 
                 JOptionPane.showMessageDialog(this, "Simulation parameters have been successfully updated", "Parameters Apllied", JOptionPane.INFORMATION_MESSAGE);
             } 
-            catch (NumberFormatException e)
+            catch(NumberFormatException e)
             {
                 JOptionPane.showMessageDialog(this, "ERROR: Make shure to input integer values", "Number Format Error", JOptionPane.ERROR_MESSAGE);
+            }
+            catch(IllegalArgumentException e)
+            {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Input number is negative",JOptionPane.ERROR_MESSAGE);
             }
         });
 
