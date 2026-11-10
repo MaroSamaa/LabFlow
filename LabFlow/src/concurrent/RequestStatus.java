@@ -8,5 +8,6 @@ public enum RequestStatus
 {
     PENDING,
     ACTIVE,
-    CLOSED
+    CLOSED,
+    CANCELLED
 }
