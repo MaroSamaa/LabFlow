@@ -157,8 +157,10 @@ public class SettingsPanel extends JPanel
         authorsTitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel groupLabel = new JLabel("The Beauty And The Beast");
+        groupLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel contributorsLabel = new JLabel("Contributors");
+        contributorsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel contributor1Label = new JLabel("Marini Enrico");
         contributor1Label.setAlignmentX(Component.CENTER_ALIGNMENT);
