@@ -180,6 +180,7 @@ public class SettingsPanel extends JPanel
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         logoLabel.setBorder(null);
+        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             
         // Assembly of the center panel with flexible spacers
         creditPanel.add(Box.createVerticalGlue()); // push to vertical center
