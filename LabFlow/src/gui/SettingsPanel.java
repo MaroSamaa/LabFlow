@@ -46,7 +46,19 @@ public class SettingsPanel extends JPanel
             frame.showMainView();
         });
 
-        //  West Panel Assembly (Simulation Parameters)
+        //  North panel assembly 
+        //  Tab name 
+        JLabel tabLabel = new JLabel(TAB_NAME);
+        tabLabel.setHorizontalAlignment(JLabel.CENTER);
+        tabLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JPanel northPanel = new JPanel(new BorderLayout());
+        northPanel.add(backBtn,BorderLayout.EAST);
+        northPanel.add(tabLabel,BorderLayout.CENTER);
+
+        //  Center panel assembly
+
+        //  Parameters Panel
         JPanel parametersPanel = new JPanel();
         parametersPanel.setLayout(new BoxLayout(parametersPanel, BoxLayout.Y_AXIS));
 
@@ -71,7 +83,6 @@ public class SettingsPanel extends JPanel
 
         // ApllyBtn
         JButton applyBtn = new JButton("APPLY");
-        //applyBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         applyBtn.addActionListener((ActionEvent) -> 
         {
@@ -137,19 +148,7 @@ public class SettingsPanel extends JPanel
 
         parametersPanel.add(Box.createVerticalGlue()); //   "Spring on the panel floor"
         
-        
-
-        //  North panel assembly 
-        //  Tab name 
-        JLabel tabLabel = new JLabel(TAB_NAME);
-        tabLabel.setHorizontalAlignment(JLabel.CENTER);
-        tabLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JPanel northPanel = new JPanel(new BorderLayout());
-        northPanel.add(backBtn,BorderLayout.EAST);
-        northPanel.add(tabLabel,BorderLayout.CENTER);
-
-        //  Center Panel Assembly (Credits)
+        //  Credit Panel
         JPanel creditPanel = new JPanel();
         creditPanel.setLayout(new BoxLayout(creditPanel, BoxLayout.Y_AXIS));
 
@@ -182,11 +181,14 @@ public class SettingsPanel extends JPanel
         creditPanel.add(authorLabel);
         creditPanel.add(Box.createVerticalGlue()); // Balance the lower vertical center space
 
+        JPanel centerPanel = new JPanel(new GridLayout(1,2));
+        centerPanel.add(parametersPanel);
+        centerPanel.add(creditPanel);
+        
+
         //  Assembly of the SettingsPanel
         add(northPanel, BorderLayout.NORTH);
-        add(creditPanel, BorderLayout.CENTER);
-        add(parametersPanel, BorderLayout.WEST);
-        
+        add(centerPanel, BorderLayout.CENTER);
     }
 }
 
