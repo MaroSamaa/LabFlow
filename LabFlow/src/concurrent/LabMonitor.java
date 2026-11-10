@@ -36,27 +36,32 @@ public class LabMonitor
     /**
      * Equipment "stored" in the lab
      */
-    List<Equipment> equipment;
+    private List<Equipment> equipment;
 
     /**
      * List of users of the lab
      */
-    List<User> users;
+    private List<User> users;
 
     /**
      * List of all the requests made 
      */
-    List<Request> requests;
+    private List<Request> requests;
 
     /**
      * List of all the events that happened
      */
-    List<String> events;
+    private List<String> events;
 
     /**
      * List of LabListeners 
      */
-    List<LabListener> listeners;
+    private List<LabListener> listeners;
+
+    /**
+     * State of the monitor
+     */
+    private boolean isPaused;
 
     //---------CONSTRUCTOR--------
 
@@ -65,6 +70,7 @@ public class LabMonitor
      * It initializes the equipment list as an empty arraylist of equipment.
      * It initializes the user list as an empty arraylist of users.
      * It initializes the request list as an empty arraylist of requests.
+     * It starts in a paused state.
      */
     public LabMonitor()
     {
@@ -73,35 +79,51 @@ public class LabMonitor
         requests = new ArrayList<Request>();
         listeners = new ArrayList<LabListener>();
         events = new ArrayList<String>();
+        isPaused = true;    //  The monitor starts as paused
     }
 
     //--------ACCESSOR METHODS--------
 
     /**
      * Getter method for the user list
-     * @return a copy of the user list
+     * @return a deep copy of the user list
      */
     public synchronized ArrayList<User> getUsers()
     {
-        return new ArrayList<User>(users);
+        ArrayList<User> usersDeepCopy = new ArrayList<User>();
+        for(User u : users)
+        {
+            usersDeepCopy.add(new User(u));
+        }
+        return usersDeepCopy;
     }
 
     /**
      * Getter method for the equipment list
-     * @return a copy of the equipment list
+     * @return a deep copy of the equipment list
      */
     public synchronized ArrayList<Equipment> getEquipment()
     {
-        return new ArrayList<Equipment>(equipment);
+        ArrayList<Equipment> equipmentDeepCopy = new ArrayList<Equipment>();
+        for(Equipment e: equipment)
+        {
+            equipmentDeepCopy.add(new Equipment(e));
+        }
+        return equipmentDeepCopy;
     }
 
     /**
      * Getter method for the request list
-     * @return a copy of the request list
+     * @return a deep copy of the request list
      */
     public synchronized ArrayList<Request> getRequests()
     {
-        return new ArrayList<Request>(requests);
+        ArrayList<Request> requestsDeepCopy = new ArrayList<Request>();
+        for(Request r : requests)
+        {
+            requestsDeepCopy.add(new Request(r));
+        }
+        return requestsDeepCopy;
     }
 
     /**
@@ -110,10 +132,17 @@ public class LabMonitor
      */
     public synchronized ArrayList<String> getEvents()
     {
-        return new ArrayList<String>(events);
+        return new ArrayList<String>(events);   //No need for a deep copy, Strings are immutable
     }
 
-    //--------METHODS--------
+    /**
+     * Getter method for the state of the lab
+     * @return the state of the lab
+     */
+    public synchronized boolean isPaused()
+    {
+        return isPaused;
+    }
 
     /**
      * This method allows for a user to be registered to the lab
@@ -162,6 +191,57 @@ public class LabMonitor
     }
 
     /**
+     * This method allows for a request to be added in the lab's request list
+     * @param toAdd the request to add to the lab's list
+     */
+    public synchronized void addRequest(Request toAdd)
+    {
+        requests.add(toAdd);
+        //  Register the added request event and notify all listeners
+        addEvent(toAdd.getUser().toString() + " requested: " + toAdd.getEquipmentType());
+    }
+
+    /**
+     * Service method to register events and notify all listeners about the event that happened
+     * @param msg the message representing the occurred event
+     */
+    private void addEvent(String msg)
+    {
+        //  Ask the pc for the time, and don't give me the ms 
+        String timestamp = java.time.LocalTime.now().withNano(0).toString();
+        events.add(timestamp + " " + msg);
+        notifyListeners(); //   Notify all listeners because an event has happened
+    }
+
+    /**
+     * Method to add a LabListener to the LabMonitor's list
+     * @param toAdd the LabListener to add
+     */
+    public synchronized void addLabListener(LabListener toAdd)
+    {
+        listeners.add(toAdd);
+        toAdd.onLabStateChange();   //When a new listener gets added notify about it
+    }
+
+    /**
+     * Method to get if even one of the lab's requests is active
+     * @return true if at least one request's status is ACTIVE
+     */
+    public synchronized boolean hasActiveRequests()
+    {
+        for(Request r : requests)
+        {
+            if(r.getStatus() == RequestStatus.ACTIVE)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //--------METHODS--------
+
+    /**
      * This method allows for an equipment (resource) to be released (set to AVAILABLE) and a request to be concluded (set to CLOSED)
      * @param request the request that is being conclunded
      * @throws IllegalStateException if the request doesn't have ACTIVE status (so if there is no equipment to be released)
@@ -191,9 +271,11 @@ public class LabMonitor
      */
     public synchronized void requestEquipment(Request request) throws InterruptedException
     {
-        requests.add(request);  //Add the request to the requests list
-        //  Register the added request event and notify all listeners
-        addEvent(request.getUser().toString() + " requested: " + request.getEquipmentType());      
+        //  A thread that starts when the lab is paused can deposit the request to the list but then it gets immediatly put to sleep
+        while(isPaused())
+        {
+            wait();
+        }
 
         Equipment requestedEquipment = findAvailableEquipment(request.getEquipmentType());
 
@@ -235,16 +317,6 @@ public class LabMonitor
     }
 
     /**
-     * Method to add a LabListener to the LabMonitor's list
-     * @param toAdd the LabListener to add
-     */
-    public synchronized void addLabListener(LabListener toAdd)
-    {
-        listeners.add(toAdd);
-        toAdd.onLabStateChange();   //When a new listener gets added notify about it
-    }
-
-    /**
      * Service method to notify all listeners that something in the lab changed
      */
     private void notifyListeners()
@@ -255,36 +327,54 @@ public class LabMonitor
         }
     }
 
-    /**
-     * Service method to register events and notify all listeners about the event that happened
-     * @param msg the message representing the occurred event
-     */
-    private void addEvent(String msg)
-    {
-        //  Ask the pc for the time, and don't give me the ms 
-        String timestamp = java.time.LocalTime.now().withNano(0).toString();
-        events.add(timestamp + " " + msg);
-        notifyListeners(); //   Notify all listeners because an event has happened
-    }
-
     //--------SAVE AND LOAD METHODS--------
 
     /**
      * Method to save the state of the lab.
-     * This saves on the file the user, equipment, request and event lists
+     * This saves on the file a copy of the user, equipment, request and event lists.
+     * The lab get's paused before saving to prevent changes from happening during writing.
+     * The ACTIVE requests are saved as CANCELLED and all of the equipment they obtained gets released
      * @param file the file where data will be written
      * @throws IOException  if something happens when writing the data
      */
     public synchronized void saveLabState(File file) throws IOException
     {
+
+        if(!isPaused()) //  Pause the labmonitor before saving anything
+        {
+            pause();
+        }
+
+        //  We modify a deep copy of the lists to maintain the labMonitor's current state in the current session
+
+        //  Make all of the active request cancelled 
+        ArrayList<Request> requestsCopyToSave = getRequests();    //  Work on a deep copy 
+        for(Request r: requestsCopyToSave)
+        {
+            if(r.getStatus() == RequestStatus.ACTIVE)
+            {
+                r.setStatus(RequestStatus.CANCELLED);
+            }
+        } 
+
+        //  Reset all IN_USE equipment to AVAILABLE status
+        ArrayList<Equipment> equipmentCopyToSave = getEquipment();  //  Work on a deep copy 
+        for(Equipment e: equipmentCopyToSave)
+        {
+            if(e.getStatus() == EquipmentStatus.IN_USE)
+            {
+                e.setStatus(EquipmentStatus.AVAILABLE);
+            }
+        }
+
         //  Use ObjectOutputStream to write data on the file
         //  Try to handle closing and unexpected closing automatically
         try (ObjectOutputStream fileWriter = new ObjectOutputStream(new FileOutputStream(file))) 
         { 
-            fileWriter.writeObject(users);      //  Save users
-            fileWriter.writeObject(equipment);  //  Save equipment
-            fileWriter.writeObject(requests);   //  Save requests
-            fileWriter.writeObject(events);     //  Save events
+            fileWriter.writeObject(getUsers());             //  Save users
+            fileWriter.writeObject(equipmentCopyToSave);    //  Save equipment
+            fileWriter.writeObject(requestsCopyToSave);     //  Save requests
+            fileWriter.writeObject(getEvents());            //  Save events
         }
     }
 
@@ -296,6 +386,14 @@ public class LabMonitor
      */
     public synchronized void loadLabState(File file) throws IOException, ClassNotFoundException 
     {
+        //  Pause the LabMonitor before loading anything
+        if(!isPaused)  
+        {
+            pause();
+        }
+
+        //  Load save file data
+
         //  Use ObjectInputStream to write data on the file
         //  Try to handle closing and unexpected closing automatically
         try (ObjectInputStream fileReader = new ObjectInputStream(new FileInputStream(file))) 
@@ -321,7 +419,70 @@ public class LabMonitor
             events.clear();
             events.addAll(loadedEvents);
             
-            addEvent("The file has been read, the lab is now loaded and ready");
         }   
+
+        //  Regenerate loaded pending threads
+        regeneratePendingThreads();
+
+        addEvent("The file has been read, the lab is now loaded and ready to resume operations");
+    }
+
+    /**
+     *  Service method to regenerate loaded pending threads
+     */
+    private void regeneratePendingThreads()
+    {
+        for(Request r : requests)
+        {
+            if(r.getStatus() == RequestStatus.PENDING)
+            {
+                RequestTask task = new RequestTask(r, this);
+                task.setRegenerated();  //  Skip the addRequest call
+                Thread requestThread = new Thread(task);
+                requestThread.start();
+            }
+        }
+    }
+
+    //--------PAUSE AND PLAY METHODS--------
+
+    /**
+     * Method to call when pausing LabMonitor's operations
+     */
+    public synchronized void pause()
+    {
+        if(!isPaused)
+        {
+            isPaused = true;
+            addEvent("The simulation has been paused");
+            notifyListeners();
+        }
+    }
+
+    /**
+     * Method that threads can call to check if the monitor is paused
+     * if this is true they get put to sleep.
+     * @throws InterruptedException if thread gets interrupted
+     */
+    public synchronized void checkPaused() throws InterruptedException
+    {
+        while(isPaused())
+        {
+            wait(); //  while paused put all active threads to sleep
+        }
+    }
+
+    /**
+     * Method to call when resuming LabMonitor's operations
+     */
+    public synchronized void play()
+    {
+        if(isPaused())
+        {
+            isPaused = false;
+            addEvent("The simulation has resumed");
+            notifyListeners();
+            notifyAll();    //  Wake up all threads
+        }
     }
 }

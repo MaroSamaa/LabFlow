@@ -33,7 +33,7 @@ public class Request implements Serializable
      */
     private RequestStatus status;
 
-    //--------CONSTRUCTOR--------
+    //--------CONSTRUCTORS--------
 
     /**
      * Constructor method for the Request class
@@ -46,6 +46,18 @@ public class Request implements Serializable
         this.equipmentType = equipmentType;
         this.status = RequestStatus.PENDING; //  A new request shall always start as pending
         this.requestedEquipment = null;
+    }
+
+    /**
+     * Copy constructor
+     * @param other the request to copy
+     */
+    public Request(Request other)
+    {
+        this.user = other.getUser();
+        this.equipmentType = other.getEquipmentType();
+        this.status = other.getStatus();
+        this.requestedEquipment = other.getRequestedEquipment();
     }
 
     //--------ACCESSOR METHODS--------

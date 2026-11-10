@@ -28,7 +28,7 @@ public class Equipment implements Serializable
      */
     private String code;
 
-    //--------CONSTRUCTOR--------
+    //--------CONSTRUCTORS--------
 
     /**
      * Constructor method for the Equipment class
@@ -40,6 +40,17 @@ public class Equipment implements Serializable
         this.type = type;
         this.code = code;
         status = EquipmentStatus.AVAILABLE; //Each equipment shall start as available
+    }
+
+    /**
+     * Copy constructor
+     * @param other the equipment to copy
+     */
+    public Equipment(Equipment other)
+    {
+        this.type = other.getType();
+        this.code = other.getCode();
+        this.status = other.getStatus();
     }
 
     //--------ACCESSOR METHODS--------
