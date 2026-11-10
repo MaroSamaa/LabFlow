@@ -77,9 +77,9 @@ public class SettingsPanel extends JPanel
         // Work time intervall parameter
         JLabel workTimeIntervallLabel = new JLabel("Work Time Intervall (ms)");
         workTimeIntervallLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        workTimeIntervallLabel.setHorizontalAlignment(JTextField.CENTER);
         workTimeIntervallTxt = new JTextField(10);
         workTimeIntervallTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        workTimeIntervallLabel.setHorizontalAlignment(JTextField.CENTER);
         workTimeIntervallTxt.setMaximumSize(workTimeIntervallTxt.getPreferredSize().getSize());
         workTimeIntervallTxt.setText(String.valueOf(RequestTask.getWorkTimeIntervall()));   
 
