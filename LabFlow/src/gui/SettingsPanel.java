@@ -121,7 +121,7 @@ public class SettingsPanel extends JPanel
         });
 
         JPanel parametersBtnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
-        parametersBtnPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        parametersBtnPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         parametersBtnPanel.add(restoreDefaultBtn);
         parametersBtnPanel.add(applyBtn);
 
@@ -181,9 +181,20 @@ public class SettingsPanel extends JPanel
         creditPanel.add(authorLabel);
         creditPanel.add(Box.createVerticalGlue()); // Balance the lower vertical center space
 
-        JPanel centerPanel = new JPanel(new GridLayout(1,2));
+        JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 60, 0)); // 60px of distance between parameters and credits panels
         centerPanel.add(parametersPanel);
         centerPanel.add(creditPanel);
+        
+        // Vertical wrapper to center everything vertically
+        JPanel verticalWrapper = new JPanel();
+        verticalWrapper.setLayout(new BoxLayout(verticalWrapper, BoxLayout.Y_AXIS));
+        verticalWrapper.add(Box.createVerticalGlue());
+        verticalWrapper.add(centerPanel);
+        verticalWrapper.add(Box.createVerticalGlue());
+
+        //  Assembly of the SettingsPanel
+        add(northPanel, BorderLayout.NORTH);
+        add(verticalWrapper, BorderLayout.CENTER);
         
 
         //  Assembly of the SettingsPanel
