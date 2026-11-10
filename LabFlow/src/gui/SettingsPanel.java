@@ -121,7 +121,7 @@ public class SettingsPanel extends JPanel
         });
 
         JPanel parametersBtnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
-        parametersBtnPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        parametersBtnPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         parametersBtnPanel.add(restoreDefaultBtn);
         parametersBtnPanel.add(applyBtn);
 
