@@ -53,12 +53,12 @@ public class RequestManager extends JDialog
                 return;
             }
 
-            Request nuovaRichiesta = new Request(selectedUser, selectedEquipmentType);
+            Request newRequest = new Request(selectedUser, selectedEquipmentType);
 
-            RequestTask task = new RequestTask(nuovaRichiesta, monitor);
+            RequestTask task = new RequestTask(newRequest, monitor);
 
-            Thread threadRichiesta = new Thread(task);
-            threadRichiesta.start();
+            Thread requestThread = new Thread(task);
+            requestThread.start();
 
             // Confirmation popup and dialog closure
             JOptionPane.showMessageDialog(this, selectedUser.toString()+ " has successfully made a request!", "Request Confirmation", JOptionPane.INFORMATION_MESSAGE);

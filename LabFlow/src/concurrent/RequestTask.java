@@ -6,7 +6,7 @@ package concurrent;
  */
 public class RequestTask implements Runnable
 {
-    private final static int WORK_TIME = 3000;  //  Variable to set the time to simulate "work with the equipment"
+    private final static int WORK_TIME = 3000;          //  Variable to set the time to simulate "work with the equipment"
     private final static int WORK_TIME_INTERVALL = 100; //  Variable that determines the max time that passes before checking if the monitor is paused
 
     //--------INSTANCE VARIABLES--------
