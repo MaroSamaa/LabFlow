@@ -408,7 +408,7 @@ public class LabMonitor
         //  Regenerate loaded pending threads
         regeneratePendingThreads();
 
-        addEvent("The file has been read, the lab is now loaded and ready");
+        addEvent("The file has been read, the lab is now loaded and ready to resume operations");
     }
 
     /**
