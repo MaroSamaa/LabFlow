@@ -3,6 +3,7 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
@@ -12,10 +13,13 @@ public class SettingsPanel extends JPanel
     private static final int LOGO_SIZE = 300;
     private static final int BTN_DIMENTION = 30;
 
+    private JTextField workTimeTxt;
+    private JTextField workTimeIntervallTxt;
+
     public SettingsPanel(Frame frame)
     {
         setLayout(new BorderLayout());
-       
+           
         //  Back button implementation 
         JButton backBtn = new JButton();
 
@@ -40,6 +44,63 @@ public class SettingsPanel extends JPanel
             frame.showMainView();
         });
 
+        //  West Panel Assembly (Simulation Parameters)
+        JPanel parametersPanel = new JPanel();
+        parametersPanel.setLayout(new BoxLayout(parametersPanel, BoxLayout.Y_AXIS));
+
+        //  Internal margin and centered title
+        TitledBorder parametersBorder = new TitledBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20), "Simulation Parameters");
+        parametersBorder.setTitleJustification(TitledBorder.CENTER);
+        parametersPanel.setBorder(parametersBorder);  
+
+        // Work time parameter
+        JLabel lblParam1 = new JLabel("Work Time (ms):");
+        lblParam1.setAlignmentX(Component.LEFT_ALIGNMENT);
+        workTimeTxt = new JTextField(10);
+        workTimeTxt.setMaximumSize(workTimeTxt.getPreferredSize().getSize()); // Don't allow for vertical stretching
+        workTimeTxt.setText(""); // TO DO: "worktime"
+
+        // Work time intervall parameter
+        JLabel lblParam2 = new JLabel("Work Time Intervall (ms)");
+        lblParam2.setAlignmentX(Component.LEFT_ALIGNMENT);
+        workTimeIntervallTxt = new JTextField(10);
+        workTimeIntervallTxt.setMaximumSize(workTimeIntervallTxt.getPreferredSize().getSize());
+        workTimeIntervallTxt.setText("");   //TO DO "workTimeIntervall"
+
+        // ApllyBtn
+        JButton applyBtn = new JButton("APPLY");
+        applyBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        applyBtn.addActionListener((ActionEvent) -> 
+        {
+            try 
+            {
+                // Read text field data
+                String newWorkTimeTxt = workTimeTxt.getText();
+                String newWorkTimeIntervallTxt = workTimeIntervallTxt.getText();
+                
+                //TO DO: parse and setting
+
+                JOptionPane.showMessageDialog(this, "Simulation parameters have been successfully updated", "Parameters Apllied", JOptionPane.INFORMATION_MESSAGE);
+            } 
+            catch (NumberFormatException e)
+            {
+                JOptionPane.showMessageDialog(this, "ERROR: Make shure to input integer values", "Number Format Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        parametersPanel.add(lblParam1);
+        parametersPanel.add(Box.createRigidArea(new Dimension(0, 5)));  //Separator
+        parametersPanel.add(workTimeTxt);
+        parametersPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        
+        parametersPanel.add(lblParam2);
+        parametersPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        parametersPanel.add(workTimeIntervallTxt);
+        
+        parametersPanel.add(Box.createVerticalGlue()); //   Push down the applyB
+        parametersPanel.add(applyBtn);
+
         //  North panel assembly 
         //  Tab name 
         JLabel tabLabel = new JLabel(TAB_NAME);
@@ -50,6 +111,7 @@ public class SettingsPanel extends JPanel
         northPanel.add(backBtn,BorderLayout.EAST);
         northPanel.add(tabLabel,BorderLayout.CENTER);
 
+        //  Center Panel Assembly (Credits)
         JPanel creditPanel = new JPanel();
         creditPanel.setLayout(new BoxLayout(creditPanel, BoxLayout.Y_AXIS));
 
@@ -85,6 +147,7 @@ public class SettingsPanel extends JPanel
         //  Assembly of the SettingsPanel
         add(northPanel, BorderLayout.NORTH);
         add(creditPanel, BorderLayout.CENTER);
+        add(parametersPanel, BorderLayout.WEST);
         
     }
 }
