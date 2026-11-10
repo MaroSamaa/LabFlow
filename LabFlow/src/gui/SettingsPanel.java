@@ -81,7 +81,7 @@ public class SettingsPanel extends JPanel
         workTimeIntervallTxt = new JTextField(10);
         workTimeIntervallTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         workTimeIntervallTxt.setMaximumSize(workTimeIntervallTxt.getPreferredSize().getSize());
-        workTimeIntervallTxt.setText(String.valueOf(RequestTask.getWorkTimeIntervall()),);   
+        workTimeIntervallTxt.setText(String.valueOf(RequestTask.getWorkTimeIntervall()));   
 
         // ApllyBtn
         JButton applyBtn = new JButton("APPLY");
