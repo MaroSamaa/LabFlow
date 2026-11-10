@@ -67,19 +67,21 @@ public class SettingsPanel extends JPanel
 
         // Work time parameter
         JLabel workTimeLabel = new JLabel("Work Time (ms):");
-        workTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        workTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);    //  Center the label in the panel
         workTimeTxt = new JTextField(10);
-        workTimeTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
-        workTimeTxt.setMaximumSize(workTimeTxt.getPreferredSize().getSize()); // Don't allow for vertical stretching
-        workTimeTxt.setText(String.valueOf(RequestTask.getWorkTime())); 
+        workTimeTxt.setAlignmentX(Component.CENTER_ALIGNMENT);      //  Center the text field in the panel
+        workTimeTxt.setHorizontalAlignment(JTextField.CENTER);      //  Center the text in the text field
+        workTimeTxt.setMaximumSize(workTimeTxt.getPreferredSize().getSize());   //  Don't allow for vertical stretching
+        workTimeTxt.setText(String.valueOf(RequestTask.getWorkTime()));         //  Set the initial text to the value of the RequestTask's workTime
 
         // Work time intervall parameter
         JLabel workTimeIntervallLabel = new JLabel("Work Time Intervall (ms)");
         workTimeIntervallLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        workTimeIntervallLabel.setHorizontalAlignment(JTextField.CENTER);
         workTimeIntervallTxt = new JTextField(10);
         workTimeIntervallTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         workTimeIntervallTxt.setMaximumSize(workTimeIntervallTxt.getPreferredSize().getSize());
-        workTimeIntervallTxt.setText(String.valueOf(RequestTask.getWorkTimeIntervall()));   
+        workTimeIntervallTxt.setText(String.valueOf(RequestTask.getWorkTimeIntervall()),);   
 
         // ApllyBtn
         JButton applyBtn = new JButton("APPLY");
