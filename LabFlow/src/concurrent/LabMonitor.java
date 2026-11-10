@@ -91,7 +91,7 @@ public class LabMonitor
     public synchronized ArrayList<User> getUsers()
     {
         ArrayList<User> usersDeepCopy = new ArrayList<User>();
-        for(User u:users)
+        for(User u : users)
         {
             usersDeepCopy.add(new User(u));
         }
@@ -352,7 +352,7 @@ public class LabMonitor
             fileWriter.writeObject(getUsers());             //  Save users
             fileWriter.writeObject(equipmentCopyToSave);    //  Save equipment
             fileWriter.writeObject(requestsCopyToSave);     //  Save requests
-            fileWriter.writeObject(getEvents());                 //  Save events
+            fileWriter.writeObject(getEvents());            //  Save events
         }
     }
 
@@ -364,6 +364,14 @@ public class LabMonitor
      */
     public synchronized void loadLabState(File file) throws IOException, ClassNotFoundException 
     {
+        //  Pause the LabMonitor before loading anything
+        if(!isPaused)  
+        {
+            pause();
+        }
+
+        //  Load save file data
+
         //  Use ObjectInputStream to write data on the file
         //  Try to handle closing and unexpected closing automatically
         try (ObjectInputStream fileReader = new ObjectInputStream(new FileInputStream(file))) 
@@ -389,8 +397,28 @@ public class LabMonitor
             events.clear();
             events.addAll(loadedEvents);
             
-            addEvent("The file has been read, the lab is now loaded and ready");
         }   
+
+        //  Regenerate loaded pending threads
+        regeneratePendingThreads();
+        
+        addEvent("The file has been read, the lab is now loaded and ready");
+    }
+
+    /**
+     *  Service method to regenerate loaded pending threads
+     */
+    private void regeneratePendingThreads()
+    {
+        for(Request r : requests)
+        {
+            if(r.getStatus() == RequestStatus.PENDING)
+            {
+                RequestTask task = new RequestTask(r, this);
+                Thread requestThread = new Thread(task);
+                requestThread.start();
+            }
+        }
     }
 
     //--------PAUSE AND PLAY METHODS--------
