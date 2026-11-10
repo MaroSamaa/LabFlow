@@ -21,7 +21,7 @@ public class ControlPanel extends JPanel
         JButton loadBtn = new JButton();
         JButton settingsBtn = new JButton();
         JButton playBtn = new JButton();
-        JButton stopBtn = new JButton();
+        JButton pauseBtn = new JButton();
 
         //--------SETTING BUTTONS IMAGE ICONS--------
         //  Set Image for settingsBtn
@@ -80,27 +80,27 @@ public class ControlPanel extends JPanel
         playBtn.setFocusPainted(false);         
         playBtn.setBorderPainted(false);        
 
-        //  Set Image for stopBtn
+        //  Set Image for pauseBtn
         try 
         {
-            Image temp = ImageIO.read(getClass().getResource("/images/stopIcon.png"));
-            Image stopIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
-            stopBtn.setIcon(new ImageIcon(stopIcon));
-            stopBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            Image temp = ImageIO.read(getClass().getResource("/images/pauseIcon.png"));
+            Image pauseIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            pauseBtn.setIcon(new ImageIcon(pauseIcon));
+            pauseBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
-        stopBtn.setMargin(new Insets(0, 0, 0, 0));
-        stopBtn.setBorder(null);
-        stopBtn.setContentAreaFilled(false);    
-        stopBtn.setFocusPainted(false);         
-        stopBtn.setBorderPainted(false);        
+        pauseBtn.setMargin(new Insets(0, 0, 0, 0));
+        pauseBtn.setBorder(null);
+        pauseBtn.setContentAreaFilled(false);    
+        pauseBtn.setFocusPainted(false);         
+        pauseBtn.setBorderPainted(false);        
 
         //--------ADD ACTION LISTENERS TO BUTTONS--------
 
         //  On save btn press prompt the user to select a file and write the monitor's information (@author Marini Enrico)
         saveBtn.addActionListener((ActionEvent) ->
         {
-            if(monitor.hasActiveRequests())
+            if(monitor.hasActiveRequests()) //If the monitor has active requests warn the user that they won't be saved
             {
                 JOptionPane.showMessageDialog(frame,"There are ACTIVE requests in the lab, these won't be saved to the save file.","Active requests won't be saved",JOptionPane.WARNING_MESSAGE);
             }
@@ -178,7 +178,7 @@ public class ControlPanel extends JPanel
             monitor.play();
         });
 
-        stopBtn.addActionListener((ActionEvent) ->
+        pauseBtn.addActionListener((ActionEvent) ->
         {
             monitor.pause();
         });
@@ -197,7 +197,7 @@ public class ControlPanel extends JPanel
         //  Put the Play and Stop Buttons together to the center
         JPanel playAndStopPanel = new JPanel();
         playAndStopPanel.add(playBtn);
-        playAndStopPanel.add(stopBtn);
+        playAndStopPanel.add(pauseBtn);
         add(playAndStopPanel, BorderLayout.CENTER);
 
     }
