@@ -54,16 +54,18 @@ public class SettingsPanel extends JPanel
         parametersPanel.setBorder(parametersBorder);  
 
         // Work time parameter
-        JLabel lblParam1 = new JLabel("Work Time (ms):");
-        lblParam1.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JLabel workTimeLabel = new JLabel("Work Time (ms):");
+        workTimeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         workTimeTxt = new JTextField(10);
+        workTimeTxt.setAlignmentX(Component.LEFT_ALIGNMENT);
         workTimeTxt.setMaximumSize(workTimeTxt.getPreferredSize().getSize()); // Don't allow for vertical stretching
         workTimeTxt.setText(""); // TO DO: "worktime"
 
         // Work time intervall parameter
-        JLabel lblParam2 = new JLabel("Work Time Intervall (ms)");
-        lblParam2.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JLabel workTimeIntervallLabel = new JLabel("Work Time Intervall (ms)");
+        workTimeIntervallLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         workTimeIntervallTxt = new JTextField(10);
+        workTimeIntervallTxt.setAlignmentX(Component.LEFT_ALIGNMENT);
         workTimeIntervallTxt.setMaximumSize(workTimeIntervallTxt.getPreferredSize().getSize());
         workTimeIntervallTxt.setText("");   //TO DO "workTimeIntervall"
 
@@ -89,12 +91,12 @@ public class SettingsPanel extends JPanel
             }
         });
 
-        parametersPanel.add(lblParam1);
+        parametersPanel.add(workTimeLabel);
         parametersPanel.add(Box.createRigidArea(new Dimension(0, 5)));  //Separator
         parametersPanel.add(workTimeTxt);
         parametersPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         
-        parametersPanel.add(lblParam2);
+        parametersPanel.add(workTimeIntervallLabel);
         parametersPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         parametersPanel.add(workTimeIntervallTxt);
         
