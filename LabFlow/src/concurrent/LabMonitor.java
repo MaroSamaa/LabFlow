@@ -86,29 +86,44 @@ public class LabMonitor
 
     /**
      * Getter method for the user list
-     * @return a copy of the user list
+     * @return a deep copy of the user list
      */
     public synchronized ArrayList<User> getUsers()
     {
-        return new ArrayList<User>(users);
+        ArrayList<User> usersDeepCopy = new ArrayList<User>();
+        for(User u:users)
+        {
+            usersDeepCopy.add(new User(u));
+        }
+        return usersDeepCopy;
     }
 
     /**
      * Getter method for the equipment list
-     * @return a copy of the equipment list
+     * @return a deep copy of the equipment list
      */
     public synchronized ArrayList<Equipment> getEquipment()
     {
-        return new ArrayList<Equipment>(equipment);
+        ArrayList<Equipment> equipmentDeepCopy = new ArrayList<Equipment>();
+        for(Equipment e: equipment)
+        {
+            equipmentDeepCopy.add(new Equipment(e));
+        }
+        return equipmentDeepCopy;
     }
 
     /**
      * Getter method for the request list
-     * @return a copy of the request list
+     * @return a deep copy of the request list
      */
     public synchronized ArrayList<Request> getRequests()
     {
-        return new ArrayList<Request>(requests);
+        ArrayList<Request> requestsDeepCopy = new ArrayList<Request>();
+        for(Request r : requests)
+        {
+            requestsDeepCopy.add(new Request(r));
+        }
+        return requestsDeepCopy;
     }
 
     /**
@@ -117,7 +132,7 @@ public class LabMonitor
      */
     public synchronized ArrayList<String> getEvents()
     {
-        return new ArrayList<String>(events);
+        return new ArrayList<String>(events);   //No need for a deep copy, Strings are immutable
     }
 
     /**
