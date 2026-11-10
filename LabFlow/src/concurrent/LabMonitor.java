@@ -36,27 +36,29 @@ public class LabMonitor
     /**
      * Equipment "stored" in the lab
      */
-    List<Equipment> equipment;
+    private List<Equipment> equipment;
 
     /**
      * List of users of the lab
      */
-    List<User> users;
+    private List<User> users;
 
     /**
      * List of all the requests made 
      */
-    List<Request> requests;
+    private List<Request> requests;
 
     /**
      * List of all the events that happened
      */
-    List<String> events;
+    private List<String> events;
 
     /**
      * List of LabListeners 
      */
-    List<LabListener> listeners;
+    private List<LabListener> listeners;
+
+    private boolean isPaused;
 
     //---------CONSTRUCTOR--------
 
@@ -65,6 +67,7 @@ public class LabMonitor
      * It initializes the equipment list as an empty arraylist of equipment.
      * It initializes the user list as an empty arraylist of users.
      * It initializes the request list as an empty arraylist of requests.
+     * It starts in a paused state.
      */
     public LabMonitor()
     {
@@ -73,6 +76,7 @@ public class LabMonitor
         requests = new ArrayList<Request>();
         listeners = new ArrayList<LabListener>();
         events = new ArrayList<String>();
+        isPaused = true;    //  The monitor starts as paused
     }
 
     //--------ACCESSOR METHODS--------
@@ -111,6 +115,11 @@ public class LabMonitor
     public synchronized ArrayList<String> getEvents()
     {
         return new ArrayList<String>(events);
+    }
+
+    public synchronized boolean isPaused()
+    {
+        return isPaused;
     }
 
     //--------METHODS--------
@@ -192,8 +201,15 @@ public class LabMonitor
     public synchronized void requestEquipment(Request request) throws InterruptedException
     {
         requests.add(request);  //Add the request to the requests list
+        
         //  Register the added request event and notify all listeners
-        addEvent(request.getUser().toString() + " requested: " + request.getEquipmentType());      
+        addEvent(request.getUser().toString() + " requested: " + request.getEquipmentType()); 
+
+        //  A thread that starts when the lab is paused can deposit the request to the list but then it gets immediatly put to sleep
+        while(isPaused())
+        {
+            wait();
+        }
 
         Equipment requestedEquipment = findAvailableEquipment(request.getEquipmentType());
 
@@ -323,5 +339,35 @@ public class LabMonitor
             
             addEvent("The file has been read, the lab is now loaded and ready");
         }   
+    }
+
+    //--------PAUSE AND PLAY METHODS--------
+    public synchronized void pause()
+    {
+        if(!isPaused)
+        {
+            isPaused = true;
+            addEvent("The simulation has been paused");
+            notifyListeners();
+        }
+    }
+
+    public synchronized void checkPaused() throws InterruptedException
+    {
+        while(isPaused())
+        {
+            wait(); //  while paused put all active threads to sleep
+        }
+    }
+
+    public synchronized void play()
+    {
+        if(isPaused())
+        {
+            isPaused = false;
+            addEvent("The simulation has resumed");
+            notifyListeners();
+            notifyAll();    //  Wake up all threads
+        }
     }
 }
