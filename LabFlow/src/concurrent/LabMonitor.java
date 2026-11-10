@@ -58,6 +58,9 @@ public class LabMonitor
      */
     private List<LabListener> listeners;
 
+    /**
+     * State of the monitor
+     */
     private boolean isPaused;
 
     //---------CONSTRUCTOR--------
@@ -117,6 +120,10 @@ public class LabMonitor
         return new ArrayList<String>(events);
     }
 
+    /**
+     * Getter method for the state of the lab
+     * @return the state of the lab
+     */
     public synchronized boolean isPaused()
     {
         return isPaused;
@@ -201,7 +208,7 @@ public class LabMonitor
     public synchronized void requestEquipment(Request request) throws InterruptedException
     {
         requests.add(request);  //Add the request to the requests list
-        
+
         //  Register the added request event and notify all listeners
         addEvent(request.getUser().toString() + " requested: " + request.getEquipmentType()); 
 
@@ -342,6 +349,10 @@ public class LabMonitor
     }
 
     //--------PAUSE AND PLAY METHODS--------
+
+    /**
+     * Method to call when pausing LabMonitor's operations
+     */
     public synchronized void pause()
     {
         if(!isPaused)
@@ -352,6 +363,11 @@ public class LabMonitor
         }
     }
 
+    /**
+     * Method that threads can call to check if the monitor is paused
+     * if this is true they get put to sleep.
+     * @throws InterruptedException if thread gets interrupted
+     */
     public synchronized void checkPaused() throws InterruptedException
     {
         while(isPaused())
@@ -360,6 +376,9 @@ public class LabMonitor
         }
     }
 
+    /**
+     * Method to call when resuming LabMonitor's operations
+     */
     public synchronized void play()
     {
         if(isPaused())
