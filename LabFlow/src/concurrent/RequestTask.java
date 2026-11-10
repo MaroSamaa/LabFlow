@@ -6,8 +6,25 @@ package concurrent;
  */
 public class RequestTask implements Runnable
 {
-    private final static int WORK_TIME = 3000;          //  Variable to set the time to simulate "work with the equipment"
-    private final static int WORK_TIME_INTERVALL = 100; //  Variable that determines the max time that passes before checking if the monitor is paused
+    public static final int DEFAULT_WORK_TIME = 3000;
+    public static final int DEFAULT_WORK_TIME_INTERVALL = 100;
+
+    /*  
+        Static because they are shared, volatile to ensure the consistency of the variables
+        between threads without introducing synchronized methods (that produce overheads), this should be
+        enough given that the operations on them are limited read / write of the whole variable in one go.
+        It tells the thread to read the info from the ram instead of the local chache value (which might be an older one)
+    */
+    /** 
+     * Total simulated work time on an equipment before releasing it;
+     * defaul value = 3000
+     * */ 
+    private static volatile int workTime = DEFAULT_WORK_TIME;
+    /**
+     *  Default value = 100
+     *  Intervall of work time before check on the monitor's pause status
+     * */ 
+    private static volatile int workTimeIntervall = DEFAULT_WORK_TIME_INTERVALL;
 
     //--------INSTANCE VARIABLES--------
 
@@ -41,6 +58,35 @@ public class RequestTask implements Runnable
     public void setRegenerated()
     {
         isRegenerated = true;
+    }
+
+    //--------ACCESSOR METHODS--------
+    public static int getWorkTime()
+    {
+        return workTime;
+    }
+
+    public static int getWorkTimeIntervall()
+    {
+        return workTimeIntervall;
+    }
+
+    public static void setWorkTime(int newWorkTime) throws IllegalArgumentException
+    {
+        if(newWorkTime <= 0)
+        {
+            throw new IllegalArgumentException("The work time value must be > 0");
+        }
+        workTime = newWorkTime;
+    }
+
+    public static void setWorkTimeIntervall(int newWorkTimeIntervall) throws IllegalArgumentException
+    {
+        if(newWorkTimeIntervall <= 0)
+        {
+            throw new IllegalArgumentException("The time intervall value must be > 0");
+        }
+        workTimeIntervall = newWorkTimeIntervall;
     }
 
     //--------METHODS--------
@@ -78,11 +124,11 @@ public class RequestTask implements Runnable
     {
         //  Devide the whole work in intervalls and check if the monitor is paused before doing an intervall of work
         int timeWorked = 0;
-        while(timeWorked < WORK_TIME)
+        while(timeWorked < workTime)
         {
             monitor.checkPaused();
-            Thread.sleep(WORK_TIME_INTERVALL);
-            timeWorked += WORK_TIME_INTERVALL;
+            Thread.sleep(workTimeIntervall);
+            timeWorked += workTimeIntervall;
         }
     }
 }
