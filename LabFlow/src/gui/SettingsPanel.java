@@ -16,7 +16,7 @@ public class SettingsPanel extends JPanel
     private static final int LOGO_SIZE = 300;
     private static final int BTN_DIMENTION = 30;
 
-    public SettingsPanel(Frame frame)
+    public SettingsPanel(Frame frame, LabMonitor monitor)
     {
         setLayout(new BorderLayout());
            
@@ -88,7 +88,7 @@ public class SettingsPanel extends JPanel
         maxEquipmentTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         maxEquipmentTxt.setHorizontalAlignment(JTextField.CENTER);
         maxEquipmentTxt.setMaximumSize(maxEquipmentTxt.getPreferredSize().getSize());
-        maxEquipmentTxt.setText(String.valueOf(LabMonitor.getMaxEquip()));
+        maxEquipmentTxt.setText(String.valueOf(monitor.getMaxEquip()));
 
         // ApllyBtn
         JButton applyBtn = new JButton("APPLY");
@@ -105,7 +105,7 @@ public class SettingsPanel extends JPanel
                 //  Set the values read
                 RequestTask.setWorkTime(newWorkTime);
                 RequestTask.setWorkTimeIntervall(newWorkTimeIntervall);
-                LabMonitor.setMaxEquip(newMaxEquip);
+                monitor.setMaxEquip(newMaxEquip);
 
                 JOptionPane.showMessageDialog(this, "Simulation parameters have been successfully updated", "Parameters Apllied", JOptionPane.INFORMATION_MESSAGE);
             } 
@@ -126,12 +126,12 @@ public class SettingsPanel extends JPanel
             //  Set the values to their defaul values
             RequestTask.setWorkTime(RequestTask.DEFAULT_WORK_TIME);
             RequestTask.setWorkTimeIntervall(RequestTask.DEFAULT_WORK_TIME_INTERVALL);
-            LabMonitor.setMaxEquip(LabMonitor.DEFAULT_MAX_EQUIP);
+            monitor.setMaxEquip(LabMonitor.DEFAULT_MAX_EQUIP);
 
             //  Update text in the textfields to reflect the changes
             workTimeTxt.setText(String.valueOf(RequestTask.getWorkTime()));
             workTimeIntervallTxt.setText(String.valueOf(RequestTask.getWorkTimeIntervall()));
-            maxEquipmentTxt.setText(String.valueOf(LabMonitor.getMaxEquip()));
+            maxEquipmentTxt.setText(String.valueOf(monitor.getMaxEquip()));
 
             JOptionPane.showMessageDialog(this, "Simulation parameters defaults have been restored","Defaul Parameters Applied", JOptionPane.INFORMATION_MESSAGE);
         });
