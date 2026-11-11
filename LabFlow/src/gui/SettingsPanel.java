@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import concurrent.RequestTask;
+import concurrent.LabMonitor;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -14,9 +15,6 @@ public class SettingsPanel extends JPanel
     private static final String TAB_NAME = "Settings and credits";
     private static final int LOGO_SIZE = 300;
     private static final int BTN_DIMENTION = 30;
-
-    private JTextField workTimeTxt;
-    private JTextField workTimeIntervallTxt;
 
     public SettingsPanel(Frame frame)
     {
@@ -65,23 +63,32 @@ public class SettingsPanel extends JPanel
         //  Internal margin 
         parametersPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));  
 
-        // Work time parameter
+        //  Work time parameter
         JLabel workTimeLabel = new JLabel("Work Time (ms):");
         workTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);    //  Center the label in the panel
-        workTimeTxt = new JTextField(10);
+        JTextField workTimeTxt = new JTextField(10);
         workTimeTxt.setAlignmentX(Component.CENTER_ALIGNMENT);      //  Center the text field in the panel
         workTimeTxt.setHorizontalAlignment(JTextField.CENTER);      //  Center the text in the text field
         workTimeTxt.setMaximumSize(workTimeTxt.getPreferredSize().getSize());   //  Don't allow for vertical stretching
         workTimeTxt.setText(String.valueOf(RequestTask.getWorkTime()));         //  Set the initial text to the value of the RequestTask's workTime
 
-        // Work time intervall parameter
+        //  Work time intervall parameter
         JLabel workTimeIntervallLabel = new JLabel("Work Time Intervall (ms)");
         workTimeIntervallLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        workTimeIntervallTxt = new JTextField(10);
+        JTextField workTimeIntervallTxt = new JTextField(10);
         workTimeIntervallTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         workTimeIntervallTxt.setHorizontalAlignment(JTextField.CENTER);
         workTimeIntervallTxt.setMaximumSize(workTimeIntervallTxt.getPreferredSize().getSize());
         workTimeIntervallTxt.setText(String.valueOf(RequestTask.getWorkTimeIntervall()));   
+
+        //  Max Equipment Parameter
+        JLabel maxEquipmentLabel = new JLabel("Max Equipment");
+        maxEquipmentLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JTextField maxEquipmentTxt = new JTextField(10);
+        maxEquipmentTxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        maxEquipmentTxt.setHorizontalAlignment(JTextField.CENTER);
+        maxEquipmentTxt.setMaximumSize(maxEquipmentTxt.getPreferredSize().getSize());
+        maxEquipmentTxt.setText(String.valueOf(LabMonitor.getMaxEquip()));
 
         // ApllyBtn
         JButton applyBtn = new JButton("APPLY");
@@ -93,10 +100,12 @@ public class SettingsPanel extends JPanel
                 // Read text field data and convert them as integers
                 int newWorkTime = Integer.parseInt(workTimeTxt.getText());
                 int newWorkTimeIntervall = Integer.parseInt(workTimeIntervallTxt.getText());
+                int newMaxEquip = Integer.parseInt(maxEquipmentTxt.getText());
                 
                 //  Set the values read
                 RequestTask.setWorkTime(newWorkTime);
                 RequestTask.setWorkTimeIntervall(newWorkTimeIntervall);
+                LabMonitor.setMaxEquip(newMaxEquip);
 
                 JOptionPane.showMessageDialog(this, "Simulation parameters have been successfully updated", "Parameters Apllied", JOptionPane.INFORMATION_MESSAGE);
             } 
@@ -106,7 +115,7 @@ public class SettingsPanel extends JPanel
             }
             catch(IllegalArgumentException e)
             {
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Input number is negative",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Input number not valid",JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -114,10 +123,15 @@ public class SettingsPanel extends JPanel
 
         restoreDefaultBtn.addActionListener((ActionEvent) ->
         {
+            //  Set the values to their defaul values
             RequestTask.setWorkTime(RequestTask.DEFAULT_WORK_TIME);
             RequestTask.setWorkTimeIntervall(RequestTask.DEFAULT_WORK_TIME_INTERVALL);
+            LabMonitor.setMaxEquip(LabMonitor.DEFAULT_MAX_EQUIP);
+
+            //  Update text in the textfields to reflect the changes
             workTimeTxt.setText(String.valueOf(RequestTask.getWorkTime()));
-            workTimeIntervallLabel.setText(String.valueOf(RequestTask.getWorkTimeIntervall()));
+            workTimeIntervallTxt.setText(String.valueOf(RequestTask.getWorkTimeIntervall()));
+            maxEquipmentTxt.setText(String.valueOf(LabMonitor.getMaxEquip()));
 
             JOptionPane.showMessageDialog(this, "Simulation parameters defaults have been restored","Defaul Parameters Applied", JOptionPane.INFORMATION_MESSAGE);
         });
@@ -144,8 +158,14 @@ public class SettingsPanel extends JPanel
         parametersPanel.add(Box.createRigidArea(new Dimension(0, 3)));
 
         parametersPanel.add(workTimeIntervallTxt);
+        parametersPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+
+        parametersPanel.add(maxEquipmentLabel);
+        parametersPanel.add(Box.createRigidArea(new Dimension(0, 3)));
+
+        parametersPanel.add(maxEquipmentTxt);
         parametersPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        
+
         parametersPanel.add(parametersBtnPanel);
 
         parametersPanel.add(Box.createVerticalGlue()); //   "Spring on the panel floor"
