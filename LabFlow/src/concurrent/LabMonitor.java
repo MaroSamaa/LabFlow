@@ -26,11 +26,6 @@ public class LabMonitor
      */
     public final static int DEFAULT_MAX_EQUIP = 4;
 
-    /**
-     * The maximum number of equipment that can be "stored" in the lab
-     */
-    private static volatile int maxEquip;
-
     //  Error Messages
     private final static String MSG_FULL = "ERROR: Couldn't add equipment, max number has already been reached";
     private final static String MSG_REQUEST_NOT_ACTIVE = "ERROR: The request isn't active, current request status is: ";
@@ -39,6 +34,11 @@ public class LabMonitor
     private static final String MSG_NEW_MAX_EQUIP_TOO_SMALL = "ERROR: The new value should be > 0 and has to be greater than the number of equipment currently stored";
 
     //--------INSTANCE VARIABLES--------
+
+    /**
+     * The maximum number of equipment that can be "stored" in the lab
+     */
+    private int maxEquip;
 
     /**
      * Equipment "stored" in the lab
@@ -93,6 +93,7 @@ public class LabMonitor
      * It initializes the user list as an empty arraylist of users.
      * It initializes the request list as an empty arraylist of requests.
      * It starts in a paused state.
+     * It sets the starting maxEquip value to the default value
      */
     public LabMonitor()
     {
@@ -203,6 +204,11 @@ public class LabMonitor
         return maxEquip;
     }
 
+    /**
+     * Setter method for the max equip storable in the lab
+     * @param newMaxEquip the new wanted value for maxEquip
+     * @throws IllegalArgumentException if the new value is < 0 or the new value does not have room to accomodate all the equipment now stored
+     */
     public synchronized void setMaxEquip(int newMaxEquip) throws IllegalArgumentException
     {
         //Ensure that the new value is >0 and that the new value has room for the now stored equipments
