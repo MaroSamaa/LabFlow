@@ -15,21 +15,28 @@ import concurrent.exceptions.*;
  *  The lab monitor class is the monitor for the management of the resources (Equipment) requested by threads(RequestTaks).
  *  It ensures the resources get taken only when they are available (they aren't being used by anyone), if a request for a 
  *  non available equipment is's put in queue waiting for the resource to be available.
- *  It also implements a cap on the number of equipment that can be "stored" in the lab.  
+ *  It also implements a cap on the number of equipment that can be "stored" in the lab. 
+ *  It communicates to the outside by notifying LabListeners. 
  * 
  */
 public class LabMonitor 
 {
     /**
+     * Default value for maxEquip static variable
+     */
+    public final static int DEFAULT_MAX_EQUIP = 4;
+
+    /**
      * The maximum number of equipment that can be "stored" in the lab
      */
-    private final static int MAX_EQUIP = 4;
+    private static volatile int maxEquip;
 
     //  Error Messages
     private final static String MSG_FULL = "ERROR: Couldn't add equipment, max number has already been reached";
     private final static String MSG_REQUEST_NOT_ACTIVE = "ERROR: The request isn't active, current request status is: ";
     private final static String MSG_USER_DUPLICATE = "ERROR: A user with the same code already exists";
     private final static String MSG_CODE_DUPLICATE = "ERROR: An equipment with the same code already exists";
+    private static final String MSG_NEW_MAX_EQUIP_TOO_SMALL = "ERROR: The new value should be > 0 and has to be greater than the number of equipment currently stored";
 
     //--------INSTANCE VARIABLES--------
 
@@ -89,6 +96,7 @@ public class LabMonitor
      */
     public LabMonitor()
     {
+        maxEquip = DEFAULT_MAX_EQUIP;
         equipment = new ArrayList<Equipment>();
         users = new ArrayList<User>();
         requests = new ArrayList<Request>();
@@ -190,6 +198,21 @@ public class LabMonitor
         return isPaused;
     }
 
+    public synchronized int getMaxEquip()
+    {
+        return maxEquip;
+    }
+
+    public synchronized void setMaxEquip(int newMaxEquip) throws IllegalArgumentException
+    {
+        //Ensure that the new value is >0 and that the new value has room for the now stored equipments
+        if(newMaxEquip < 0 || newMaxEquip < equipmentCounter)  
+        {
+            throw new IllegalArgumentException(MSG_NEW_MAX_EQUIP_TOO_SMALL);
+        }
+        maxEquip = newMaxEquip;
+    }
+
     /**
      * This method allows for a user to be registered to the lab
      * @param toAdd the user to be registered to the lab
@@ -218,7 +241,7 @@ public class LabMonitor
      */
     public synchronized void addEquipment(Equipment toAdd) throws EquipmentStorageFullException, DuplicateEquipmentCodeException
     {
-        if(equipmentCounter >= MAX_EQUIP)
+        if(equipmentCounter >= maxEquip)
         {
             //  Illegal State because more of MAX_EQUIP would be a "wrong" state
             throw new EquipmentStorageFullException(MSG_FULL);
