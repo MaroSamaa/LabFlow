@@ -100,12 +100,12 @@ public class RequestPanel extends JPanel implements LabListener
         JLabel panelTitle = new JLabel("REQUESTS", JLabel.CENTER);
 
         JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        userCounter = new JLabel(": "+monitor.getUserCounter());
+        userCounter = new JLabel();
         userPanel.add(userBtn);
         userPanel.add(userCounter);
         
         JPanel addRequestPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
-        activeRequestCounter = new JLabel(monitor.getActiveRequestCounter() + ":");
+        activeRequestCounter = new JLabel();
         addRequestPanel.add(activeRequestCounter);
         addRequestPanel.add(addRequestBtn);
 
