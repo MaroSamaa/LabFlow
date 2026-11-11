@@ -63,6 +63,21 @@ public class LabMonitor
      */
     private boolean isPaused;
 
+    /**
+     * Counter that contains how many users are registered to the lab
+     */
+    private int userCounter;
+
+    /**
+     * Counter that contains how many equipments are stored in the lab
+     */
+    private int equipmentCounter;
+
+    /**
+     * Counter that contains how many requests are either PENDING or ACTIVE
+     */
+    private int activeRequestCounter;
+
     //---------CONSTRUCTOR--------
 
     /**
@@ -80,6 +95,10 @@ public class LabMonitor
         listeners = new ArrayList<LabListener>();
         events = new ArrayList<String>();
         isPaused = true;    //  The monitor starts as paused
+        //  Initialize counters at 0
+        userCounter = 0;
+        equipmentCounter = 0;
+        activeRequestCounter = 0;
     }
 
     //--------ACCESSOR METHODS--------
@@ -136,6 +155,33 @@ public class LabMonitor
     }
 
     /**
+     * Getter method for the user counter
+     * @return the number of users registered to the lab
+     */
+    public synchronized int getUserCounter()
+    {
+        return userCounter;
+    }
+
+    /**
+     * Getter method for the equipment counter
+     * @return the number of equipment stored in the lab
+     */
+    public synchronized int getEquipmentCounter()
+    {
+        return equipmentCounter;
+    }
+
+    /**
+     * Getter method for the active request counter
+     * @return the number of PENDING or ACTIVE requests
+     */
+    public synchronized int getActiveRequestCounter()
+    {
+        return activeRequestCounter;
+    }
+
+    /**
      * Getter method for the state of the lab
      * @return the state of the lab
      */
@@ -159,6 +205,7 @@ public class LabMonitor
             }
         }
         users.add(toAdd);
+        userCounter++;
         //  Register the user added avent and notify all listeners
         addEvent(toAdd.toString() + " has been registered to the lab");
     }
@@ -171,7 +218,7 @@ public class LabMonitor
      */
     public synchronized void addEquipment(Equipment toAdd) throws EquipmentStorageFullException, DuplicateEquipmentCodeException
     {
-        if(equipment.size() >= MAX_EQUIP)
+        if(equipmentCounter >= MAX_EQUIP)
         {
             //  Illegal State because more of MAX_EQUIP would be a "wrong" state
             throw new EquipmentStorageFullException(MSG_FULL);
@@ -186,6 +233,7 @@ public class LabMonitor
             }
         }
         equipment.add(toAdd);
+        equipmentCounter++;
         //  Register the equipment added event and notify all listeners
         addEvent(toAdd.getType() + " ("+ toAdd.getCode() + ") added"); 
     }
@@ -197,6 +245,7 @@ public class LabMonitor
     public synchronized void addRequest(Request toAdd)
     {
         requests.add(toAdd);
+        activeRequestCounter++;
         //  Register the added request event and notify all listeners
         addEvent(toAdd.getUser().toString() + " requested: " + toAdd.getEquipmentType());
     }
@@ -258,6 +307,7 @@ public class LabMonitor
         toRelease.setStatus(EquipmentStatus.AVAILABLE);
         request.setStatus(RequestStatus.CLOSED);
 
+        activeRequestCounter--;
         //  Register the user gave back event and notify all listeners (request and equipment changed status)
         addEvent(request.getUser().toString() + " gave back: " + toRelease.getCode());
 
@@ -418,20 +468,24 @@ public class LabMonitor
             requests.addAll(loadedRequests);
             events.clear();
             events.addAll(loadedEvents);
-            
+
+            //  Restart counter from the information read
+            userCounter = loadedUsers.size();
+            equipmentCounter = loadedEquipment.size();
         }   
 
-        //  Regenerate loaded pending threads
+        //  Regenerate loaded pending threads and update activeRequestCounter
         regeneratePendingThreads();
 
         addEvent("The file has been read, the lab is now loaded and ready to resume operations");
     }
 
     /**
-     *  Service method to regenerate loaded pending threads
+     *  Service method to regenerate loaded pending threads and update activeRequestCounter after save file reading
      */
     private void regeneratePendingThreads()
     {
+        activeRequestCounter = 0;   //  Reset the counter to 0
         for(Request r : requests)
         {
             if(r.getStatus() == RequestStatus.PENDING)
@@ -440,6 +494,7 @@ public class LabMonitor
                 task.setRegenerated();  //  Skip the addRequest call
                 Thread requestThread = new Thread(task);
                 requestThread.start();
+                activeRequestCounter++;
             }
         }
     }
