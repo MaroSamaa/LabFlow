@@ -13,6 +13,7 @@ public class EquipmentPanel extends JPanel implements LabListener
     private LabMonitor monitor;
 
     private JTable equipmentTable;
+    private JLabel equipmentCounter;
 
     private DefaultTableModel tableModel;
 
@@ -47,9 +48,14 @@ public class EquipmentPanel extends JPanel implements LabListener
             equipManager.setVisible(true);
         });
 
+        JPanel addEquipmentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        equipmentCounter = new JLabel();
+        addEquipmentPanel.add(addEquipmentBtn);
+        addEquipmentPanel.add(equipmentCounter);
+
         JLabel panelTitle = new JLabel("EQUIPMENT", JLabel.CENTER);
         northPanel.add(panelTitle, BorderLayout.CENTER);
-        northPanel.add(addEquipmentBtn, BorderLayout.WEST);
+        northPanel.add(addEquipmentPanel, BorderLayout.WEST);
 
         // EquipmentPanel assembly
         add(scrollTable, BorderLayout.CENTER);
@@ -61,7 +67,7 @@ public class EquipmentPanel extends JPanel implements LabListener
     /**
      * Service method to load the table with LabMonitor equipment data
      */
-    public void updateEquipmentTable() 
+    private void updateEquipmentTable() 
     {
         tableModel.setRowCount(0);
         List<Equipment> equipment = monitor.getEquipment();
@@ -79,6 +85,14 @@ public class EquipmentPanel extends JPanel implements LabListener
     }
 
     /**
+     * Service method to update the equipment activity counter
+     */
+    private void updateEquipmentCounter()
+    {
+        equipmentCounter.setText(": " + monitor.getEquipmentCounter());
+    }
+
+    /**
      * Method to update the equipment table when the listener gets notified
      */
     @Override
@@ -88,6 +102,7 @@ public class EquipmentPanel extends JPanel implements LabListener
         SwingUtilities.invokeLater(() ->
         {
             updateEquipmentTable();
+            updateEquipmentCounter();
         });
     }
 }
