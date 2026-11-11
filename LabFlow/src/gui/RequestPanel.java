@@ -50,8 +50,8 @@ public class RequestPanel extends JPanel implements LabListener
         centerPanel.add(scrollTable);
 
         //  Buttons and actionlisteners
-        JButton userBtn = new JButton("User");
-        JButton addRequestBtn = new JButton("Add request");
+        JButton userBtn = new JButton();
+        JButton addRequestBtn = new JButton();
 
         //  Set Image for userBtn
         try 
