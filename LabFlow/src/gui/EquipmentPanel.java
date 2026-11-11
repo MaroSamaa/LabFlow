@@ -67,7 +67,7 @@ public class EquipmentPanel extends JPanel implements LabListener
             equipManager.setVisible(true);
         });
 
-        JPanel addEquipmentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        JPanel addEquipmentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
         equipmentCounter = new JLabel();
         addEquipmentPanel.add(addEquipmentBtn);
         addEquipmentPanel.add(equipmentCounter);

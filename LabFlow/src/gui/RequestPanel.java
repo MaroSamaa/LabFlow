@@ -99,12 +99,12 @@ public class RequestPanel extends JPanel implements LabListener
 
         JLabel panelTitle = new JLabel("REQUESTS", JLabel.CENTER);
 
-        JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 0));
         userCounter = new JLabel();
         userPanel.add(userBtn);
         userPanel.add(userCounter);
         
-        JPanel addRequestPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
+        JPanel addRequestPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,3,0));
         activeRequestCounter = new JLabel();
         addRequestPanel.add(activeRequestCounter);
         addRequestPanel.add(addRequestBtn);
@@ -153,7 +153,7 @@ public class RequestPanel extends JPanel implements LabListener
     private void updateActivityCounters()
     {
         userCounter.setText(": "+monitor.getUserCounter());
-        activeRequestCounter.setText(monitor.getActiveRequestCounter() + ":");
+        activeRequestCounter.setText(monitor.getActiveRequestCounter() + " :");
     }
 
     /**
