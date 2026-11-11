@@ -1,14 +1,18 @@
 package gui;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.IOException;
+
 import concurrent.*;
 import java.util.List;
 
 public class EquipmentPanel extends JPanel implements LabListener 
 {
     private final static String[] columnNames = {"Type","Code","Status"};
+    private final static int BTN_DIMENTION = 30;
 
     private LabMonitor monitor;
 
@@ -39,7 +43,22 @@ public class EquipmentPanel extends JPanel implements LabListener
 
         //  North panel assembly (addEquipmentBtn and panelTitle label)
         JPanel northPanel = new JPanel(new BorderLayout());
-        JButton addEquipmentBtn = new JButton("Add equipment");
+        JButton addEquipmentBtn = new JButton();
+
+        //  Set Image for addEquipmentBtn
+        try 
+        {
+            Image temp = ImageIO.read(getClass().getResource("/images/equipmentIcon.png"));
+            Image equipmentIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            addEquipmentBtn.setIcon(new ImageIcon(equipmentIcon));
+            addEquipmentBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+        }
+        catch (IOException e) {System.out.println(e.getStackTrace());}
+        addEquipmentBtn.setMargin(new Insets(0, 0, 0, 0));
+        addEquipmentBtn.setBorder(null);
+        addEquipmentBtn.setContentAreaFilled(false);    // Remove java swing "standard" bkg
+        addEquipmentBtn.setFocusPainted(false);         // Remove java swing "hover" border
+        addEquipmentBtn.setBorderPainted(false);        // Remove "excess" borders
 
         //  Open and visualize the EquipmentManager
         addEquipmentBtn.addActionListener((ActionEvent) ->
