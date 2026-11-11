@@ -59,7 +59,8 @@ public class RequestPanel extends JPanel implements LabListener
             Image temp = ImageIO.read(getClass().getResource("/images/userIcon.png"));
             Image userIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
             userBtn.setIcon(new ImageIcon(userIcon));
-            userBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            userBtn.setMinimumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            userBtn.setMaximumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         userBtn.setMargin(new Insets(0, 0, 0, 0));
@@ -74,7 +75,8 @@ public class RequestPanel extends JPanel implements LabListener
             Image temp = ImageIO.read(getClass().getResource("/images/requestIcon.png"));
             Image requestIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
             addRequestBtn.setIcon(new ImageIcon(requestIcon));
-            addRequestBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            addRequestBtn.setMinimumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            addRequestBtn.setMaximumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         addRequestBtn.setMargin(new Insets(0, 0, 0, 0));
