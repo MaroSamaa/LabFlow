@@ -23,6 +23,8 @@ public class RequestPanel extends JPanel implements LabListener
     private static final int BTN_DIMENTION = 30;
 
     private DefaultTableModel requestTableModel;
+    private JLabel activeRequestCounter;
+    private JLabel userCounter;
 
     private LabMonitor monitor;
 
@@ -98,12 +100,12 @@ public class RequestPanel extends JPanel implements LabListener
         JLabel panelTitle = new JLabel("REQUESTS", JLabel.CENTER);
 
         JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        JLabel userCounter = new JLabel(": "+monitor.getUserCounter());
+        userCounter = new JLabel(": "+monitor.getUserCounter());
         userPanel.add(userBtn);
         userPanel.add(userCounter);
         
         JPanel addRequestPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
-        JLabel activeRequestCounter = new JLabel(monitor.getActiveRequestCounter() + ":");
+        activeRequestCounter = new JLabel(monitor.getActiveRequestCounter() + ":");
         addRequestPanel.add(activeRequestCounter);
         addRequestPanel.add(addRequestBtn);
 
@@ -146,6 +148,15 @@ public class RequestPanel extends JPanel implements LabListener
     }
 
     /**
+     * Service method to update the activity counters (user counter and active request counter)
+     */
+    private void updateActivityCounters()
+    {
+        userCounter.setText(": "+monitor.getUserCounter());
+        activeRequestCounter.setText(monitor.getActiveRequestCounter() + ":");
+    }
+
+    /**
      * Method to update the request table when the listener gets notified
      */
     @Override 
@@ -155,6 +166,7 @@ public class RequestPanel extends JPanel implements LabListener
         SwingUtilities.invokeLater(()->
         {
             updateRequestTable();
+            updateActivityCounters();
         });
     }
 }
