@@ -31,7 +31,7 @@ public class LabMonitor
     private final static String MSG_REQUEST_NOT_ACTIVE = "ERROR: The request isn't active, current request status is: ";
     private final static String MSG_USER_DUPLICATE = "ERROR: A user with the same code already exists";
     private final static String MSG_CODE_DUPLICATE = "ERROR: An equipment with the same code already exists";
-    private static final String MSG_NEW_MAX_EQUIP_TOO_SMALL = "ERROR: The new value should be > 0 and has to be greater than the number of equipment currently stored";
+    private static final String MSG_NEW_MAX_EQUIP_TOO_SMALL = "ERROR: The new maxEquip value should be > 0 and has to be greater than the number of equipment currently stored";
 
     //--------INSTANCE VARIABLES--------
 
