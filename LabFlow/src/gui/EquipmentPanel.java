@@ -51,7 +51,8 @@ public class EquipmentPanel extends JPanel implements LabListener
             Image temp = ImageIO.read(getClass().getResource("/images/equipmentIcon.png"));
             Image equipmentIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
             addEquipmentBtn.setIcon(new ImageIcon(equipmentIcon));
-            addEquipmentBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            addEquipmentBtn.setMinimumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            addEquipmentBtn.setMaximumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         addEquipmentBtn.setMargin(new Insets(0, 0, 0, 0));
