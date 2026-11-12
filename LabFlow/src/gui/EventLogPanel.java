@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import concurrent.LabMonitor;
@@ -33,6 +34,20 @@ public class EventLogPanel extends JPanel implements LabListener
         };
 
         eventTable = new JTable(eventTableModel);
+
+        //  Set the table row size and font
+        eventTable.setRowHeight(30);
+        eventTable.getTableHeader().setFont(eventTable.getFont().deriveFont(Font.PLAIN, 13f)); //   Set font for the table header
+        eventTable.setFont(eventTable.getFont().deriveFont(Font.PLAIN, 13f));
+
+        //  Table cell renderer to center the text in the table's cells
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        for(int i = 0; i < eventTable.getColumnCount(); i++)    //  Apply the renderer to all columns
+        {
+            eventTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
         
         // (CHECK IF OK) Set the time column to a fixed width
         eventTable.getColumnModel().getColumn(0).setPreferredWidth(80);
