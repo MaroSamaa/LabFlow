@@ -19,8 +19,9 @@ import java.io.IOException;
  */
 public class RequestPanel extends JPanel implements LabListener
 {
-    private final static String[] columnNames = {"Requesting User", "Requested Equipment", "Request status"};
-    private static final int BTN_DIMENTION = 30;
+    private final static String[] columnNames = {"","Requesting User", "Requested Equipment", "Request status"};
+    private static final int BTN_SIZE = 30;
+    private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
     private DefaultTableModel requestTableModel;
     private JLabel activeRequestCounter;
@@ -46,6 +47,13 @@ public class RequestPanel extends JPanel implements LabListener
             }
         };
         JTable requestTable = new JTable(requestTableModel);
+
+        // Narrow first column (status indicator) setting
+        requestTable.getColumnModel().getColumn(0).setPreferredWidth(25);
+        requestTable.getColumnModel().getColumn(0).setMaxWidth(25);;
+        requestTable.getColumnModel().getColumn(0).setMinWidth(25);
+        requestTable.getColumnModel().getColumn(0).setResizable(false);
+
         JScrollPane scrollTable = new JScrollPane(requestTable); // Make the table scrollable
         centerPanel.add(scrollTable);
 
@@ -57,10 +65,10 @@ public class RequestPanel extends JPanel implements LabListener
         try 
         {
             Image temp = ImageIO.read(getClass().getResource("/images/userIcon.png"));
-            Image userIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            Image userIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             userBtn.setIcon(new ImageIcon(userIcon));
-            userBtn.setMinimumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
-            userBtn.setMaximumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            userBtn.setMinimumSize(BTN_DIMENSION);
+            userBtn.setMaximumSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         userBtn.setMargin(new Insets(0, 0, 0, 0));
@@ -73,10 +81,10 @@ public class RequestPanel extends JPanel implements LabListener
         try 
         {
             Image temp = ImageIO.read(getClass().getResource("/images/requestIcon.png"));
-            Image requestIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            Image requestIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             addRequestBtn.setIcon(new ImageIcon(requestIcon));
-            addRequestBtn.setMinimumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
-            addRequestBtn.setMaximumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            addRequestBtn.setMinimumSize(BTN_DIMENSION);
+            addRequestBtn.setMaximumSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         addRequestBtn.setMargin(new Insets(0, 0, 0, 0));
@@ -141,9 +149,10 @@ public class RequestPanel extends JPanel implements LabListener
         {
             String[] rowData = 
             {
-                r.getUser().toString(),      // Requesting user name
-                r.getEquipmentType(),       // Requested equipment type
-                r.getStatus().toString()    // Request status
+                statusIndicator(r.getStatus()), //  Colored dot
+                r.getUser().toString(),         //  Requesting user name
+                r.getEquipmentType(),           //  Requested equipment type
+                r.getStatus().getLabel()        //  Request status
             };
             requestTableModel.addRow(rowData);
         }
@@ -157,6 +166,26 @@ public class RequestPanel extends JPanel implements LabListener
         userCounter.setText(": "+monitor.getUserCounter());
         activeRequestCounter.setText(monitor.getActiveRequestCounter() + " :");
     }
+    
+    private String statusIndicator(RequestStatus status)
+    {
+        switch (status)
+        {
+            case RequestStatus.ACTIVE:      //  Green
+                return "<html><center><font color='#27AE60'>●</font></center></html>";
+        
+            case RequestStatus.PENDING:     //  Amber
+                return "<html><center><font color='#E6A822'>●</font></center></html>";
+
+            case RequestStatus.CLOSED:      //  Gray
+                return "<html><center><font color='#D3D3D3'>●</font></center></html>";
+
+            case RequestStatus.CANCELLED:   //  Red
+                return "<html><center><font color='#FF0000'>●</font></center></html>";
+            default:                        //  Gray
+                return "<html><center><font color='#D3D3D3'>●</font></center></html>";
+        }
+    } 
 
     /**
      * Method to update the request table when the listener gets notified

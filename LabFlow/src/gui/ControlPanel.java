@@ -12,10 +12,12 @@ import java.io.IOException;
 
 public class ControlPanel extends JPanel implements LabListener
 {
-    private static final int BTN_DIMENTION = 30;
+    private static final int BTN_SIZE = 30;
+    private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
+    private static final Dimension INDICATOR_DIMENSION = new Dimension(20,20);
 
     private LabMonitor monitor;
-    private StatusIndicator pauseIndicator;
+    private JLabel pauseIndicator;
 
     public ControlPanel(Frame frame, LabMonitor monitor)
     {
@@ -27,16 +29,22 @@ public class ControlPanel extends JPanel implements LabListener
         JButton settingsBtn = new JButton();
         JButton playBtn = new JButton();
         JButton pauseBtn = new JButton();
-        pauseIndicator = new StatusIndicator(15);
+        pauseIndicator = new JLabel("\u2022");
+        pauseIndicator.setFont(new Font(pauseIndicator.getFont().getName(), Font.PLAIN,50));
+        pauseIndicator.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pauseIndicator.setPreferredSize(INDICATOR_DIMENSION);
+        pauseIndicator.setMinimumSize(INDICATOR_DIMENSION);
+        pauseIndicator.setMaximumSize(INDICATOR_DIMENSION);
+
 
         //--------SETTING BUTTONS IMAGE ICONS--------
         //  Set Image for settingsBtn
         try 
         {
             Image temp = ImageIO.read(getClass().getResource("/images/settingsIcon.png"));
-            Image settingsIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            Image settingsIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             settingsBtn.setIcon(new ImageIcon(settingsIcon));
-            settingsBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            settingsBtn.setPreferredSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         settingsBtn.setMargin(new Insets(0, 0, 0, 0));
@@ -63,6 +71,7 @@ public class ControlPanel extends JPanel implements LabListener
         {
             Image loadIcon = ImageIO.read(getClass().getResource("/images/loadIcon.png"));
             loadBtn.setIcon(new ImageIcon(loadIcon));
+            loadBtn.setPreferredSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         loadBtn.setMargin(new Insets(0, 0, 0, 0));
@@ -75,9 +84,9 @@ public class ControlPanel extends JPanel implements LabListener
         try 
         {
             Image temp = ImageIO.read(getClass().getResource("/images/playIcon.png"));
-            Image playIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            Image playIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             playBtn.setIcon(new ImageIcon(playIcon));
-            playBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            playBtn.setPreferredSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         playBtn.setMargin(new Insets(0, 0, 0, 0));
@@ -90,9 +99,9 @@ public class ControlPanel extends JPanel implements LabListener
         try 
         {
             Image temp = ImageIO.read(getClass().getResource("/images/pauseIcon.png"));
-            Image pauseIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            Image pauseIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             pauseBtn.setIcon(new ImageIcon(pauseIcon));
-            pauseBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            pauseBtn.setPreferredSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         pauseBtn.setMargin(new Insets(0, 0, 0, 0));
@@ -214,11 +223,11 @@ public class ControlPanel extends JPanel implements LabListener
     {
         if(monitor.isPaused())
         {
-            pauseIndicator.setColor(Color.RED);
+            pauseIndicator.setForeground(Color.RED);
         }
         else
         {
-            pauseIndicator.setColor(Color.GREEN);
+            pauseIndicator.setForeground(Color.GREEN);
         }
     }
 
