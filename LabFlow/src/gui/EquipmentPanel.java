@@ -40,6 +40,13 @@ public class EquipmentPanel extends JPanel implements LabListener
         };
         
         equipmentTable = new JTable(tableModel);
+
+        // Narrow first column (status indicator) setting
+        equipmentTable.getColumnModel().getColumn(0).setPreferredWidth(25);
+        equipmentTable.getColumnModel().getColumn(0).setMaxWidth(25);;
+        equipmentTable.getColumnModel().getColumn(0).setMinWidth(25);
+        equipmentTable.getColumnModel().getColumn(0).setResizable(false);
+        
         JScrollPane scrollTable = new JScrollPane(equipmentTable);  //  Make the table scrollable  
 
         //  North panel assembly (addEquipmentBtn and panelTitle label)
