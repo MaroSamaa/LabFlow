@@ -11,7 +11,7 @@ import java.util.List;
 
 public class EquipmentPanel extends JPanel implements LabListener 
 {
-    private final static String[] columnNames = {"Type","Code","Status"};
+    private final static String[] columnNames = {"","Type","Code","Status"};
     private final static int BTN_SIZE = 35;
     private final static Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
@@ -97,13 +97,29 @@ public class EquipmentPanel extends JPanel implements LabListener
         {
             Object[] rowData = 
             {
-                e.getType(),                // Equipment type
-                e.getCode(),                // Equipment code
-                e.getStatus().getLabel()    // Equipment status
+                statusIndicator(e.getStatus()), //  Colored dot
+                e.getType(),                    // Equipment type
+                e.getCode(),                    // Equipment code
+                e.getStatus().getLabel()        // Equipment status
             };
             tableModel.addRow(rowData);
         }
     }
+
+    private String statusIndicator(EquipmentStatus status)
+    {
+        switch (status)
+        {
+            case EquipmentStatus.AVAILABLE:      //  Green
+                return "<html><center><font color='#27AE60'>●</font></center></html>";
+        
+            case EquipmentStatus.IN_USE:         //  Amber
+                return "<html><center><font color='#E6A822'>●</font></center></html>";
+
+            default:                        //  Gray
+                return "<html><center><font color='#D3D3D3'>●</font></center></html>";
+        }
+    } 
 
     /**
      * Service method to update the equipment activity counter
