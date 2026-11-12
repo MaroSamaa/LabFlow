@@ -13,7 +13,7 @@ import java.util.List;
 public class EquipmentPanel extends JPanel implements LabListener 
 {
     private final static String[] columnNames = {"","Type","Code","Status"};
-    private final static int BTN_SIZE = 35;
+    private final static int BTN_SIZE = 30;
     private final static Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
     private LabMonitor monitor;
