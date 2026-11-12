@@ -41,6 +41,11 @@ public class EquipmentPanel extends JPanel implements LabListener
         
         equipmentTable = new JTable(tableModel);
 
+        //  Set the table row size and font
+        equipmentTable.setRowHeight(30);
+        equipmentTable.getTableHeader().setFont(equipmentTable.getFont().deriveFont(Font.PLAIN, 13f)); //   Set font for the table header
+        equipmentTable.setFont(equipmentTable.getFont().deriveFont(Font.PLAIN, 13f));
+
         // Narrow first column (status indicator) setting
         equipmentTable.getColumnModel().getColumn(0).setPreferredWidth(25);
         equipmentTable.getColumnModel().getColumn(0).setMaxWidth(25);;

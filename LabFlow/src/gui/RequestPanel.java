@@ -47,7 +47,10 @@ public class RequestPanel extends JPanel implements LabListener
             }
         };
         JTable requestTable = new JTable(requestTableModel);
+
+        //  Set the table row size and font
         requestTable.setRowHeight(30);
+        requestTable.getTableHeader().setFont(requestTable.getFont().deriveFont(Font.PLAIN, 13f)); //   Set font for the table header
         requestTable.setFont(requestTable.getFont().deriveFont(Font.PLAIN, 13f));
 
         // Narrow first column (status indicator) setting
