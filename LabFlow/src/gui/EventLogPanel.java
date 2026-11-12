@@ -45,6 +45,11 @@ public class EventLogPanel extends JPanel implements LabListener
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         eventTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 
+        //  Table cell renderer to give a bit of left padding to the description column
+        DefaultTableCellRenderer paddingRenderer = new DefaultTableCellRenderer();
+        paddingRenderer.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
+        eventTable.getColumnModel().getColumn(1).setCellRenderer(paddingRenderer);
+
         
         // (CHECK IF OK) Set the time column to a fixed width
         eventTable.getColumnModel().getColumn(0).setPreferredWidth(80);
