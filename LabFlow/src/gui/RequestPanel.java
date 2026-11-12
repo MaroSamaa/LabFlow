@@ -149,10 +149,10 @@ public class RequestPanel extends JPanel implements LabListener
         {
             String[] rowData = 
             {
-                statusIndicator(r.getStatus()),
-                r.getUser().toString(),     // Requesting user name
-                r.getEquipmentType(),       // Requested equipment type
-                r.getStatus().toString()    // Request status
+                statusIndicator(r.getStatus()), //  Colored dot
+                r.getUser().toString(),         //  Requesting user name
+                r.getEquipmentType(),           //  Requested equipment type
+                r.getStatus().getLabel()        //  Request status
             };
             requestTableModel.addRow(rowData);
         }
