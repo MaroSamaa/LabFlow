@@ -25,6 +25,7 @@ public class RequestPanel extends JPanel implements LabListener
     private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
     private DefaultTableModel requestTableModel;
+    private JTable requestTable;
     private JLabel activeRequestCounter;
     private JLabel userCounter;
 
@@ -46,7 +47,7 @@ public class RequestPanel extends JPanel implements LabListener
                 return false; 
             }
         };
-        JTable requestTable = new JTable(requestTableModel);
+        requestTable = new JTable(requestTableModel);
 
         //  Set the table row size and font
         requestTable.setRowHeight(30);
@@ -168,6 +169,13 @@ public class RequestPanel extends JPanel implements LabListener
                 r.getStatus().getLabel()        //  Request status
             };
             requestTableModel.addRow(rowData);
+        }
+
+        // Auto-scroll down to see the latest row added
+        if (requestTable.getRowCount() > 0) 
+        {
+            int lastRow = requestTable.getRowCount() - 1;
+            requestTable.scrollRectToVisible(requestTable.getCellRect(lastRow, 0, true));
         }
     }
 

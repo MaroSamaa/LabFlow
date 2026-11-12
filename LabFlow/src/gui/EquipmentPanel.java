@@ -126,6 +126,13 @@ public class EquipmentPanel extends JPanel implements LabListener
             };
             tableModel.addRow(rowData);
         }
+
+        // Auto-scroll down to see the latest row added
+        if (equipmentTable.getRowCount() > 0) 
+        {
+            int lastRow = equipmentTable.getRowCount() - 1;
+            equipmentTable.scrollRectToVisible(equipmentTable.getCellRect(lastRow, 0, true));
+        }
     }
 
     private String statusIndicator(EquipmentStatus status)
