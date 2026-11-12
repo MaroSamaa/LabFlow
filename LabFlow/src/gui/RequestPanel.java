@@ -35,8 +35,7 @@ public class RequestPanel extends JPanel implements LabListener
         this.monitor = monitor;
         setLayout(new BorderLayout());
 
-        //  Assembly of the center panel
-        JPanel centerPanel = new JPanel();
+        //  Assembly of the center panel (request table)
 
         // Create the table model and don't allow direct modification 
         requestTableModel = new DefaultTableModel(columnNames, 0) 
@@ -70,7 +69,6 @@ public class RequestPanel extends JPanel implements LabListener
         requestTable.getColumnModel().getColumn(0).setResizable(false);
 
         JScrollPane scrollTable = new JScrollPane(requestTable); // Make the table scrollable
-        centerPanel.add(scrollTable);
 
         //  Buttons and actionlisteners
         JButton userBtn = new JButton();
@@ -143,7 +141,7 @@ public class RequestPanel extends JPanel implements LabListener
 
         //  Assembly of the request panel
         add(northPanel, BorderLayout.NORTH);
-        add(centerPanel, BorderLayout.CENTER);
+        add(scrollTable, BorderLayout.CENTER);
 
         this.monitor.addLabListener(this);
     }
