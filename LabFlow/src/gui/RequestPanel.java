@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class RequestPanel extends JPanel implements LabListener
 {
-    private final static String[] columnNames = {"Requesting User", "Requested Equipment", "Request status"};
+    private final static String[] columnNames = {"","Requesting User", "Requested Equipment", "Request status"};
     private static final int BTN_SIZE = 30;
     private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
@@ -47,6 +47,13 @@ public class RequestPanel extends JPanel implements LabListener
             }
         };
         JTable requestTable = new JTable(requestTableModel);
+
+        // Narrow first column (status indicator) setting
+        requestTable.getColumnModel().getColumn(0).setPreferredWidth(25);
+        requestTable.getColumnModel().getColumn(0).setMaxWidth(25);;
+        requestTable.getColumnModel().getColumn(0).setMinWidth(25);
+        requestTable.getColumnModel().getColumn(0).setResizable(false);
+
         JScrollPane scrollTable = new JScrollPane(requestTable); // Make the table scrollable
         centerPanel.add(scrollTable);
 
@@ -134,6 +141,8 @@ public class RequestPanel extends JPanel implements LabListener
         // Reset to blank table
         requestTableModel.setRowCount(0);
 
+        JLabel statusIndicator = new JLabel();
+
         // Get the request list from the LabMonitor
         List<Request> requests = monitor.getRequests();
 
@@ -142,9 +151,10 @@ public class RequestPanel extends JPanel implements LabListener
         {
             String[] rowData = 
             {
-                r.getUser().toString(),      // Requesting user name
+                "\u2022",
+                r.getUser().toString(),     // Requesting user name
                 r.getEquipmentType(),       // Requested equipment type
-                r.getStatus().getLabel()    // Request status
+                r.getStatus().toString()    // Request status
             };
             requestTableModel.addRow(rowData);
         }
