@@ -12,7 +12,8 @@ import java.io.IOException;
 
 public class ControlPanel extends JPanel implements LabListener
 {
-    private static final int BTN_DIMENTION = 30;
+    private static final int BTN_SIZE = 30;
+    private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
     private static final Dimension INDICATOR_DIMENSION = new Dimension(20,20);
 
     private LabMonitor monitor;
@@ -41,9 +42,9 @@ public class ControlPanel extends JPanel implements LabListener
         try 
         {
             Image temp = ImageIO.read(getClass().getResource("/images/settingsIcon.png"));
-            Image settingsIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            Image settingsIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             settingsBtn.setIcon(new ImageIcon(settingsIcon));
-            settingsBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            settingsBtn.setPreferredSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         settingsBtn.setMargin(new Insets(0, 0, 0, 0));
@@ -70,6 +71,7 @@ public class ControlPanel extends JPanel implements LabListener
         {
             Image loadIcon = ImageIO.read(getClass().getResource("/images/loadIcon.png"));
             loadBtn.setIcon(new ImageIcon(loadIcon));
+            loadBtn.setPreferredSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         loadBtn.setMargin(new Insets(0, 0, 0, 0));
@@ -82,9 +84,9 @@ public class ControlPanel extends JPanel implements LabListener
         try 
         {
             Image temp = ImageIO.read(getClass().getResource("/images/playIcon.png"));
-            Image playIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            Image playIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             playBtn.setIcon(new ImageIcon(playIcon));
-            playBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            playBtn.setPreferredSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         playBtn.setMargin(new Insets(0, 0, 0, 0));
@@ -97,9 +99,9 @@ public class ControlPanel extends JPanel implements LabListener
         try 
         {
             Image temp = ImageIO.read(getClass().getResource("/images/pauseIcon.png"));
-            Image pauseIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            Image pauseIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             pauseBtn.setIcon(new ImageIcon(pauseIcon));
-            pauseBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            pauseBtn.setPreferredSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         pauseBtn.setMargin(new Insets(0, 0, 0, 0));

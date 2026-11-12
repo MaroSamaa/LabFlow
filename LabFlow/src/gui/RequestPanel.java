@@ -20,7 +20,8 @@ import java.io.IOException;
 public class RequestPanel extends JPanel implements LabListener
 {
     private final static String[] columnNames = {"Requesting User", "Requested Equipment", "Request status"};
-    private static final int BTN_DIMENTION = 30;
+    private static final int BTN_SIZE = 30;
+    private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
     private DefaultTableModel requestTableModel;
     private JLabel activeRequestCounter;
@@ -57,10 +58,10 @@ public class RequestPanel extends JPanel implements LabListener
         try 
         {
             Image temp = ImageIO.read(getClass().getResource("/images/userIcon.png"));
-            Image userIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            Image userIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             userBtn.setIcon(new ImageIcon(userIcon));
-            userBtn.setMinimumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
-            userBtn.setMaximumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            userBtn.setMinimumSize(BTN_DIMENSION);
+            userBtn.setMaximumSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         userBtn.setMargin(new Insets(0, 0, 0, 0));
@@ -73,10 +74,10 @@ public class RequestPanel extends JPanel implements LabListener
         try 
         {
             Image temp = ImageIO.read(getClass().getResource("/images/requestIcon.png"));
-            Image requestIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            Image requestIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             addRequestBtn.setIcon(new ImageIcon(requestIcon));
-            addRequestBtn.setMinimumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
-            addRequestBtn.setMaximumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            addRequestBtn.setMinimumSize(BTN_DIMENSION);
+            addRequestBtn.setMaximumSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         addRequestBtn.setMargin(new Insets(0, 0, 0, 0));

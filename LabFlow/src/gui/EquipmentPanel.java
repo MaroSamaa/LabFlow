@@ -12,7 +12,8 @@ import java.util.List;
 public class EquipmentPanel extends JPanel implements LabListener 
 {
     private final static String[] columnNames = {"Type","Code","Status"};
-    private final static int BTN_DIMENTION = 35;
+    private final static int BTN_SIZE = 35;
+    private final static Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
     private LabMonitor monitor;
 
@@ -49,10 +50,10 @@ public class EquipmentPanel extends JPanel implements LabListener
         try 
         {
             Image temp = ImageIO.read(getClass().getResource("/images/equipmentIcon.png"));
-            Image equipmentIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            Image equipmentIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             addEquipmentBtn.setIcon(new ImageIcon(equipmentIcon));
-            addEquipmentBtn.setMinimumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
-            addEquipmentBtn.setMaximumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            addEquipmentBtn.setMinimumSize(BTN_DIMENSION);
+            addEquipmentBtn.setMaximumSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         addEquipmentBtn.setMargin(new Insets(0, 0, 0, 0));

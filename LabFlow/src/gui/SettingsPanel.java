@@ -14,7 +14,8 @@ public class SettingsPanel extends JPanel
 {
     private static final String TAB_NAME = "Settings and credits";
     private static final int LOGO_SIZE = 300;
-    private static final int BTN_DIMENTION = 30;
+    private static final int BTN_SIZE = 30;
+    private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
     public SettingsPanel(Frame frame, LabMonitor monitor)
     {
@@ -27,9 +28,9 @@ public class SettingsPanel extends JPanel
         try 
         {
             Image temp = ImageIO.read(getClass().getResource("/images/backIcon.png"));
-            Image settingsIcon = temp.getScaledInstance(BTN_DIMENTION, BTN_DIMENTION, Image.SCALE_SMOOTH);
+            Image settingsIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             backBtn.setIcon(new ImageIcon(settingsIcon));
-            backBtn.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+            backBtn.setPreferredSize(BTN_DIMENSION);
         }
         catch (IOException e) {System.out.println(e.getStackTrace());}
         backBtn.setMargin(new Insets(0, 0, 0, 0));
