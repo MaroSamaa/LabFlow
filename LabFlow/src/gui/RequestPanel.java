@@ -144,7 +144,7 @@ public class RequestPanel extends JPanel implements LabListener
             {
                 r.getUser().toString(),      // Requesting user name
                 r.getEquipmentType(),       // Requested equipment type
-                r.getStatus().toString()    // Request status
+                r.getStatus().getLabel()    // Request status
             };
             requestTableModel.addRow(rowData);
         }

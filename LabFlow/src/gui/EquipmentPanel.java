@@ -97,9 +97,9 @@ public class EquipmentPanel extends JPanel implements LabListener
         {
             Object[] rowData = 
             {
-                e.getType(),   // Equipment type
-                e.getCode(),   // Equipment code
-                e.getStatus()  // Equipment status
+                e.getType(),                // Equipment type
+                e.getCode(),                // Equipment code
+                e.getStatus().getLabel()    // Equipment status
             };
             tableModel.addRow(rowData);
         }
