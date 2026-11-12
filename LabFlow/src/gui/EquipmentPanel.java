@@ -2,6 +2,7 @@ package gui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.IOException;
@@ -45,6 +46,15 @@ public class EquipmentPanel extends JPanel implements LabListener
         equipmentTable.setRowHeight(30);
         equipmentTable.getTableHeader().setFont(equipmentTable.getFont().deriveFont(Font.PLAIN, 13f)); //   Set font for the table header
         equipmentTable.setFont(equipmentTable.getFont().deriveFont(Font.PLAIN, 13f));
+
+        //  Table cell renderer to center the text in the table's cells
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        for(int i = 0; i < equipmentTable.getColumnCount(); i++)    //  Apply the renderer to all columns
+        {
+            equipmentTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
 
         // Narrow first column (status indicator) setting
         equipmentTable.getColumnModel().getColumn(0).setPreferredWidth(25);
