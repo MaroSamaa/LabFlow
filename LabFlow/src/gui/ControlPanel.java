@@ -15,7 +15,7 @@ public class ControlPanel extends JPanel implements LabListener
     private static final int BTN_DIMENTION = 30;
 
     private LabMonitor monitor;
-    private StatusIndicator pauseIndicator;
+    private JLabel pauseIndicator;
 
     public ControlPanel(Frame frame, LabMonitor monitor)
     {
@@ -27,7 +27,13 @@ public class ControlPanel extends JPanel implements LabListener
         JButton settingsBtn = new JButton();
         JButton playBtn = new JButton();
         JButton pauseBtn = new JButton();
-        pauseIndicator = new StatusIndicator(15);
+        pauseIndicator = new JLabel("\u2022");
+        pauseIndicator.setFont(new Font(pauseIndicator.getFont().getName(), Font.PLAIN,50));
+        pauseIndicator.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pauseIndicator.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+        pauseIndicator.setMinimumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+        pauseIndicator.setMaximumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+
 
         //--------SETTING BUTTONS IMAGE ICONS--------
         //  Set Image for settingsBtn
@@ -214,11 +220,11 @@ public class ControlPanel extends JPanel implements LabListener
     {
         if(monitor.isPaused())
         {
-            pauseIndicator.setColor(Color.RED);
+            pauseIndicator.setForeground(Color.RED);
         }
         else
         {
-            pauseIndicator.setColor(Color.GREEN);
+            pauseIndicator.setForeground(Color.GREEN);
         }
     }
 
