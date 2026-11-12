@@ -4,6 +4,7 @@ import concurrent.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.awt.*;
@@ -52,6 +53,15 @@ public class RequestPanel extends JPanel implements LabListener
         requestTable.setRowHeight(30);
         requestTable.getTableHeader().setFont(requestTable.getFont().deriveFont(Font.PLAIN, 13f)); //   Set font for the table header
         requestTable.setFont(requestTable.getFont().deriveFont(Font.PLAIN, 13f));
+
+        //  Table cell renderer to center the text in the table's cells
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        for(int i = 0; i < requestTable.getColumnCount(); i++)    //  Apply the renderer to all columns
+        {
+            requestTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
 
         // Narrow first column (status indicator) setting
         requestTable.getColumnModel().getColumn(0).setPreferredWidth(25);
