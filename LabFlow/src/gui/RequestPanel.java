@@ -141,8 +141,6 @@ public class RequestPanel extends JPanel implements LabListener
         // Reset to blank table
         requestTableModel.setRowCount(0);
 
-        JLabel statusIndicator = new JLabel();
-
         // Get the request list from the LabMonitor
         List<Request> requests = monitor.getRequests();
 
@@ -151,7 +149,7 @@ public class RequestPanel extends JPanel implements LabListener
         {
             String[] rowData = 
             {
-                "\u2022",
+                statusIndicator(r.getStatus()),
                 r.getUser().toString(),     // Requesting user name
                 r.getEquipmentType(),       // Requested equipment type
                 r.getStatus().toString()    // Request status
@@ -168,6 +166,26 @@ public class RequestPanel extends JPanel implements LabListener
         userCounter.setText(": "+monitor.getUserCounter());
         activeRequestCounter.setText(monitor.getActiveRequestCounter() + " :");
     }
+    
+    private String statusIndicator(RequestStatus status)
+    {
+        switch (status)
+        {
+            case RequestStatus.ACTIVE:      //  Green
+                return "<html><center><font color='#27AE60'>●</font></center></html>";
+        
+            case RequestStatus.PENDING:     //  Amber
+                return "<html><center><font color='#E6A822'>●</font></center></html>";
+
+            case RequestStatus.CLOSED:      //  Gray
+                return "<html><center><font color='#D3D3D3'>●</font></center></html>";
+
+            case RequestStatus.CANCELLED:   //  Red
+                return "<html><center><font color='#FF0000'>●</font></center></html>";
+            default:                        //  Gray
+                return "<html><center><font color='#D3D3D3'>●</font></center></html>";
+        }
+    } 
 
     /**
      * Method to update the request table when the listener gets notified
