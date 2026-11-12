@@ -13,6 +13,7 @@ import java.io.IOException;
 public class ControlPanel extends JPanel implements LabListener
 {
     private static final int BTN_DIMENTION = 30;
+    private static final Dimension INDICATOR_DIMENSION = new Dimension(20,20);
 
     private LabMonitor monitor;
     private JLabel pauseIndicator;
@@ -30,9 +31,9 @@ public class ControlPanel extends JPanel implements LabListener
         pauseIndicator = new JLabel("\u2022");
         pauseIndicator.setFont(new Font(pauseIndicator.getFont().getName(), Font.PLAIN,50));
         pauseIndicator.setAlignmentX(Component.CENTER_ALIGNMENT);
-        pauseIndicator.setPreferredSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
-        pauseIndicator.setMinimumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
-        pauseIndicator.setMaximumSize(new Dimension(BTN_DIMENTION,BTN_DIMENTION));
+        pauseIndicator.setPreferredSize(INDICATOR_DIMENSION);
+        pauseIndicator.setMinimumSize(INDICATOR_DIMENSION);
+        pauseIndicator.setMaximumSize(INDICATOR_DIMENSION);
 
 
         //--------SETTING BUTTONS IMAGE ICONS--------
