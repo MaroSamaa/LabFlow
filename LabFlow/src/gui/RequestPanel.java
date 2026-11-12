@@ -47,6 +47,8 @@ public class RequestPanel extends JPanel implements LabListener
             }
         };
         JTable requestTable = new JTable(requestTableModel);
+        requestTable.setRowHeight(30);
+        requestTable.setFont(requestTable.getFont().deriveFont(Font.PLAIN, 13f));
 
         // Narrow first column (status indicator) setting
         requestTable.getColumnModel().getColumn(0).setPreferredWidth(25);
