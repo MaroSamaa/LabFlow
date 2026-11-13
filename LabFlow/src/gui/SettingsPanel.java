@@ -24,7 +24,7 @@ public class SettingsPanel extends JPanel
     private static final String MSG_DEFAULT_PARAMETERS_RESTORED = "Simulation parameters defaults have been restored";
 
     //--------CONSTANTS--------
-    private static final String TAB_NAME = "Settings and credits";
+    private static final String TAB_NAME = "Settings and Credits";
 
     /**
      * Logo size constant
@@ -80,6 +80,7 @@ public class SettingsPanel extends JPanel
  
         //----Tab Name----
         JLabel tabLabel = new JLabel(TAB_NAME);
+        tabLabel.setFont(tabLabel.getFont().deriveFont(Font.BOLD));
         tabLabel.setHorizontalAlignment(JLabel.CENTER);
         tabLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
