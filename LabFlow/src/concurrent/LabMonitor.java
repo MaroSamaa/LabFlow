@@ -227,16 +227,18 @@ public class LabMonitor
      */
     public synchronized void addUser(User toAdd) throws DuplicateUserCodeException
     {
-        for(User u : users) //Make sure there is no user with the same user code
+        //Make sure there is no user with the same user code
+        for(User u : users)
         {
             if(u.getCode().equalsIgnoreCase(toAdd.getCode()))
             {
                 throw new DuplicateUserCodeException(MSG_USER_DUPLICATE);
             }
         }
+
+        //  Register the user added avent and notify all listeners
         users.add(toAdd);
         userCounter++;
-        //  Register the user added avent and notify all listeners
         addEvent(toAdd.toString() + " has been registered to the lab");
     }
 
@@ -248,9 +250,9 @@ public class LabMonitor
      */
     public synchronized void addEquipment(Equipment toAdd) throws EquipmentStorageFullException, DuplicateEquipmentCodeException
     {
+        //  Check if the storage isn't full 
         if(equipmentCounter >= maxEquip)
         {
-            //  Illegal State because more of MAX_EQUIP would be a "wrong" state
             throw new EquipmentStorageFullException(MSG_FULL);
         }
 
@@ -262,9 +264,10 @@ public class LabMonitor
                 throw new DuplicateEquipmentCodeException(MSG_CODE_DUPLICATE);
             }
         }
+
+        //  Register the equipment added event and notify all listeners
         equipment.add(toAdd);
         equipmentCounter++;
-        //  Register the equipment added event and notify all listeners
         addEvent(toAdd.getType() + " ("+ toAdd.getCode() + ") added"); 
     }
 
@@ -274,9 +277,9 @@ public class LabMonitor
      */
     public synchronized void addRequest(Request toAdd)
     {
+        //  Register the added request event and notify all listeners
         requests.add(toAdd);
         activeRequestCounter++;
-        //  Register the added request event and notify all listeners
         addEvent(toAdd.getUser().toString() + " requested: " + toAdd.getEquipmentType());
     }
 
@@ -333,12 +336,11 @@ public class LabMonitor
             throw new IllegalStateException(MSG_REQUEST_NOT_ACTIVE + request.getStatus());
         }
 
+        //  Register the user gave back event and notify all listeners (request and equipment changed status)
         Equipment toRelease = request.getRequestedEquipment();
         toRelease.setStatus(EquipmentStatus.AVAILABLE);
         request.setStatus(RequestStatus.CLOSED);
-
         activeRequestCounter--;
-        //  Register the user gave back event and notify all listeners (request and equipment changed status)
         addEvent(request.getUser().toString() + " gave back: " + toRelease.getCode());
 
         notifyAll();    //Notify all waiting threads the fastest to awake gets the equipment 
@@ -369,10 +371,9 @@ public class LabMonitor
             requestedEquipment = findAvailableEquipment(request.getEquipmentType());  //  when awaken retry the search 
         }
 
+        //  Register the user obtained event and notify all listeners (request and equipment changed status)
         requestedEquipment.setStatus(EquipmentStatus.IN_USE);
         request.setStatus(RequestStatus.ACTIVE);
-
-        //  Register the user obtained event and notify all listeners (request and equipment changed status)
         addEvent(request.getUser().toString() + " obtained: " + requestedEquipment.getCode()); 
 
         request.setRequestedEquipment(requestedEquipment);
@@ -504,7 +505,7 @@ public class LabMonitor
             equipmentCounter = loadedEquipment.size();
         }   
 
-        //  Regenerate loaded pending threads and update activeRequestCounter
+        //  Regenerate loaded PENDING threads and update activeRequestCounter
         regeneratePendingThreads();
 
         addEvent("The file has been read, the lab is now loaded and ready to resume operations");
