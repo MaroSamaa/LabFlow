@@ -176,6 +176,7 @@ public class SettingsPanel extends JPanel
         parametersBtnPanel.add(applyBtn);
 
         JLabel parametersPanelTitle = new JLabel("Simulation Parameters");
+        parametersPanelTitle.setFont(parametersPanelTitle.getFont().deriveFont(Font.BOLD));
         parametersPanelTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //  Assembly of the parameters panel
@@ -211,12 +212,14 @@ public class SettingsPanel extends JPanel
 
         // Credits labels
         JLabel authorsTitleLabel = new JLabel("Authors");
+        authorsTitleLabel.setFont(authorsTitleLabel.getFont().deriveFont(Font.BOLD));
         authorsTitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel groupLabel = new JLabel("The Beauty And The Beast");
         groupLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel contributorsLabel = new JLabel("Contributors");
+        contributorsLabel.setFont(contributorsLabel.getFont().deriveFont(Font.BOLD));
         contributorsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel contributor1Label = new JLabel("Marini Enrico");
