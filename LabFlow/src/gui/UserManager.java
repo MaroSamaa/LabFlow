@@ -164,5 +164,12 @@ public class UserManager extends JDialog
             String[] rowData = {u.getName(), u.getCode()};
             userTableModel.addRow(rowData);
         }
+
+        // Auto-scroll down to see the latest row added
+        if (userTable.getRowCount() > 0) 
+        {
+            int lastRow = userTable.getRowCount() - 1;
+            userTable.scrollRectToVisible(userTable.getCellRect(lastRow, 0, true));
+        }
     }
 }
