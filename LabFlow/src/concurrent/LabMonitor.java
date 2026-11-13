@@ -17,6 +17,7 @@ import concurrent.exceptions.*;
  *  non available equipment is's put in queue waiting for the resource to be available.
  *  It also implements a cap on the number of equipment that can be "stored" in the lab. 
  *  It communicates to the outside by notifying LabListeners. 
+ *  It implements save and load features for it's state.
  * 
  */
 public class LabMonitor 
@@ -26,7 +27,7 @@ public class LabMonitor
      */
     public final static int DEFAULT_MAX_EQUIP = 4;
 
-    //  Error Messages
+    //---------Error Messages---------
     private final static String MSG_FULL = "ERROR: Couldn't add equipment, max number has already been reached";
     private final static String MSG_REQUEST_NOT_ACTIVE = "ERROR: The request isn't active, current request status is: ";
     private final static String MSG_USER_DUPLICATE = "ERROR: A user with the same code already exists";

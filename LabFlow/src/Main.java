@@ -5,6 +5,11 @@ import javax.swing.UIManager;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+/**
+ * Main class of the project, contains the main method.
+ * Also set's UIManager global preferences.
+ * @author Marini Enrico
+ */
 public class Main 
 {
     public static void main(String[] args)
