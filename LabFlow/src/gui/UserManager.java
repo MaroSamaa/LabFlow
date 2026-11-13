@@ -4,7 +4,6 @@ import concurrent.*;
 import concurrent.exceptions.DuplicateUserCodeException;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.List;
 
@@ -75,6 +74,9 @@ public class UserManager extends JDialog
 
         JTextField newUserName = new JTextField(20);
         JTextField newUserCode = new JTextField(20);
+
+        newUserName.setHorizontalAlignment(JTextField.CENTER);
+        newUserCode.setHorizontalAlignment(JTextField.CENTER);
         
         inputPanel.add(new JLabel("New User Name:"));
         inputPanel.add(newUserName);
