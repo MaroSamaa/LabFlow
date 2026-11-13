@@ -30,7 +30,7 @@ public class ControlPanel extends JPanel implements LabListener
         JButton playBtn = new JButton();
         JButton pauseBtn = new JButton();
         pauseIndicator = new JLabel("\u2022");
-        pauseIndicator.setFont(new Font(pauseIndicator.getFont().getName(), Font.PLAIN,50));
+        pauseIndicator.setFont(new Font(pauseIndicator.getFont().getName(), Font.PLAIN,35));
         pauseIndicator.setAlignmentX(Component.CENTER_ALIGNMENT);
         pauseIndicator.setPreferredSize(INDICATOR_DIMENSION);
         pauseIndicator.setMinimumSize(INDICATOR_DIMENSION);

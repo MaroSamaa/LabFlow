@@ -4,6 +4,7 @@ import concurrent.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.awt.*;
@@ -24,6 +25,7 @@ public class RequestPanel extends JPanel implements LabListener
     private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
     private DefaultTableModel requestTableModel;
+    private JTable requestTable;
     private JLabel activeRequestCounter;
     private JLabel userCounter;
 
@@ -34,8 +36,7 @@ public class RequestPanel extends JPanel implements LabListener
         this.monitor = monitor;
         setLayout(new BorderLayout());
 
-        //  Assembly of the center panel
-        JPanel centerPanel = new JPanel();
+        //  Assembly of the center panel (request table)
 
         // Create the table model and don't allow direct modification 
         requestTableModel = new DefaultTableModel(columnNames, 0) 
@@ -46,7 +47,21 @@ public class RequestPanel extends JPanel implements LabListener
                 return false; 
             }
         };
-        JTable requestTable = new JTable(requestTableModel);
+        requestTable = new JTable(requestTableModel);
+
+        //  Set the table row size and font
+        requestTable.setRowHeight(30);
+        requestTable.getTableHeader().setFont(requestTable.getFont().deriveFont(Font.PLAIN, 13f)); //   Set font for the table header
+        requestTable.setFont(requestTable.getFont().deriveFont(Font.PLAIN, 13f));
+
+        //  Table cell renderer to center the text in the table's cells
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        for(int i = 0; i < requestTable.getColumnCount(); i++)    //  Apply the renderer to all columns
+        {
+            requestTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
 
         // Narrow first column (status indicator) setting
         requestTable.getColumnModel().getColumn(0).setPreferredWidth(25);
@@ -55,7 +70,6 @@ public class RequestPanel extends JPanel implements LabListener
         requestTable.getColumnModel().getColumn(0).setResizable(false);
 
         JScrollPane scrollTable = new JScrollPane(requestTable); // Make the table scrollable
-        centerPanel.add(scrollTable);
 
         //  Buttons and actionlisteners
         JButton userBtn = new JButton();
@@ -128,7 +142,7 @@ public class RequestPanel extends JPanel implements LabListener
 
         //  Assembly of the request panel
         add(northPanel, BorderLayout.NORTH);
-        add(centerPanel, BorderLayout.CENTER);
+        add(scrollTable, BorderLayout.CENTER);
 
         this.monitor.addLabListener(this);
     }
@@ -155,6 +169,13 @@ public class RequestPanel extends JPanel implements LabListener
                 r.getStatus().getLabel()        //  Request status
             };
             requestTableModel.addRow(rowData);
+        }
+
+        // Auto-scroll down to see the latest row added
+        if (requestTable.getRowCount() > 0) 
+        {
+            int lastRow = requestTable.getRowCount() - 1;
+            requestTable.scrollRectToVisible(requestTable.getCellRect(lastRow, 0, true));
         }
     }
 

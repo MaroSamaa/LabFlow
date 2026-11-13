@@ -2,6 +2,7 @@ package gui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.util.List;
 public class EquipmentPanel extends JPanel implements LabListener 
 {
     private final static String[] columnNames = {"","Type","Code","Status"};
-    private final static int BTN_SIZE = 35;
+    private final static int BTN_SIZE = 30;
     private final static Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
     private LabMonitor monitor;
@@ -40,6 +41,20 @@ public class EquipmentPanel extends JPanel implements LabListener
         };
         
         equipmentTable = new JTable(tableModel);
+
+        //  Set the table row size and font
+        equipmentTable.setRowHeight(30);
+        equipmentTable.getTableHeader().setFont(equipmentTable.getFont().deriveFont(Font.PLAIN, 13f)); //   Set font for the table header
+        equipmentTable.setFont(equipmentTable.getFont().deriveFont(Font.PLAIN, 13f));
+
+        //  Table cell renderer to center the text in the table's cells
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        for(int i = 0; i < equipmentTable.getColumnCount(); i++)    //  Apply the renderer to all columns
+        {
+            equipmentTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
 
         // Narrow first column (status indicator) setting
         equipmentTable.getColumnModel().getColumn(0).setPreferredWidth(25);
@@ -110,6 +125,13 @@ public class EquipmentPanel extends JPanel implements LabListener
                 e.getStatus().getLabel()        // Equipment status
             };
             tableModel.addRow(rowData);
+        }
+
+        // Auto-scroll down to see the latest row added
+        if (equipmentTable.getRowCount() > 0) 
+        {
+            int lastRow = equipmentTable.getRowCount() - 1;
+            equipmentTable.scrollRectToVisible(equipmentTable.getCellRect(lastRow, 0, true));
         }
     }
 

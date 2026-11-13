@@ -33,8 +33,17 @@ public class Frame extends JFrame
 
         lm.first(parentPanel);
         add(parentPanel);
+
+        //  Set starting frame size as 50% of the screens width and 60% of the screens height
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int windowWidth = (int) (screenSize.getWidth() * 0.5);
+        int windowHeight = (int) (screenSize.getHeight() * 0.6);
+        setSize(windowWidth,windowHeight);
+
+        //  Open the frame at the center of the screen
+        setLocationRelativeTo(null);
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //End program when frame gets closed
-        pack();
         setVisible(true);
     }
 
