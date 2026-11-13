@@ -76,7 +76,7 @@ public class EventLogPanel extends JPanel implements LabListener
         JScrollPane scrollTable = new JScrollPane(eventTable);
         
         //--------PANEL TITLE--------
-        JLabel panelTitle = new JLabel("EVENT LOG", JLabel.LEFT);
+        JLabel panelTitle = new JLabel("EVENT LOG", JLabel.CENTER);
         panelTitle.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         //--------ASSEMBLY OF THE EVENT PANEL--------
