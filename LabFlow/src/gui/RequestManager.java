@@ -5,11 +5,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Dialog that lets the user create new requests.
+ * @author Visone Sara
+ */
 public class RequestManager extends JDialog 
 {
     private JComboBox<User> userCombo;
     private JComboBox<String> equipmentCombo;
 
+    /**
+     * Constructor for the RequestManager
+     * @param parent the parent frame
+     * @param monitor the referenced LabMonitor
+     */
     public RequestManager(Frame parent, LabMonitor monitor) 
     {
 
@@ -76,6 +85,10 @@ public class RequestManager extends JDialog
        
     }
 
+    /**
+     * Service method to load the monitor's data about users and equipment types
+     * @param monitor the LabMonitor to load the data from
+     */
     private void loadMonitorData(LabMonitor monitor) 
     {
         // Load lab user list
@@ -104,6 +117,5 @@ public class RequestManager extends JDialog
                 equipmentCombo.addItem(e.getType());
             }
         }
-
     }
 }

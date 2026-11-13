@@ -6,10 +6,15 @@ import concurrent.LabMonitor;
 
 import java.awt.*;
 
+/**
+ * Frame of the GUI.
+ * It starts with a size calculated on the computer's screen size.
+ * It has two "cards", one for the main view and one for the settings.
+ * @author Visone Sara
+ */
 public class Frame extends JFrame
 {
     private JPanel parentPanel; 
-
     private JPanel mainViewPanel;
     private JPanel settingsPanel;
 
@@ -17,13 +22,10 @@ public class Frame extends JFrame
 
     public Frame(LabMonitor monitor)
     {
-        super("LabFlow");   //Set title of the JFrame to LabFlow
+        super("LabFlow");
 
         parentPanel = new JPanel();
         parentPanel.setLayout(lm);
-
-        //setSize(1500,500);     //To set a fixed window starting size
-        //setResizable(false);   //To set the window to not be resizable (if the extention of tables continues)
         
         settingsPanel = new SettingsPanel(this,monitor);
         mainViewPanel = new MainViewPanel(this,monitor);
@@ -40,19 +42,24 @@ public class Frame extends JFrame
         int windowHeight = (int) (screenSize.getHeight() * 0.6);
         setSize(windowWidth,windowHeight);
 
-        //  Open the frame at the center of the screen
-        setLocationRelativeTo(null);
-
+        setLocationRelativeTo(null);                    //  Open the frame at the center of the screen
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //End program when frame gets closed
         setVisible(true);
     }
 
     //  "CARD SWITCH" METHODS
+
+    /**
+     * Switch the view to the settings panel
+     */
     public void showSettings()
     {
         lm.show(parentPanel, "SETTINGS");
     }
 
+    /**
+     * Switch the view to the main view panel
+     */
     public void showMainView()
     {
         lm.show(parentPanel, "MAIN");

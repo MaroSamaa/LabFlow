@@ -6,8 +6,19 @@ import concurrent.LabMonitor;
 
 import java.awt.*;
 
+/**
+ * Panel with the main view of the program.
+ * From here the user can see the EventLogPanel, RequestPanel, 
+ * EquipmentPanel and ControlPanel.
+ * @author Visone Sara
+ */ 
 public class MainViewPanel extends JPanel
 {
+    /**
+     * Constructor method for the MainViewPanel
+     * @param frame the parent frame
+     * @param monitor the referenced LabMonitor
+     */
     public MainViewPanel(Frame frame, LabMonitor monitor)
     {
         setLayout(new BorderLayout());
@@ -19,6 +30,7 @@ public class MainViewPanel extends JPanel
         southPanel.setLayout(new BorderLayout());
 
         //--------ASSEMBLY OF THE SUPPORT PANELS--------
+        
         //  Center panel with equipment and requests / user panel
         centerPanel.add(new EquipmentPanel(frame,monitor));
         centerPanel.add(new RequestPanel(frame, monitor));

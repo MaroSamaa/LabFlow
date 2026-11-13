@@ -11,26 +11,45 @@ import java.awt.*;
 import java.io.IOException;
 
 /**
- * @author Visone Sara
  * JPanel to show all the requests made in the session.
  * It implements LabListener to auto update the request table whenever
  * a change in the LabMonitor happens.
  * It also has two buttons, one to open the UserManager Dialog
  * and one to open the RequestManager dialog.
+ * @author Visone Sara
  */
 public class RequestPanel extends JPanel implements LabListener
 {
+    /**
+     * Column names for the request table
+     */
     private final static String[] columnNames = {"","Requesting User", "Requested Equipment", "Request status"};
+
+    /**
+     * Button size constant
+     */
     private static final int BTN_SIZE = 30;
+
+    /**
+     * Button dimension constant
+     */
     private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
+
+    /**
+     * The referenced LabMonitor
+     */
+    private LabMonitor monitor;
 
     private DefaultTableModel requestTableModel;
     private JTable requestTable;
     private JLabel activeRequestCounter;
     private JLabel userCounter;
 
-    private LabMonitor monitor;
-
+    /**
+     * Constructor for the RequestPanel
+     * @param frame the parent frame
+     * @param monitor the referenced LabMonitor
+     */
     public RequestPanel(Frame frame, LabMonitor monitor)
     {
         this.monitor = monitor;
@@ -188,6 +207,11 @@ public class RequestPanel extends JPanel implements LabListener
         activeRequestCounter.setText(monitor.getActiveRequestCounter() + " :");
     }
     
+    /**
+     * Service method to update a status indicator
+     * @param status the request's status
+     * @return html string with a unicode dot of the color matching the request's status
+     */
     private String statusIndicator(RequestStatus status)
     {
         switch (status)
@@ -209,7 +233,7 @@ public class RequestPanel extends JPanel implements LabListener
     } 
 
     /**
-     * Method to update the request table when the listener gets notified
+     * Method to update the request table and activity counter when the listener gets notified
      */
     @Override 
     public void onLabStateChange()

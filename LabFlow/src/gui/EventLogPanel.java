@@ -10,14 +10,30 @@ import concurrent.LabListener;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Panel that shows the user a table containing event log messages.
+ * It's a table with 2 columns, one for the timestamp and one for the event's
+ * description given by the LabMonitor.
+ * @author Visone Sara
+ */
 public class EventLogPanel extends JPanel implements LabListener 
 {
+    /**
+     * Column names for the event log table
+     */
     private final static String[] columnNames = {"Time", "Event"};
 
+    /**
+     * The referenced LabMonitor
+     */
     private LabMonitor monitor;
     private DefaultTableModel eventTableModel;
     private JTable eventTable; 
 
+    /**
+     * Constructor for the EventLogPanel
+     * @param monitor the referenced LabMonitor
+     */
     public EventLogPanel(LabMonitor monitor) 
     {
         this.monitor = monitor;
@@ -62,6 +78,9 @@ public class EventLogPanel extends JPanel implements LabListener
         this.monitor.addLabListener(this); 
     }
 
+    /**
+     * Service method to update the eventTable
+     */
     private void updateEventLog() 
     {
         eventTableModel.setRowCount(0); // Reset to blank table
@@ -83,6 +102,9 @@ public class EventLogPanel extends JPanel implements LabListener
         }
     }
 
+    /**
+     * Method to update the event log table when the listener gets notified
+     */
     @Override
     public void onLabStateChange()
     {

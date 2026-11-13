@@ -22,11 +22,6 @@ public class UserManager extends JDialog
     private DefaultListModel<String> listModel;
 
     /**
-     * Textfield where the name of the new user gets written
-     */
-   // private JTextField newUserName;
-
-    /**
      * Constructor method for the UserManager Class
      * @param parent the parent frame of the JDialog
      * @param monitor the referenced LabMonitor
