@@ -22,13 +22,15 @@ public class Main
         {
             UIManager.setLookAndFeel(new FlatLightLaf());       //  Set L&F to flatlaf (Light theme)
 
+            //  Buttons Ui Preferences
+            UIManager.put("Button.arc", 10);                                 // Give all buttons rounded corners
+            UIManager.put("Button.background", new Color(243, 238, 255));   // Button background color
+
+            //  Tables Ui Preferences
             UIManager.put("Table.showHorizontalLines", true);   // Enable table's horizontal lines globally
             UIManager.put("Table.showVerticalLines", true);     // Enable table's vertical lines globally
-
             UIManager.put("TableHeader.background", new Color(243, 238, 255));  //  Table header color
-
-            // Reinstate spacing for the table cells to give roomm for the lines
-            UIManager.put("Table.intercellSpacing", new Dimension(1, 1));  
+            UIManager.put("Table.intercellSpacing", new Dimension(1, 1)); // Reinstate spacing for the table cells to give roomm for the lines  
         } 
         catch (Exception e) 
         {

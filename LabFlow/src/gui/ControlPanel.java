@@ -93,8 +93,10 @@ public class ControlPanel extends JPanel implements LabListener
         //  Set Image for saveBtn
         try 
         {
-            Image saveIcon = ImageIO.read(getClass().getResource("/images/saveIcon.png"));
+            Image temp = ImageIO.read(getClass().getResource("/images/saveIcon.png"));
+            Image saveIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             saveBtn.setIcon(new ImageIcon(saveIcon));
+            saveBtn.setPreferredSize(BTN_DIMENSION);
         }
         catch(IOException e) {System.out.println(e.getStackTrace());}
         saveBtn.setMargin(new Insets(0, 0, 0, 0));
@@ -106,7 +108,8 @@ public class ControlPanel extends JPanel implements LabListener
         //  Set Image for loadBtn
         try 
         {
-            Image loadIcon = ImageIO.read(getClass().getResource("/images/loadIcon.png"));
+            Image temp = ImageIO.read(getClass().getResource("/images/loadIcon.png"));
+            Image loadIcon = temp.getScaledInstance(BTN_SIZE, BTN_SIZE, Image.SCALE_SMOOTH);
             loadBtn.setIcon(new ImageIcon(loadIcon));
             loadBtn.setPreferredSize(BTN_DIMENSION);
         }

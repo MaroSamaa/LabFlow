@@ -24,7 +24,7 @@ public class SettingsPanel extends JPanel
     private static final String MSG_DEFAULT_PARAMETERS_RESTORED = "Simulation parameters defaults have been restored";
 
     //--------CONSTANTS--------
-    private static final String TAB_NAME = "Settings and credits";
+    private static final String TAB_NAME = "Settings and Credits";
 
     /**
      * Logo size constant
@@ -80,6 +80,7 @@ public class SettingsPanel extends JPanel
  
         //----Tab Name----
         JLabel tabLabel = new JLabel(TAB_NAME);
+        tabLabel.setFont(tabLabel.getFont().deriveFont(Font.BOLD));
         tabLabel.setHorizontalAlignment(JLabel.CENTER);
         tabLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -176,6 +177,7 @@ public class SettingsPanel extends JPanel
         parametersBtnPanel.add(applyBtn);
 
         JLabel parametersPanelTitle = new JLabel("Simulation Parameters");
+        parametersPanelTitle.setFont(parametersPanelTitle.getFont().deriveFont(Font.BOLD));
         parametersPanelTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //  Assembly of the parameters panel
@@ -211,12 +213,14 @@ public class SettingsPanel extends JPanel
 
         // Credits labels
         JLabel authorsTitleLabel = new JLabel("Authors");
+        authorsTitleLabel.setFont(authorsTitleLabel.getFont().deriveFont(Font.BOLD));
         authorsTitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel groupLabel = new JLabel("The Beauty And The Beast");
         groupLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel contributorsLabel = new JLabel("Contributors");
+        contributorsLabel.setFont(contributorsLabel.getFont().deriveFont(Font.BOLD));
         contributorsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel contributor1Label = new JLabel("Marini Enrico");

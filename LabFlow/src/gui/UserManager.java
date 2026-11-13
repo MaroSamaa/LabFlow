@@ -4,7 +4,9 @@ import concurrent.*;
 import concurrent.exceptions.DuplicateUserCodeException;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 import java.util.List;
 
@@ -20,12 +22,13 @@ public class UserManager extends JDialog
 
     private static final String MSG_INPUT_WARNING = "Input all of the necessary data";
 
+    //--------CONSTANTS--------
+    private static final String[] columnNames = {"User Name", "User Code"};
+
     //--------INSTANCE VARIABLES--------
 
-    /**
-     * Written list of all users in the lab
-     */
-    private DefaultListModel<String> listModel;
+    private DefaultTableModel userTableModel;
+    private JTable userTable; 
 
     //--------CONSTRUCTOR--------
 
@@ -44,12 +47,42 @@ public class UserManager extends JDialog
 
         //--------CENTER PANEL(User list)--------
 
-        listModel = new DefaultListModel<>();
+        JPanel centerPanel = new JPanel(new BorderLayout());
+
+        // Create the table model and don't allow direct modification 
+        userTableModel = new DefaultTableModel(columnNames, 0) 
+        {
+            @Override
+            public boolean isCellEditable(int row, int column) 
+            {
+                return false; 
+            }
+        };
+        userTable = new JTable(userTableModel);
+
+        //  Set the table row size and font
+        userTable.setRowHeight(30);
+        userTable.getTableHeader().setFont(userTable.getFont().deriveFont(Font.PLAIN, 13f)); //   Set font for the table header
+        userTable.setFont(userTable.getFont().deriveFont(Font.PLAIN, 13f));
+
+        //  Table cell renderer to center the text in the table's cells
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        for(int i = 0; i < userTable.getColumnCount(); i++)    //  Apply the renderer to all columns
+        {
+            userTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        JScrollPane scrollableUserTable = new JScrollPane(userTable);   //  Make the table scrollable
+
         updateList(monitor);    //  Load initial data from monitor
 
-        //  Make the list scrollable 
-        JList<String> userList = new JList<>(listModel);
-        JScrollPane scrollableUserList = new JScrollPane(userList);
+        JLabel userListTitle = new JLabel("Registered Users", JLabel.CENTER);
+        userListTitle.setFont(userListTitle.getFont().deriveFont(Font.BOLD));
+
+        centerPanel.add(scrollableUserTable,BorderLayout.CENTER);
+        centerPanel.add(userListTitle,BorderLayout.NORTH);
 
         
         //--------SOUTH PANEL(Textfield inputs)--------
@@ -60,12 +93,16 @@ public class UserManager extends JDialog
         JPanel inputPanel = new JPanel(new GridLayout(2, 2, 10, 15));
 
         //  Title of the south panel
-        TitledBorder panelTitle = new TitledBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20),"New user creation");
-        panelTitle.setTitleJustification(TitledBorder.CENTER);
-        southPanel.setBorder(panelTitle);
+        JLabel panelTitle = new JLabel("New User Creation", JLabel.CENTER);
+        panelTitle.setFont(panelTitle.getFont().deriveFont(Font.BOLD));
+
+        southPanel.add(panelTitle,BorderLayout.NORTH);
 
         JTextField newUserName = new JTextField(20);
         JTextField newUserCode = new JTextField(20);
+
+        newUserName.setHorizontalAlignment(JTextField.CENTER);
+        newUserCode.setHorizontalAlignment(JTextField.CENTER);
         
         inputPanel.add(new JLabel("New User Name:"));
         inputPanel.add(newUserName);
@@ -109,22 +146,30 @@ public class UserManager extends JDialog
 
 
         //  Assembly of the UserManager
-        add(scrollableUserList, BorderLayout.CENTER);
+        add(centerPanel, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
     }
 
     /**
-     * Service method to update the written user list
+     * Service method to update the user table
      * @param monitor the referenced LabMonitor
      */
     private void updateList(LabMonitor monitor) 
     {
-        listModel.clear();  //Reset the list
-        listModel.addElement("LAB USERS:");
+        userTableModel.setRowCount(0);  // Reset to blank table
         List<User> users = monitor.getUsers();
+    
         for (User u : users) 
         {
-            listModel.addElement(u.toString());
+            String[] rowData = {u.getName(), u.getCode()};
+            userTableModel.addRow(rowData);
+        }
+
+        // Auto-scroll down to see the latest row added
+        if (userTable.getRowCount() > 0) 
+        {
+            int lastRow = userTable.getRowCount() - 1;
+            userTable.scrollRectToVisible(userTable.getCellRect(lastRow, 0, true));
         }
     }
 }
