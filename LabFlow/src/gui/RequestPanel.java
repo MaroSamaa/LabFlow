@@ -11,32 +11,56 @@ import java.awt.*;
 import java.io.IOException;
 
 /**
- * @author Visone Sara
  * JPanel to show all the requests made in the session.
  * It implements LabListener to auto update the request table whenever
  * a change in the LabMonitor happens.
  * It also has two buttons, one to open the UserManager Dialog
  * and one to open the RequestManager dialog.
+ * @author Visone Sara
  */
 public class RequestPanel extends JPanel implements LabListener
 {
+    //--------CONSTANTS--------
+
+    /**
+     * Column names for the request table
+     */
     private final static String[] columnNames = {"","Requesting User", "Requested Equipment", "Request status"};
+
+    /**
+     * Button size constant
+     */
     private static final int BTN_SIZE = 30;
+
+    /**
+     * Button dimension constant
+     */
     private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
+    //--------INSTANCE VARIABLES--------
+
+    /**
+     * The referenced LabMonitor
+     */
+    private LabMonitor monitor;
     private DefaultTableModel requestTableModel;
     private JTable requestTable;
     private JLabel activeRequestCounter;
     private JLabel userCounter;
 
-    private LabMonitor monitor;
+    //--------CONSTRUCTOR--------
 
+    /**
+     * Constructor for the RequestPanel
+     * @param frame the parent frame
+     * @param monitor the referenced LabMonitor
+     */
     public RequestPanel(Frame frame, LabMonitor monitor)
     {
         this.monitor = monitor;
         setLayout(new BorderLayout());
 
-        //  Assembly of the center panel (request table)
+        //--------CENTER PANEL(request table)--------
 
         // Create the table model and don't allow direct modification 
         requestTableModel = new DefaultTableModel(columnNames, 0) 
@@ -71,9 +95,12 @@ public class RequestPanel extends JPanel implements LabListener
 
         JScrollPane scrollTable = new JScrollPane(requestTable); // Make the table scrollable
 
-        //  Buttons and actionlisteners
+        //--------BUTTONS--------
+
         JButton userBtn = new JButton();
         JButton addRequestBtn = new JButton();
+
+        //----Set Icons----
 
         //  Set Image for userBtn
         try 
@@ -107,6 +134,8 @@ public class RequestPanel extends JPanel implements LabListener
         addRequestBtn.setFocusPainted(false);         
         addRequestBtn.setBorderPainted(false);        
 
+        //----Action listeners----
+
         //  Open and visualize UserManager 
         userBtn.addActionListener((ActionEvent) ->
         {
@@ -121,6 +150,9 @@ public class RequestPanel extends JPanel implements LabListener
             reqManager.setVisible(true);
         });
 
+        //--------NORTH PANEL(User manager and Request manager btns)--------
+        JPanel northPanel = new JPanel();
+
         JLabel panelTitle = new JLabel("REQUESTS", JLabel.CENTER);
 
         JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 0));
@@ -133,14 +165,12 @@ public class RequestPanel extends JPanel implements LabListener
         addRequestPanel.add(activeRequestCounter);
         addRequestPanel.add(addRequestBtn);
 
-        //  Assembly of the northPanel
-        JPanel northPanel = new JPanel();
         northPanel.setLayout(new BorderLayout());
         northPanel.add(userPanel, BorderLayout.WEST);
         northPanel.add(panelTitle, BorderLayout.CENTER);
         northPanel.add(addRequestPanel, BorderLayout.EAST);
 
-        //  Assembly of the request panel
+        //--------ASSEMBLY OF THE REQUEST PANEL--------
         add(northPanel, BorderLayout.NORTH);
         add(scrollTable, BorderLayout.CENTER);
 
@@ -188,6 +218,11 @@ public class RequestPanel extends JPanel implements LabListener
         activeRequestCounter.setText(monitor.getActiveRequestCounter() + " :");
     }
     
+    /**
+     * Service method to update a status indicator
+     * @param status the request's status
+     * @return html string with a unicode dot of the color matching the request's status
+     */
     private String statusIndicator(RequestStatus status)
     {
         switch (status)
@@ -209,7 +244,7 @@ public class RequestPanel extends JPanel implements LabListener
     } 
 
     /**
-     * Method to update the request table when the listener gets notified
+     * Method to update the request table and activity counter when the listener gets notified
      */
     @Override 
     public void onLabStateChange()

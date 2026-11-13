@@ -5,11 +5,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Dialog that lets the user create new requests.
+ * @author Visone Sara
+ */
 public class RequestManager extends JDialog 
 {
+    //--------INSTANCE VARIABLES--------
+
     private JComboBox<User> userCombo;
     private JComboBox<String> equipmentCombo;
 
+    //--------CONSTRUCTOR--------
+    
+    /**
+     * Constructor for the RequestManager
+     * @param parent the parent frame
+     * @param monitor the referenced LabMonitor
+     */
     public RequestManager(Frame parent, LabMonitor monitor) 
     {
 
@@ -19,7 +32,8 @@ public class RequestManager extends JDialog
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout());
 
-        // Center Panel (drop down menus with labels)
+        //--------CENTER PANEL(Drop down inputs)--------
+
         JPanel selectorPanel = new JPanel(new GridLayout(2, 2, 10, 15));
         selectorPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
 
@@ -29,13 +43,13 @@ public class RequestManager extends JDialog
         // Populate the drop down menus
         loadMonitorData(monitor);
 
-        //  Assembly of the selector panel
         selectorPanel.add(new JLabel("Requesting User:"));
         selectorPanel.add(userCombo);
         selectorPanel.add(new JLabel("Wanted Equipment:"));
         selectorPanel.add(equipmentCombo);
 
-        //  SouthPanel (add request btn)
+        //---------SOUTH PANEL(add request btn)--------
+
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton addRequestBtn = new JButton("Insert new request");
 
@@ -48,34 +62,34 @@ public class RequestManager extends JDialog
             // Check if selection is not null
             if (selectedUser == null || selectedEquipmentType == null) 
             {
-                //  Warning popup if one of the selector was empty
                 JOptionPane.showMessageDialog(this, "Select a user and an equipment", "Selection Warning", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
+            //  Create the new requestTask thread and start it
             Request newRequest = new Request(selectedUser, selectedEquipmentType);
-
             RequestTask task = new RequestTask(newRequest, monitor);
-
             Thread requestThread = new Thread(task);
             requestThread.start();
 
             // Confirmation popup and dialog closure
             JOptionPane.showMessageDialog(this, selectedUser.toString()+ " has successfully made a request!", "Request Confirmation", JOptionPane.INFORMATION_MESSAGE);
-                
             dispose(); // Close the confirmation popup and the request manager
-
         });
 
         southPanel.add(addRequestBtn);
 
-        //  Assembly of the Request Manager
+        //--------ASSEMBLY OF THE REQUEST MANAGER--------
         add(selectorPanel, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
 
        
     }
 
+    /**
+     * Service method to load the monitor's data about users and equipment types
+     * @param monitor the LabMonitor to load the data from
+     */
     private void loadMonitorData(LabMonitor monitor) 
     {
         // Load lab user list
@@ -104,6 +118,5 @@ public class RequestManager extends JDialog
                 equipmentCombo.addItem(e.getType());
             }
         }
-
     }
 }

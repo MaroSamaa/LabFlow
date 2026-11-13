@@ -10,34 +10,71 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ *  Panel with buttons to control the program
+ *  @author Visone Sara
+ */
 public class ControlPanel extends JPanel implements LabListener
 {
+    //---------MESSAGES--------
+
+    private static final String MSG_ERROR_IN_SELECTED_FILE = "Make sure to select a previously saved file\n";
+    private static final String MSG_ERROR_DURING_LOAD = "Error during file reading:\n";
+    private static final String MSG_LAB_STATE_LOADED = "The state of the lab has been successfully loaded";
+    private static final String MSG_UNSAVED_DATA_WARNING = "All unsaved data will be lost, are you sure you want to proceed?";
+    private static final String MSG_ERROR_DURING_SAVE = "Error during save file writing:\n";
+    private static final String MSG_LAB_STATE_SAVED = "The state of the lab has been saved";
+    private static final String MSG_ACTIVE_REQUESTS_WARNING = "There are ACTIVE requests in the lab, these won't be saved to the save file.";
+
+    //--------CONSTANTS--------
+
+    /**
+     * Button size constant
+     */
     private static final int BTN_SIZE = 30;
+
+    /**
+     * Button dimension constant
+     */
     private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
+
+    /**
+     * Indicator dimension constant
+     */
     private static final Dimension INDICATOR_DIMENSION = new Dimension(20,20);
 
+    //--------INSTANCE VARIABLES--------
+
+    /**
+     * The referenced LabMonitor
+     */
     private LabMonitor monitor;
+
     private JLabel pauseIndicator;
 
+    //--------CONSTRUCTOR--------
+
+    /**
+     * Constructor for the ControlPanel
+     * @param frame the parent frame
+     * @param monitor the referenced LabMonitor
+     */
     public ControlPanel(Frame frame, LabMonitor monitor)
     {
         this.monitor = monitor;
         setLayout(new BorderLayout());
 
+        //--------BUTTONS--------
+
+        //  Initialization 
         JButton saveBtn = new JButton();
         JButton loadBtn = new JButton();
         JButton settingsBtn = new JButton();
         JButton playBtn = new JButton();
         JButton pauseBtn = new JButton();
-        pauseIndicator = new JLabel("\u2022");
-        pauseIndicator.setFont(new Font(pauseIndicator.getFont().getName(), Font.PLAIN,35));
-        pauseIndicator.setAlignmentX(Component.CENTER_ALIGNMENT);
-        pauseIndicator.setPreferredSize(INDICATOR_DIMENSION);
-        pauseIndicator.setMinimumSize(INDICATOR_DIMENSION);
-        pauseIndicator.setMaximumSize(INDICATOR_DIMENSION);
 
+        //----Setting icons----
 
-        //--------SETTING BUTTONS IMAGE ICONS--------
         //  Set Image for settingsBtn
         try 
         {
@@ -46,7 +83,7 @@ public class ControlPanel extends JPanel implements LabListener
             settingsBtn.setIcon(new ImageIcon(settingsIcon));
             settingsBtn.setPreferredSize(BTN_DIMENSION);
         }
-        catch (IOException e) {System.out.println(e.getStackTrace());}
+        catch(IOException e) {System.out.println(e.getStackTrace());}
         settingsBtn.setMargin(new Insets(0, 0, 0, 0));
         settingsBtn.setBorder(null);
         settingsBtn.setContentAreaFilled(false);    // Remove java swing "standard" bkg
@@ -59,7 +96,7 @@ public class ControlPanel extends JPanel implements LabListener
             Image saveIcon = ImageIO.read(getClass().getResource("/images/saveIcon.png"));
             saveBtn.setIcon(new ImageIcon(saveIcon));
         }
-        catch (IOException e) {System.out.println(e.getStackTrace());}
+        catch(IOException e) {System.out.println(e.getStackTrace());}
         saveBtn.setMargin(new Insets(0, 0, 0, 0));
         saveBtn.setBorder(null);
         saveBtn.setContentAreaFilled(false);    
@@ -110,21 +147,21 @@ public class ControlPanel extends JPanel implements LabListener
         pauseBtn.setFocusPainted(false);         
         pauseBtn.setBorderPainted(false);        
 
-        //--------ADD ACTION LISTENERS TO BUTTONS--------
+        //----Adding action listeners----
 
         //  On save btn press prompt the user to select a file and write the monitor's information (@author Marini Enrico)
         saveBtn.addActionListener((ActionEvent) ->
         {
-            if(this.monitor.hasActiveRequests()) //If the monitor has active requests warn the user that they won't be saved
+            //  If the monitor has active requests warn the user that they won't be saved
+            if(this.monitor.hasActiveRequests()) 
             {
-                JOptionPane.showMessageDialog(frame,"There are ACTIVE requests in the lab, these won't be saved to the save file.","Active requests won't be saved",JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(frame, MSG_ACTIVE_REQUESTS_WARNING,"Active requests won't be saved",JOptionPane.WARNING_MESSAGE);
             }
+
             //  Show the user a File Chooser with a custom title
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save Lab State");
-
-            //  Center the file chooser to the frame
-            int userSelection = fileChooser.showSaveDialog(frame);
+            int userSelection = fileChooser.showSaveDialog(frame);  //  Center the file chooser to the frame
         
             if(userSelection == JFileChooser.APPROVE_OPTION) 
             {
@@ -132,38 +169,32 @@ public class ControlPanel extends JPanel implements LabListener
                 
                 try 
                 {
-                    // Chiamata al metodo del monitor che usa il try-with-resources
+                    // Tell the monitor to write the file with it's state
                     this.monitor.saveLabState(file);
                     
-                    JOptionPane.showMessageDialog(frame,"The state of the lab has been saved","Save File Confirmation",JOptionPane.INFORMATION_MESSAGE);
-                        
+                    JOptionPane.showMessageDialog(frame, MSG_LAB_STATE_SAVED,"Save File Confirmation",JOptionPane.INFORMATION_MESSAGE); 
                 } 
-                catch (IOException e) {JOptionPane.showMessageDialog(frame,"Error during save file writing:\n" + e.getMessage(),"Save File Error",JOptionPane.ERROR_MESSAGE);}
+                catch(IOException e){JOptionPane.showMessageDialog(frame, MSG_ERROR_DURING_SAVE + e.getMessage(),"Save File Error",JOptionPane.ERROR_MESSAGE);}
             }
         });
 
         //  On load btn press prompt the user to select a file and load the data into the monitor (@author Marini Enrico)
         loadBtn.addActionListener((ActionEvent) ->
         {
-
-            //  If there is information that get's potentially overritten make the user choose
+            //  If there is information that get's potentially overritten make the user choose to continue or not
             if(!this.monitor.getEvents().isEmpty())
             {
-                int userChoice = JOptionPane.showConfirmDialog(frame, "All unsaved data will be lost, are you sure you want to proceed?", "Overwrite Confirmation",JOptionPane.YES_NO_OPTION);
+                int userChoice = JOptionPane.showConfirmDialog(frame, MSG_UNSAVED_DATA_WARNING, "Overwrite Confirmation",JOptionPane.YES_NO_OPTION);
                 if(userChoice == JOptionPane.NO_OPTION)
                 {
                     return;
                 }
             }
 
-            //  If no data is present or the user chose to continue and overwrite
-
             //  Show the user a File Chooser with a custom title
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Load Lab State");
-    
-            //  Center the file chooser to the frame
-            int userSelection = fileChooser.showOpenDialog(frame);
+            int userSelection = fileChooser.showOpenDialog(frame);  //  Center the file chooser to the frame
     
             if (userSelection == JFileChooser.APPROVE_OPTION) 
             {
@@ -171,14 +202,13 @@ public class ControlPanel extends JPanel implements LabListener
                 
                 try 
                 {
-                    // Chiamata al metodo del monitor
+                    // Tell the monitor to read the state from the file
                     this.monitor.loadLabState(file);
                     
-                    JOptionPane.showMessageDialog(frame,"The state of the lab has been successfully loaded","Load File Confirmation",JOptionPane.INFORMATION_MESSAGE);
-                        
+                    JOptionPane.showMessageDialog(frame,MSG_LAB_STATE_LOADED,"Load File Confirmation",JOptionPane.INFORMATION_MESSAGE);
                 } 
-                catch (IOException e){JOptionPane.showMessageDialog(frame,"Error during file reading:\n" + e.getMessage(),"Loading Error",JOptionPane.ERROR_MESSAGE);}
-                catch(ClassNotFoundException e){JOptionPane.showMessageDialog(frame,"Make sure to select a previously saved file\n" + e.getMessage(),"File Selection Error",JOptionPane.ERROR_MESSAGE);}
+                catch(IOException e){JOptionPane.showMessageDialog(frame, MSG_ERROR_DURING_LOAD + e.getMessage(),"Loading Error",JOptionPane.ERROR_MESSAGE);}
+                catch(ClassNotFoundException e){JOptionPane.showMessageDialog(frame,MSG_ERROR_IN_SELECTED_FILE + e.getMessage(),"File Selection Error",JOptionPane.ERROR_MESSAGE);}
             }
         });
 
@@ -188,20 +218,34 @@ public class ControlPanel extends JPanel implements LabListener
             frame.showSettings();
         });
 
+        //  On play btn push tell the monitor to play
         playBtn.addActionListener((ActionEvent) ->
         {
             this.monitor.play();
         });
 
+        //  On pause btn push tell the monitor to pause
         pauseBtn.addActionListener((ActionEvent) ->
         {
             this.monitor.pause();
         });
 
+        //--------PAUSE INDICATOR--------
+
+        //  Initialization
+        pauseIndicator = new JLabel("\u2022");  // Unicode dot
+
+        //  Size and font setting
+        pauseIndicator.setFont(new Font(pauseIndicator.getFont().getName(), Font.PLAIN,35));
+        pauseIndicator.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pauseIndicator.setPreferredSize(INDICATOR_DIMENSION);
+        pauseIndicator.setMinimumSize(INDICATOR_DIMENSION);
+        pauseIndicator.setMaximumSize(INDICATOR_DIMENSION);
 
         //--------ASSEMBLY OF THE CONTROL PANEL--------
 
-        add(settingsBtn, BorderLayout.WEST);    //put the settingsBtn to the left
+        //  Put the settingsBtn to the left
+        add(settingsBtn, BorderLayout.WEST);    
 
         //  Put the Save and Load Buttons together to the right
         JPanel saveAndLoadPanel = new JPanel();
@@ -216,9 +260,12 @@ public class ControlPanel extends JPanel implements LabListener
         playAndPausePanel.add(pauseBtn);
         add(playAndPausePanel, BorderLayout.CENTER);
 
-        this.monitor.addLabListener(this);
+        this.monitor.addLabListener(this);  //  Register listener to the LabMonitor
     }
 
+    /**
+     * Service method to update the color of the pause indicator
+     */
     public void updatePauseIndicator()
     {
         if(monitor.isPaused())

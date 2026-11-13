@@ -10,18 +10,42 @@ import concurrent.LabListener;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Panel that shows the user a table containing event log messages.
+ * It's a table with 2 columns, one for the timestamp and one for the event's
+ * description given by the LabMonitor.
+ * @author Visone Sara
+ */
 public class EventLogPanel extends JPanel implements LabListener 
 {
+    //--------CONSTANTS--------
+
+    /**
+     * Column names for the event log table
+     */
     private final static String[] columnNames = {"Time", "Event"};
 
+    //--------INSTANCE VARIABLES--------
+
+    /**
+     * The referenced LabMonitor
+     */
     private LabMonitor monitor;
     private DefaultTableModel eventTableModel;
     private JTable eventTable; 
 
+    //--------CONSTRUCTOR--------
+
+    /**
+     * Constructor for the EventLogPanel
+     * @param monitor the referenced LabMonitor
+     */
     public EventLogPanel(LabMonitor monitor) 
     {
         this.monitor = monitor;
         setLayout(new BorderLayout());
+
+        //--------EVENT TABLE CREATION AND SETTINGS--------
 
         // Create the table model and don't allow direct modification 
         eventTableModel = new DefaultTableModel(columnNames, 0) 
@@ -45,23 +69,26 @@ public class EventLogPanel extends JPanel implements LabListener
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         eventTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
     
-        // (CHECK IF OK) Set the time column to a fixed width
+        //  Set the time column to a fixed width
         eventTable.getColumnModel().getColumn(0).setPreferredWidth(80);
         eventTable.getColumnModel().getColumn(0).setMaxWidth(100);
 
         JScrollPane scrollTable = new JScrollPane(eventTable);
         
-        // Panel title
+        //--------PANEL TITLE--------
         JLabel panelTitle = new JLabel("EVENT LOG", JLabel.LEFT);
         panelTitle.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        //  EventLogPanel assembly
+        //--------ASSEMBLY OF THE EVENT PANEL--------
         add(panelTitle, BorderLayout.NORTH);
         add(scrollTable, BorderLayout.CENTER);
 
         this.monitor.addLabListener(this); 
     }
 
+    /**
+     * Service method to update the eventTable
+     */
     private void updateEventLog() 
     {
         eventTableModel.setRowCount(0); // Reset to blank table
@@ -83,6 +110,9 @@ public class EventLogPanel extends JPanel implements LabListener
         }
     }
 
+    /**
+     * Method to update the event log table when the listener gets notified
+     */
     @Override
     public void onLabStateChange()
     {

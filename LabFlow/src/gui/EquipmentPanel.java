@@ -10,25 +10,54 @@ import java.io.IOException;
 import concurrent.*;
 import java.util.List;
 
+/**
+ * Panel that shows a table with the equipment's type, code and status.
+ * The status is displayed via a indicator and the label of the status.
+ * @author Visone Sara
+ */
 public class EquipmentPanel extends JPanel implements LabListener 
 {
+    //--------CONSTANTS--------
+
+    /**
+     * Column names for the equipment table
+     */
     private final static String[] columnNames = {"","Type","Code","Status"};
+
+    /**
+     * Btn size constant
+     */
     private final static int BTN_SIZE = 30;
+
+    /**
+     * Btn dimension constant
+     */
     private final static Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
+    //--------INSTANCE VARIABLES--------
+
+    /**
+     * The referenced monitor
+     */
     private LabMonitor monitor;
 
-    private JTable equipmentTable;
     private JLabel equipmentCounter;
-
+    private JTable equipmentTable;
     private DefaultTableModel tableModel;
 
+    //--------CONSTRUCTOR--------
+    
+    /**
+     * Constructor method for the EquipmentPanel 
+     * @param frame the frame that contains the panel
+     * @param monitor the referenced LabMonitor
+     */
     public EquipmentPanel(Frame frame, LabMonitor monitor) 
     {
         this.monitor = monitor;
         setLayout(new BorderLayout());
         
-        //  Center Panel assembly (table with equipment type, code and status)
+        //--------CENTER PANEL(Equipment table)--------
 
         // Create the table model and don't allow direct modification 
         tableModel = new DefaultTableModel(columnNames, 0) 
@@ -51,7 +80,7 @@ public class EquipmentPanel extends JPanel implements LabListener
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
-        for(int i = 0; i < equipmentTable.getColumnCount(); i++)    //  Apply the renderer to all columns
+        for(int i = 0; i < equipmentTable.getColumnCount(); i++)    //  Apply the center renderer to all columns
         {
             equipmentTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
@@ -64,7 +93,8 @@ public class EquipmentPanel extends JPanel implements LabListener
         
         JScrollPane scrollTable = new JScrollPane(equipmentTable);  //  Make the table scrollable  
 
-        //  North panel assembly (addEquipmentBtn and panelTitle label)
+        //--------NORTH PANEL(addEquipmentBtn and panelTitle label)--------
+
         JPanel northPanel = new JPanel(new BorderLayout());
         JButton addEquipmentBtn = new JButton();
 
@@ -100,7 +130,7 @@ public class EquipmentPanel extends JPanel implements LabListener
         northPanel.add(panelTitle, BorderLayout.CENTER);
         northPanel.add(addEquipmentPanel, BorderLayout.WEST);
 
-        // EquipmentPanel assembly
+        //--------ASSEMBLY OF THE EQUIPMENT PANEL--------
         add(scrollTable, BorderLayout.CENTER);
         add(northPanel, BorderLayout.NORTH);
 
@@ -135,6 +165,10 @@ public class EquipmentPanel extends JPanel implements LabListener
         }
     }
 
+    /** 
+     * Service method to update the status indicator's color via html String
+     * @author Marini Enrico
+    */
     private String statusIndicator(EquipmentStatus status)
     {
         switch (status)

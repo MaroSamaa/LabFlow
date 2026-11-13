@@ -66,6 +66,7 @@ public class User implements Serializable
     }
 
     //--------METHODS--------
+    
     @Override 
     public String toString()
     {

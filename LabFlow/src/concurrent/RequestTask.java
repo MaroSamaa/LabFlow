@@ -38,6 +38,9 @@ public class RequestTask implements Runnable
      */
     private Request request;
 
+    /**
+     * True if thread was regenerated
+     */
     private boolean isRegenerated;
 
     //--------CONSTRUCTOR--------
@@ -50,27 +53,38 @@ public class RequestTask implements Runnable
     }
 
     //--------ACCESSOR METHODS--------
-    public boolean isRegenerated()
-    {
-        return isRegenerated;
-    }
 
+    /**
+     * Setter method for the isRegenerated variable
+     */
     public void setRegenerated()
     {
         isRegenerated = true;
     }
 
-    //--------ACCESSOR METHODS--------
+    /**
+     * Getter method for workTime parameter
+     * @return the workTime parameter
+     */
     public static int getWorkTime()
     {
         return workTime;
     }
 
+    /**
+     * Getter method for workTimeIntervall parameter
+     * @return the workTimeIntervall parameter
+     */
     public static int getWorkTimeIntervall()
     {
         return workTimeIntervall;
     }
 
+    /**
+     * Setter method for workTime parameter
+     * @param newWorkTime the wanted workTime
+     * @throws IllegalArgumentException if the new value is <= 0
+     */
     public static void setWorkTime(int newWorkTime) throws IllegalArgumentException
     {
         if(newWorkTime <= 0)
@@ -80,6 +94,11 @@ public class RequestTask implements Runnable
         workTime = newWorkTime;
     }
 
+    /**
+     * Setter method for workTimeIntervall parameter
+     * @param newWorkTimeIntervall the wanted workTimeIntervall
+     * @throws IllegalArgumentException if the new value is <= 0
+     */
     public static void setWorkTimeIntervall(int newWorkTimeIntervall) throws IllegalArgumentException
     {
         if(newWorkTimeIntervall <= 0)
@@ -104,22 +123,27 @@ public class RequestTask implements Runnable
             
             monitor.requestEquipment(request); //   Request the equipment and wait until you get it
 
-            simulateWork();
+            simulateWork();                     //  Simulate work being done with the equipment
 
             monitor.releaseEquipment(request);  //  Return the equipment to the lab so it can be used by someone else
 
         }
         catch(InterruptedException e)
         {
-            Thread.currentThread().interrupt(); //  Reset the interrupted flag "manually" to true (java forgets it was interrupted)
-            System.out.println("ERROR: thread has been interrupted");   //to be replaced with event log message integration
+            Thread.currentThread().interrupt();                         //  Reset the interrupted flag "manually" to true (java forgets it was interrupted)
+            System.out.println("ERROR: thread has been interrupted");   
         }
         catch(IllegalStateException e)
         {
-            System.out.println(e.getMessage()); //to be replaced with event log message integration
+            System.out.println(e.getMessage()); 
         }
     }
 
+    /**
+     * Service method that simulate a user working with an equipment; 
+     * it works in smaller intervals to allow the pausing mid-work of the thread.
+     * @throws InterruptedException if the thread get's interrupted for some reason
+     */
     private void simulateWork() throws InterruptedException
     {
         //  Devide the whole work in intervalls and check if the monitor is paused before doing an intervall of work
