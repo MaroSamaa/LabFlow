@@ -127,6 +127,8 @@ public class EquipmentPanel extends JPanel implements LabListener
         addEquipmentPanel.add(equipmentCounter);
 
         JLabel panelTitle = new JLabel("EQUIPMENT", JLabel.CENTER);
+        panelTitle.setFont(panelTitle.getFont().deriveFont(Font.BOLD));
+
         northPanel.add(panelTitle, BorderLayout.CENTER);
         northPanel.add(addEquipmentPanel, BorderLayout.WEST);
 

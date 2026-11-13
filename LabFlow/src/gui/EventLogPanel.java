@@ -77,6 +77,7 @@ public class EventLogPanel extends JPanel implements LabListener
         
         //--------PANEL TITLE--------
         JLabel panelTitle = new JLabel("EVENT LOG", JLabel.CENTER);
+        panelTitle.setFont(panelTitle.getFont().deriveFont(Font.BOLD));
         panelTitle.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         //--------ASSEMBLY OF THE EVENT PANEL--------

@@ -154,6 +154,7 @@ public class RequestPanel extends JPanel implements LabListener
         JPanel northPanel = new JPanel();
 
         JLabel panelTitle = new JLabel("REQUESTS", JLabel.CENTER);
+        panelTitle.setFont(panelTitle.getFont().deriveFont(Font.BOLD));
 
         JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 0));
         userCounter = new JLabel();
