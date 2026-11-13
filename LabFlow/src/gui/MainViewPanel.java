@@ -15,7 +15,7 @@ public class MainViewPanel extends JPanel
         JPanel centerPanel = new JPanel();  //Panel with the two tables
         JPanel southPanel = new JPanel();   //Panel with EventLog and Controls
 
-        centerPanel.setLayout(new GridLayout(1,2,0, 0));
+        centerPanel.setLayout(new GridLayout(1,2,10, 0));
         southPanel.setLayout(new BorderLayout());
 
         //--------ASSEMBLY OF THE SUPPORT PANELS--------
