@@ -22,6 +22,9 @@ public class Main
         {
             UIManager.setLookAndFeel(new FlatLightLaf());       //  Set L&F to flatlaf (Light theme)
 
+            UIManager.put("Button.arc", 10);                                 // Give all buttons rounded corners
+            UIManager.put("Button.background", new Color(243, 238, 255));   // Button background color
+
             UIManager.put("Table.showHorizontalLines", true);   // Enable table's horizontal lines globally
             UIManager.put("Table.showVerticalLines", true);     // Enable table's vertical lines globally
 
