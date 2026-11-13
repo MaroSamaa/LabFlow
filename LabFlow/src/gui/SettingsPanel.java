@@ -17,10 +17,31 @@ import java.io.IOException;
  */
 public class SettingsPanel extends JPanel
 {
+    //--------MESSAGES--------
+    
+    private static final String MSG_PARAMETERS_UPDATED = "Simulation parameters have been successfully updated";
+    private static final String MSG_INPUT_VALUES_ERROR = "ERROR: Make sure to input integer values";
+    private static final String MSG_DEFAULT_PARAMETERS_RESTORED = "Simulation parameters defaults have been restored";
+
+    //--------CONSTANTS--------
     private static final String TAB_NAME = "Settings and credits";
+
+    /**
+     * Logo size constant
+     */
     private static final int LOGO_SIZE = 300;
+
+    /**
+     * Button size constant
+     */
     private static final int BTN_SIZE = 30;
+
+    /**
+     * Button dimension constant
+     */
     private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
+
+    //--------CONSTRUCTOR--------
 
     /**
      * Constructor method for the SettingsPanel
@@ -31,10 +52,12 @@ public class SettingsPanel extends JPanel
     {
         setLayout(new BorderLayout());
            
-        //  Back button implementation 
+        //--------NORTH PANEL(Back button and tab title)--------
+
+        //----Back Button----
         JButton backBtn = new JButton();
 
-         //  Set Image for backBtn
+        //  Set Image for backBtn
         try 
         {
             Image temp = ImageIO.read(getClass().getResource("/images/backIcon.png"));
@@ -54,9 +77,8 @@ public class SettingsPanel extends JPanel
         {
             frame.showMainView();
         });
-
-        //  North panel assembly 
-        //  Tab name 
+ 
+        //----Tab Name----
         JLabel tabLabel = new JLabel(TAB_NAME);
         tabLabel.setHorizontalAlignment(JLabel.CENTER);
         tabLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -65,9 +87,9 @@ public class SettingsPanel extends JPanel
         northPanel.add(backBtn,BorderLayout.EAST);
         northPanel.add(tabLabel,BorderLayout.CENTER);
 
-        //  Center panel assembly
+        //--------CENTER PANEL(SETTINGS AND CREDITS)--------
 
-        //  Parameters Panel
+        //----Parameters Panel----
         JPanel parametersPanel = new JPanel();
         parametersPanel.setLayout(new BoxLayout(parametersPanel, BoxLayout.Y_AXIS));
 
@@ -101,7 +123,7 @@ public class SettingsPanel extends JPanel
         maxEquipmentTxt.setMaximumSize(maxEquipmentTxt.getPreferredSize().getSize());
         maxEquipmentTxt.setText(String.valueOf(monitor.getMaxEquip()));
 
-        // ApllyBtn
+        // Apply Button
         JButton applyBtn = new JButton("APPLY");
         
         applyBtn.addActionListener((ActionEvent) -> 
@@ -118,11 +140,11 @@ public class SettingsPanel extends JPanel
                 RequestTask.setWorkTimeIntervall(newWorkTimeIntervall);
                 monitor.setMaxEquip(newMaxEquip);
 
-                JOptionPane.showMessageDialog(this, "Simulation parameters have been successfully updated", "Parameters Apllied", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, MSG_PARAMETERS_UPDATED, "Parameters Apllied", JOptionPane.INFORMATION_MESSAGE);
             } 
             catch(NumberFormatException e)
             {
-                JOptionPane.showMessageDialog(this, "ERROR: Make sure to input integer values", "Number Format Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, MSG_INPUT_VALUES_ERROR, "Number Format Error", JOptionPane.ERROR_MESSAGE);
             }
             catch(IllegalArgumentException e)
             {
@@ -130,6 +152,7 @@ public class SettingsPanel extends JPanel
             }
         });
 
+        //  Restore Default Button
         JButton restoreDefaultBtn = new JButton("RESTORE DEFAULT");
 
         restoreDefaultBtn.addActionListener((ActionEvent) ->
@@ -144,7 +167,7 @@ public class SettingsPanel extends JPanel
             workTimeIntervallTxt.setText(String.valueOf(RequestTask.getWorkTimeIntervall()));
             maxEquipmentTxt.setText(String.valueOf(monitor.getMaxEquip()));
 
-            JOptionPane.showMessageDialog(this, "Simulation parameters defaults have been restored","Defaul Parameters Applied", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, MSG_DEFAULT_PARAMETERS_RESTORED,"Defaul Parameters Applied", JOptionPane.INFORMATION_MESSAGE);
         });
 
         JPanel parametersBtnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
@@ -155,6 +178,7 @@ public class SettingsPanel extends JPanel
         JLabel parametersPanelTitle = new JLabel("Simulation Parameters");
         parametersPanelTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        //  Assembly of the parameters panel
         parametersPanel.add(Box.createVerticalGlue());  //  "Spring on the panel ceiling"
         parametersPanel.add(parametersPanelTitle);
         parametersPanel.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -181,7 +205,7 @@ public class SettingsPanel extends JPanel
 
         parametersPanel.add(Box.createVerticalGlue()); //   "Spring on the panel floor"
         
-        //  Credit Panel
+        //----Credit Panel----
         JPanel creditPanel = new JPanel();
         creditPanel.setLayout(new BoxLayout(creditPanel, BoxLayout.Y_AXIS));
 
@@ -201,7 +225,7 @@ public class SettingsPanel extends JPanel
         JLabel contributor2Label = new JLabel("Visone Sara");
         contributor2Label.setAlignmentX(Component.CENTER_ALIGNMENT);   
         
-        //  Logo label implementation
+        //  Logo label 
         JLabel logoLabel = new JLabel();
 
         try 
@@ -215,7 +239,7 @@ public class SettingsPanel extends JPanel
         logoLabel.setBorder(null);
         logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             
-        // Assembly of the center panel with flexible spacers
+        // Assembly of the credit panel
         creditPanel.add(Box.createVerticalGlue()); // push to vertical center
         creditPanel.add(logoLabel);
         creditPanel.add(Box.createRigidArea(new Dimension(0, 15))); // 15px from logo to authors text
@@ -246,7 +270,7 @@ public class SettingsPanel extends JPanel
         verticalWrapper.add(centerPanel);
         verticalWrapper.add(Box.createVerticalGlue());
 
-        //  Assembly of the SettingsPanel
+        //--------ASSEMBLY OF THE SETTINGS PANEL--------
         add(northPanel, BorderLayout.NORTH);
         add(verticalWrapper, BorderLayout.CENTER);
     }

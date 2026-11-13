@@ -14,15 +14,24 @@ import java.awt.*;
  */
 public class Frame extends JFrame
 {
+    //--------INSTANCE VARIABLES--------
     private JPanel parentPanel; 
     private JPanel mainViewPanel;
     private JPanel settingsPanel;
 
     private CardLayout lm = new CardLayout();
 
+    //--------CONSTRUCTOR--------
+    
+    /**
+     * Constructor for the Frame
+     * @param monitor the referenced LabMonitor
+     */
     public Frame(LabMonitor monitor)
     {
         super("LabFlow");
+
+        //--------PARENT PANEL--------
 
         parentPanel = new JPanel();
         parentPanel.setLayout(lm);
@@ -33,8 +42,10 @@ public class Frame extends JFrame
         parentPanel.add(mainViewPanel,"MAIN");
         parentPanel.add(settingsPanel, "SETTINGS");
 
-        lm.first(parentPanel);
+        lm.first(parentPanel);  //  Start on the Main View Panel
         add(parentPanel);
+
+        //---------JFRAME SETTINGS--------
 
         //  Set starting frame size as 50% of the screens width and 60% of the screens height
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -42,8 +53,8 @@ public class Frame extends JFrame
         int windowHeight = (int) (screenSize.getHeight() * 0.6);
         setSize(windowWidth,windowHeight);
 
-        setLocationRelativeTo(null);                    //  Open the frame at the center of the screen
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //End program when frame gets closed
+        setLocationRelativeTo(null);                  //  Open the frame at the center of the screen
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //  End program when frame gets closed
         setVisible(true);
     }
 

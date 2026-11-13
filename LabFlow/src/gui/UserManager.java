@@ -16,10 +16,18 @@ import java.util.List;
  */
 public class UserManager extends JDialog 
 {
+    //--------MESSAGES--------
+
+    private static final String MSG_INPUT_WARNING = "Input all of the necessary data";
+
+    //--------INSTANCE VARIABLES--------
+
     /**
      * Written list of all users in the lab
      */
     private DefaultListModel<String> listModel;
+
+    //--------CONSTRUCTOR--------
 
     /**
      * Constructor method for the UserManager Class
@@ -34,7 +42,8 @@ public class UserManager extends JDialog
         setLocationRelativeTo(parent);  //Set it on top of the frame
         setLayout(new BorderLayout());
 
-        //  Center panel (user list)
+        //--------CENTER PANEL(User list)--------
+
         listModel = new DefaultListModel<>();
         updateList(monitor);    //  Load initial data from monitor
 
@@ -43,7 +52,8 @@ public class UserManager extends JDialog
         JScrollPane scrollableUserList = new JScrollPane(userList);
 
         
-        //  South Panel (textfield inputs)
+        //--------SOUTH PANEL(Textfield inputs)--------
+
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BorderLayout());
 
@@ -62,9 +72,10 @@ public class UserManager extends JDialog
         inputPanel.add(new JLabel("New User Code:"));
         inputPanel.add(newUserCode);
 
+        //----Add User Button----
+
         JButton addUserBtn = new JButton("ADD");
 
-        //  AddUserBtn actionlistener
         addUserBtn.addActionListener((ActionEvent) -> 
         {
             //  Get the string in the textfields
@@ -73,8 +84,7 @@ public class UserManager extends JDialog
 
             if (userName.isEmpty() || userCode.isEmpty()) //  If either of the two textfields was left empty
             {
-                //Warning popup if either of the two textfields was left empty
-                JOptionPane.showMessageDialog(this, "Input all of the necessary data", "Input Warning",JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, MSG_INPUT_WARNING, "Input Warning",JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -91,11 +101,7 @@ public class UserManager extends JDialog
                 newUserName.setText("");
                 newUserCode.setText("");
                 
-            } catch (DuplicateUserCodeException e) 
-            {
-                // Error popup if the user couldn't be added (user's code is the code of another user in the list)
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Duplicate user code error", JOptionPane.ERROR_MESSAGE);
-            }
+            } catch (DuplicateUserCodeException e){JOptionPane.showMessageDialog(this, e.getMessage(), "Duplicate user code error", JOptionPane.ERROR_MESSAGE);}
         });
 
         southPanel.add(inputPanel, BorderLayout.CENTER);

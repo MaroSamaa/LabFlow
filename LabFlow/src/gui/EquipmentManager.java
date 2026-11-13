@@ -12,6 +12,12 @@ import concurrent.exceptions.EquipmentStorageFullException;
  */
 public class EquipmentManager extends JDialog 
 {
+    //--------MESSAGES--------
+
+    private static final String MSG_DATA_INPUT = "Input all of the necessary data";
+
+    //--------CONSTRUCTOR--------
+
     /**
      * Constructor method for the EquipmentManager
      * @param parent the parent frame
@@ -25,7 +31,8 @@ public class EquipmentManager extends JDialog
         setLocationRelativeTo(parent);  //  Spawn where the frame is
         setLayout(new BorderLayout(10, 10));
 
-        //  Center Panel (textfield inputs)
+        //--------CENTER PANEL (textfield inputs)--------
+
         JPanel inputPanel = new JPanel(new GridLayout(2, 2, 10, 15));
         inputPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
 
@@ -37,7 +44,8 @@ public class EquipmentManager extends JDialog
         inputPanel.add(new JLabel("New Equipment Code:"));
         inputPanel.add(newEquipmentCode);
         
-        //  South Panel (addEquipmentBtn)
+        //--------SOUTH PANEL (Add btn)--------
+
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton addEquipmentBtn = new JButton("ADD");
 
@@ -49,9 +57,8 @@ public class EquipmentManager extends JDialog
             
             if (equipmentCode.isEmpty() || equipmentType.isEmpty()) //  If either of the two textfields was left empty
             {
-                //Warning popup if either of the two textfields was left empty
-                JOptionPane.showMessageDialog(this, "Input all of the necessary data", "Input Warning",JOptionPane.WARNING_MESSAGE);
-                return;
+                JOptionPane.showMessageDialog(this, MSG_DATA_INPUT, "Input Warning",JOptionPane.WARNING_MESSAGE);
+                return; //  Don't go ahead!
             }
 
             try 
@@ -59,21 +66,19 @@ public class EquipmentManager extends JDialog
                 Equipment newEquipment = new Equipment(equipmentType, equipmentCode);
                 monitor.addEquipment(newEquipment);
 
-                // Confirmation popup and dialog closure
                 JOptionPane.showMessageDialog(this, newEquipment.getCode()+ " has been added!", "New Equipment Confirmation", JOptionPane.INFORMATION_MESSAGE);
                 dispose(); // Close the confirmation popup and the equipment manager
-
             } 
-            catch (EquipmentStorageFullException e) {JOptionPane.showMessageDialog(this, e.getMessage(), "Full Storage Error", JOptionPane.ERROR_MESSAGE);}
-            catch (DuplicateEquipmentCodeException e){JOptionPane.showMessageDialog(this, e.getMessage(), "Duplicate Equipment Code Error", JOptionPane.ERROR_MESSAGE);}
+            catch(EquipmentStorageFullException e){JOptionPane.showMessageDialog(this, e.getMessage(), "Full Storage Error", JOptionPane.ERROR_MESSAGE);}
+            catch(DuplicateEquipmentCodeException e){JOptionPane.showMessageDialog(this, e.getMessage(), "Duplicate Equipment Code Error", JOptionPane.ERROR_MESSAGE);}
         });
 
         southPanel.add(addEquipmentBtn);
 
-        //  EquipmentManager assembly
+        //--------ASSEMBLY OF THE EQUIPMENTMANAGER--------
+
         add(inputPanel, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
-
     }
 }
 

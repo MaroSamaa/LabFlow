@@ -18,10 +18,14 @@ import java.util.List;
  */
 public class EventLogPanel extends JPanel implements LabListener 
 {
+    //--------CONSTANTS--------
+
     /**
      * Column names for the event log table
      */
     private final static String[] columnNames = {"Time", "Event"};
+
+    //--------INSTANCE VARIABLES--------
 
     /**
      * The referenced LabMonitor
@@ -29,6 +33,8 @@ public class EventLogPanel extends JPanel implements LabListener
     private LabMonitor monitor;
     private DefaultTableModel eventTableModel;
     private JTable eventTable; 
+
+    //--------CONSTRUCTOR--------
 
     /**
      * Constructor for the EventLogPanel
@@ -38,6 +44,8 @@ public class EventLogPanel extends JPanel implements LabListener
     {
         this.monitor = monitor;
         setLayout(new BorderLayout());
+
+        //--------EVENT TABLE CREATION AND SETTINGS--------
 
         // Create the table model and don't allow direct modification 
         eventTableModel = new DefaultTableModel(columnNames, 0) 
@@ -61,17 +69,17 @@ public class EventLogPanel extends JPanel implements LabListener
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         eventTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
     
-        // (CHECK IF OK) Set the time column to a fixed width
+        //  Set the time column to a fixed width
         eventTable.getColumnModel().getColumn(0).setPreferredWidth(80);
         eventTable.getColumnModel().getColumn(0).setMaxWidth(100);
 
         JScrollPane scrollTable = new JScrollPane(eventTable);
         
-        // Panel title
+        //--------PANEL TITLE--------
         JLabel panelTitle = new JLabel("EVENT LOG", JLabel.LEFT);
         panelTitle.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        //  EventLogPanel assembly
+        //--------ASSEMBLY OF THE EVENT PANEL--------
         add(panelTitle, BorderLayout.NORTH);
         add(scrollTable, BorderLayout.CENTER);
 

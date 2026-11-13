@@ -14,6 +14,8 @@ import java.awt.*;
  */ 
 public class MainViewPanel extends JPanel
 {
+    //--------CONSTRUCTOR--------
+
     /**
      * Constructor method for the MainViewPanel
      * @param frame the parent frame
@@ -23,11 +25,9 @@ public class MainViewPanel extends JPanel
     {
         setLayout(new BorderLayout());
 
-        JPanel centerPanel = new JPanel();  //Panel with the two tables
-        JPanel southPanel = new JPanel();   //Panel with EventLog and Controls
-
-        centerPanel.setLayout(new GridLayout(1,2,10, 0));
-        southPanel.setLayout(new BorderLayout());
+        //--------INITIALIZATION OF SUPPORT PANELS--------
+        JPanel centerPanel = new JPanel(new GridLayout(1,2,10, 0)); //  Panel with the two tables
+        JPanel southPanel = new JPanel(new BorderLayout());                               //  Panel with EventLog and Controls
 
         //--------ASSEMBLY OF THE SUPPORT PANELS--------
         
@@ -39,11 +39,12 @@ public class MainViewPanel extends JPanel
         southPanel.add(new EventLogPanel(monitor), BorderLayout.CENTER);
         southPanel.add(new ControlPanel(frame,monitor), BorderLayout.SOUTH);
 
-        //  Tell the southPanel to be 50% of the starting window size
+        //  Set the southPanel to be 50% of the starting window size
         int southPanelHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 0.6 * 0.5);
         southPanel.setPreferredSize(new Dimension(0,southPanelHeight));
 
         //--------ASSEMBLY OF THE MAIN VIEW PANEL--------
+        
         add(centerPanel, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
 

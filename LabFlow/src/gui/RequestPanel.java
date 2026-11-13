@@ -20,6 +20,8 @@ import java.io.IOException;
  */
 public class RequestPanel extends JPanel implements LabListener
 {
+    //--------CONSTANTS--------
+
     /**
      * Column names for the request table
      */
@@ -35,15 +37,18 @@ public class RequestPanel extends JPanel implements LabListener
      */
     private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
+    //--------INSTANCE VARIABLES--------
+
     /**
      * The referenced LabMonitor
      */
     private LabMonitor monitor;
-
     private DefaultTableModel requestTableModel;
     private JTable requestTable;
     private JLabel activeRequestCounter;
     private JLabel userCounter;
+
+    //--------CONSTRUCTOR--------
 
     /**
      * Constructor for the RequestPanel
@@ -55,7 +60,7 @@ public class RequestPanel extends JPanel implements LabListener
         this.monitor = monitor;
         setLayout(new BorderLayout());
 
-        //  Assembly of the center panel (request table)
+        //--------CENTER PANEL(request table)--------
 
         // Create the table model and don't allow direct modification 
         requestTableModel = new DefaultTableModel(columnNames, 0) 
@@ -90,9 +95,12 @@ public class RequestPanel extends JPanel implements LabListener
 
         JScrollPane scrollTable = new JScrollPane(requestTable); // Make the table scrollable
 
-        //  Buttons and actionlisteners
+        //--------BUTTONS--------
+
         JButton userBtn = new JButton();
         JButton addRequestBtn = new JButton();
+
+        //----Set Icons----
 
         //  Set Image for userBtn
         try 
@@ -126,6 +134,8 @@ public class RequestPanel extends JPanel implements LabListener
         addRequestBtn.setFocusPainted(false);         
         addRequestBtn.setBorderPainted(false);        
 
+        //----Action listeners----
+
         //  Open and visualize UserManager 
         userBtn.addActionListener((ActionEvent) ->
         {
@@ -140,6 +150,9 @@ public class RequestPanel extends JPanel implements LabListener
             reqManager.setVisible(true);
         });
 
+        //--------NORTH PANEL(User manager and Request manager btns)--------
+        JPanel northPanel = new JPanel();
+
         JLabel panelTitle = new JLabel("REQUESTS", JLabel.CENTER);
 
         JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 0));
@@ -152,14 +165,12 @@ public class RequestPanel extends JPanel implements LabListener
         addRequestPanel.add(activeRequestCounter);
         addRequestPanel.add(addRequestBtn);
 
-        //  Assembly of the northPanel
-        JPanel northPanel = new JPanel();
         northPanel.setLayout(new BorderLayout());
         northPanel.add(userPanel, BorderLayout.WEST);
         northPanel.add(panelTitle, BorderLayout.CENTER);
         northPanel.add(addRequestPanel, BorderLayout.EAST);
 
-        //  Assembly of the request panel
+        //--------ASSEMBLY OF THE REQUEST PANEL--------
         add(northPanel, BorderLayout.NORTH);
         add(scrollTable, BorderLayout.CENTER);
 
