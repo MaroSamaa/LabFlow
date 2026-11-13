@@ -10,19 +10,42 @@ import java.io.IOException;
 import concurrent.*;
 import java.util.List;
 
+/**
+ * Panel that shows a table with the equipment's type, code and status.
+ * The status is displayed via a indicator and the label of the status.
+ * @author Visone Sara
+ */
 public class EquipmentPanel extends JPanel implements LabListener 
 {
+    /**
+     * Column names for the equipment table
+     */
     private final static String[] columnNames = {"","Type","Code","Status"};
+
+    /**
+     * Btn size constant
+     */
     private final static int BTN_SIZE = 30;
+
+    /**
+     * Btn dimension constant
+     */
     private final static Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
+    /**
+     * The referenced monitor
+     */
     private LabMonitor monitor;
 
-    private JTable equipmentTable;
     private JLabel equipmentCounter;
-
+    private JTable equipmentTable;
     private DefaultTableModel tableModel;
 
+    /**
+     * Constructor method for the EquipmentPanel 
+     * @param frame the frame that contains the panel
+     * @param monitor the referenced LabMonitor
+     */
     public EquipmentPanel(Frame frame, LabMonitor monitor) 
     {
         this.monitor = monitor;
@@ -135,6 +158,10 @@ public class EquipmentPanel extends JPanel implements LabListener
         }
     }
 
+    /** 
+     * Service method to update the status indicator's color via html String
+     * @author Marini Enrico
+    */
     private String statusIndicator(EquipmentStatus status)
     {
         switch (status)

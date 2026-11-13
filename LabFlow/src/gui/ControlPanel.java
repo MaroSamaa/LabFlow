@@ -10,13 +10,32 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ *  Panel with buttons to control the program
+ *  @author Visone Sara
+ */
 public class ControlPanel extends JPanel implements LabListener
 {
+    /**
+     * Button size constant
+     */
     private static final int BTN_SIZE = 30;
+
+    /**
+     * Button dimension constant
+     */
     private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
+
+    /**
+     * Indicator dimension constant
+     */
     private static final Dimension INDICATOR_DIMENSION = new Dimension(20,20);
 
+    /**
+     * The referenced LabMonitor
+     */
     private LabMonitor monitor;
+
     private JLabel pauseIndicator;
 
     public ControlPanel(Frame frame, LabMonitor monitor)
@@ -24,11 +43,14 @@ public class ControlPanel extends JPanel implements LabListener
         this.monitor = monitor;
         setLayout(new BorderLayout());
 
+        //  Button initialization
         JButton saveBtn = new JButton();
         JButton loadBtn = new JButton();
         JButton settingsBtn = new JButton();
         JButton playBtn = new JButton();
         JButton pauseBtn = new JButton();
+
+        //  Indicator initialization
         pauseIndicator = new JLabel("\u2022");
         pauseIndicator.setFont(new Font(pauseIndicator.getFont().getName(), Font.PLAIN,35));
         pauseIndicator.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -36,8 +58,8 @@ public class ControlPanel extends JPanel implements LabListener
         pauseIndicator.setMinimumSize(INDICATOR_DIMENSION);
         pauseIndicator.setMaximumSize(INDICATOR_DIMENSION);
 
-
         //--------SETTING BUTTONS IMAGE ICONS--------
+
         //  Set Image for settingsBtn
         try 
         {
@@ -188,11 +210,13 @@ public class ControlPanel extends JPanel implements LabListener
             frame.showSettings();
         });
 
+        //  On play btn push tell the monitor to play
         playBtn.addActionListener((ActionEvent) ->
         {
             this.monitor.play();
         });
 
+        //  On pause btn push tell the monitor to pause
         pauseBtn.addActionListener((ActionEvent) ->
         {
             this.monitor.pause();
@@ -216,9 +240,12 @@ public class ControlPanel extends JPanel implements LabListener
         playAndPausePanel.add(pauseBtn);
         add(playAndPausePanel, BorderLayout.CENTER);
 
-        this.monitor.addLabListener(this);
+        this.monitor.addLabListener(this);  //  Register listener to the LabMonitor
     }
 
+    /**
+     * Service method to update the color of the pause indicator
+     */
     public void updatePauseIndicator()
     {
         if(monitor.isPaused())

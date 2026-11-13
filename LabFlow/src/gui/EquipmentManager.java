@@ -6,15 +6,23 @@ import concurrent.*;
 import concurrent.exceptions.DuplicateEquipmentCodeException;
 import concurrent.exceptions.EquipmentStorageFullException;
 
+/**
+ * Dialog that let's the user manage the LabMonitor's equipment 
+ * @author Visone Sara
+ */
 public class EquipmentManager extends JDialog 
 {
-    
+    /**
+     * Constructor method for the EquipmentManager
+     * @param parent the parent frame
+     * @param monitor the referenced LabMonitor
+     */
     public EquipmentManager(Frame parent, LabMonitor monitor) 
     {
         super(parent, "Equipment Manager", true); //Modal = true to block the access to the frame below 
 
         setSize(380, 220);
-        setLocationRelativeTo(parent);
+        setLocationRelativeTo(parent);  //  Spawn where the frame is
         setLayout(new BorderLayout(10, 10));
 
         //  Center Panel (textfield inputs)

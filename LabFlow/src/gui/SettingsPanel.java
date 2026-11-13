@@ -10,6 +10,11 @@ import concurrent.LabMonitor;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
+/**
+ * Panel to show the user the program's credits and allow
+ * for simulation parameter's editing
+ * @author Visone Sara
+ */
 public class SettingsPanel extends JPanel
 {
     private static final String TAB_NAME = "Settings and credits";
@@ -17,6 +22,11 @@ public class SettingsPanel extends JPanel
     private static final int BTN_SIZE = 30;
     private static final Dimension BTN_DIMENSION = new Dimension(BTN_SIZE,BTN_SIZE);
 
+    /**
+     * Constructor method for the SettingsPanel
+     * @param frame the parent frame
+     * @param monitor the referenced LabMonitor
+     */
     public SettingsPanel(Frame frame, LabMonitor monitor)
     {
         setLayout(new BorderLayout());
