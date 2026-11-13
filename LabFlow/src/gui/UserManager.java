@@ -44,12 +44,20 @@ public class UserManager extends JDialog
 
         //--------CENTER PANEL(User list)--------
 
+        JPanel centerPanel = new JPanel(new BorderLayout());
+
         listModel = new DefaultListModel<>();
         updateList(monitor);    //  Load initial data from monitor
 
         //  Make the list scrollable 
         JList<String> userList = new JList<>(listModel);
         JScrollPane scrollableUserList = new JScrollPane(userList);
+
+        JLabel userListTitle = new JLabel("Registered Users", JLabel.CENTER);
+        userListTitle.setFont(userListTitle.getFont().deriveFont(Font.BOLD));
+
+        centerPanel.add(scrollableUserList,BorderLayout.CENTER);
+        centerPanel.add(userListTitle,BorderLayout.NORTH);
 
         
         //--------SOUTH PANEL(Textfield inputs)--------
@@ -60,9 +68,10 @@ public class UserManager extends JDialog
         JPanel inputPanel = new JPanel(new GridLayout(2, 2, 10, 15));
 
         //  Title of the south panel
-        TitledBorder panelTitle = new TitledBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20),"New user creation");
-        panelTitle.setTitleJustification(TitledBorder.CENTER);
-        southPanel.setBorder(panelTitle);
+        JLabel panelTitle = new JLabel("New User Creation", JLabel.CENTER);
+        panelTitle.setFont(panelTitle.getFont().deriveFont(Font.BOLD));
+
+        southPanel.add(panelTitle,BorderLayout.NORTH);
 
         JTextField newUserName = new JTextField(20);
         JTextField newUserCode = new JTextField(20);
@@ -109,7 +118,7 @@ public class UserManager extends JDialog
 
 
         //  Assembly of the UserManager
-        add(scrollableUserList, BorderLayout.CENTER);
+        add(centerPanel, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
     }
 
@@ -120,7 +129,6 @@ public class UserManager extends JDialog
     private void updateList(LabMonitor monitor) 
     {
         listModel.clear();  //Reset the list
-        listModel.addElement("LAB USERS:");
         List<User> users = monitor.getUsers();
         for (User u : users) 
         {
