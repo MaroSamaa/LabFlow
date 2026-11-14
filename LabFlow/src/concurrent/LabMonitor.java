@@ -1,11 +1,5 @@
 package concurrent;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import concurrent.exceptions.*;
@@ -411,17 +405,16 @@ public class LabMonitor
     //--------SAVE AND LOAD METHODS--------
 
     /**
-     * Method to save the state of the lab.
-     * This saves on the file a copy of the user, equipment, request and event lists.
+     * Method to create a LabSnapshot of the lab.
      * The lab get's paused before saving to prevent changes from happening during writing.
-     * The ACTIVE requests are saved as CANCELLED and all of the equipment they obtained gets released
-     * @param file the file where data will be written
-     * @throws IOException  if something happens when writing the data
+     * The ACTIVE requests are snapshot as CANCELLED and all of the equipment they obtained gets released
+     * @return the LabSnapshot representing the lab state
      */
-    public synchronized void saveLabState(File file) throws IOException
+    public synchronized LabSnapshot createSnapshot() 
     {
 
-        if(!isPaused()) //  Pause the labmonitor before saving anything
+        //  Pause the labmonitor before creating the snapshot
+        if(!isPaused()) 
         {
             pause();
         }
@@ -448,63 +441,35 @@ public class LabMonitor
             }
         }
 
-        //  Use ObjectOutputStream to write data on the file
-        //  Try to handle closing and unexpected closing automatically
-        try (ObjectOutputStream fileWriter = new ObjectOutputStream(new FileOutputStream(file))) 
-        { 
-            fileWriter.writeObject(getUsers());             //  Save users
-            fileWriter.writeObject(equipmentCopyToSave);    //  Save equipment
-            fileWriter.writeObject(requestsCopyToSave);     //  Save requests
-            fileWriter.writeObject(getEvents());            //  Save events
-        }
+        return new LabSnapshot(getUsers(), equipmentCopyToSave, requestsCopyToSave, getEvents());
     }
 
     /**
-     * Method to load the state of the lab from a file
-     * @param file from where the data will be loaded
-     * @throws IOException if something happens when reading the data
-     * @throws ClassNotFoundException if the file wasn't a previously saved file
+     * Method to restore a LabSnapshot.
+     * @param toRestore LabSnapshot to restore
      */
-    public synchronized void loadLabState(File file) throws IOException, ClassNotFoundException 
+    public synchronized void restoreSnapshot(LabSnapshot toRestore)
     {
-        //  Pause the LabMonitor before loading anything
+        //  Pause the LabMonitor before restoring anything
         if(!isPaused)  
         {
             pause();
         }
+         
+        //  Update the monitor's lists with the snapshot's data
+        users.clear();
+        users.addAll(toRestore.getUsers());
+        equipment.clear();
+        equipment.addAll(toRestore.getEquipment());
+        requests.clear();
+        requests.addAll(toRestore.getRequests());
+        events.clear();
+        events.addAll(toRestore.getEvents());
 
-        //  Load save file data
-
-        //  Use ObjectInputStream to write data on the file
-        //  Try to handle closing and unexpected closing automatically
-        try (ObjectInputStream fileReader = new ObjectInputStream(new FileInputStream(file))) 
-        {
-
-            //  I suppress the warnings because i am certain of the order and type safety
-            @SuppressWarnings ("unchecked")
-            List<User> loadedUsers = (List<User>) fileReader.readObject();
-            @SuppressWarnings ("unchecked")
-            List<Equipment> loadedEquipment = (List<Equipment>) fileReader.readObject();
-            @SuppressWarnings ("unchecked")
-            List<Request> loadedRequests = (List<Request>) fileReader.readObject();
-            @SuppressWarnings ("unchecked")
-            List<String> loadedEvents = (List<String>) fileReader.readObject();
-            
-            //  Update the monitor's lists
-            users.clear();
-            users.addAll(loadedUsers);
-            equipment.clear();
-            equipment.addAll(loadedEquipment);
-            requests.clear();
-            requests.addAll(loadedRequests);
-            events.clear();
-            events.addAll(loadedEvents);
-
-            //  Restart counter from the information read
-            userCounter = loadedUsers.size();
-            equipmentCounter = loadedEquipment.size();
-        }   
-
+        //  Restart counter from the information read
+        userCounter = users.size();
+        equipmentCounter = equipment.size();
+        
         //  Regenerate loaded PENDING threads and update activeRequestCounter
         regeneratePendingThreads();
 
