@@ -144,12 +144,12 @@ public class EquipmentPanel extends JPanel implements LabListener
      */
     private void updateEquipmentTable() 
     {
-        tableModel.setRowCount(0);
+        tableModel.setRowCount(0);  //  Set table to blank
         List<Equipment> equipment = monitor.getEquipment();
 
         for (Equipment e : equipment) 
         {
-            Object[] rowData = 
+            String[] rowData = 
             {
                 statusIndicator(e.getStatus()), //  Colored dot
                 e.getType(),                    // Equipment type
