@@ -10,6 +10,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class enables the creation of snapshots of the lab state.
+ * @author Marini Enrico
+ */
 public class LabSnapshot implements Serializable 
 {
     private static final long serialVersionUID = 1L;
@@ -23,27 +27,50 @@ public class LabSnapshot implements Serializable
 
     //--------ACCESSOR METHODS--------
 
+    /**
+     * Getter method for the snapsot's user list
+     * @return the snapshot's user list
+     */
     public List<User> getUsers()
     {
         return users;
     }
 
+    /**
+     * Getter method for the snapsot's equipment list
+     * @return the snapshot's equipment list
+     */
     public List<Equipment> getEquipment()
     {
         return equipment;
     }
 
+    /**
+     * Getter method for the snapsot's request list
+     * @return the snapshot's request list
+     */
     public List<Request> getRequests()
     {
         return requests;
     }
 
+    /**
+     * Getter method for the snapsot's event list
+     * @return the snapshot's event list
+     */
     public List<String> getEvents()
     {
         return events;
     }
     //--------CONSTRUCTOR--------
 
+    /**
+     * Constructor method for the LabSnapshot
+     * @param users the user list to snapshot
+     * @param equipment the equipment list to snapshot
+     * @param requests the request list to snapshot
+     * @param events the event list to snapshot
+     */
     public LabSnapshot(List<User> users,List<Equipment> equipment, List<Request> requests, List<String> events)
     {
         this.users = new ArrayList<User>(users);
@@ -52,6 +79,11 @@ public class LabSnapshot implements Serializable
         this.events = new ArrayList<String>(events);
     }
 
+    /**
+     * Save the snapshot to a file
+     * @param file the file where the snapshot will be written
+     * @throws IOException if an OutputStream error occurs
+     */
     public void saveToFile(File file) throws IOException
     {
         //  Use ObjectOutputStream to write data on the file
@@ -62,7 +94,14 @@ public class LabSnapshot implements Serializable
         }
     }
 
-    public static LabSnapshot loadFromFile(File file) throws IOException, ClassNotFoundException
+    /**
+     * Static method to create a LabSnapshot from a save file
+     * @param file the file to load the snapshot data
+     * @return the LabSnapshot loaded with the data from the save file
+     * @throws IOException if on InputStrean error occurs
+     * @throws ClassNotFoundException if the file isn't a previously saved file
+     */
+    public static LabSnapshot loadFromFile(File file) throws IOException, ClassNotFoundException, ClassCastException
     {
         //  Use ObjectInputStream to write data on the file
         //  Try to handle closing and unexpected closing automatically

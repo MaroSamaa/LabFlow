@@ -402,7 +402,7 @@ public class LabMonitor
         }
     }
 
-    //--------SAVE AND LOAD METHODS--------
+    //--------SNAPSHOT METHODS--------
 
     /**
      * Method to create a LabSnapshot of the lab.
@@ -477,7 +477,7 @@ public class LabMonitor
     }
 
     /**
-     *  Service method to regenerate loaded pending threads and update activeRequestCounter after save file reading
+     *  Service method to regenerate loaded pending threads and update activeRequestCounter after snapshot restoration
      */
     private void regeneratePendingThreads()
     {
