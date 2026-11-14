@@ -242,7 +242,7 @@ public class ControlPanel extends JPanel implements LabListener
 
         //  Size and font setting
         pauseIndicator.setFont(pauseIndicator.getFont().deriveFont(Font.PLAIN,35));
-        pauseIndicator.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pauseIndicator.setHorizontalAlignment(JLabel.CENTER);
         pauseIndicator.setPreferredSize(INDICATOR_DIMENSION);
         pauseIndicator.setMinimumSize(INDICATOR_DIMENSION);
         pauseIndicator.setMaximumSize(INDICATOR_DIMENSION);
