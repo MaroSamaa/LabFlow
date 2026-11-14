@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import concurrent.LabListener;
 import concurrent.LabMonitor;
+import concurrent.LabSnapshot;
 
 import java.awt.*;
 import java.io.File;
@@ -172,8 +173,8 @@ public class ControlPanel extends JPanel implements LabListener
                 
                 try 
                 {
-                    // Tell the monitor to write the file with it's state
-                    this.monitor.saveLabState(file);
+                    LabSnapshot toSave = this.monitor.createSnapshot();
+                    toSave.saveToFile(file);
                     
                     JOptionPane.showMessageDialog(frame, MSG_LAB_STATE_SAVED,"Save File Confirmation",JOptionPane.INFORMATION_MESSAGE); 
                 } 
@@ -206,7 +207,8 @@ public class ControlPanel extends JPanel implements LabListener
                 try 
                 {
                     // Tell the monitor to read the state from the file
-                    this.monitor.loadLabState(file);
+                    LabSnapshot toLoad = LabSnapshot.loadFromFile(file);
+                    this.monitor.restoreSnapshot(toLoad);
                     
                     JOptionPane.showMessageDialog(frame,MSG_LAB_STATE_LOADED,"Load File Confirmation",JOptionPane.INFORMATION_MESSAGE);
                 } 
