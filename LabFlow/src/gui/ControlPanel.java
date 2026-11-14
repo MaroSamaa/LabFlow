@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import concurrent.LabListener;
 import concurrent.LabMonitor;
+import concurrent.LabSnapshot;
 
 import java.awt.*;
 import java.io.File;
@@ -172,8 +173,8 @@ public class ControlPanel extends JPanel implements LabListener
                 
                 try 
                 {
-                    // Tell the monitor to write the file with it's state
-                    this.monitor.saveLabState(file);
+                    LabSnapshot toSave = this.monitor.createSnapshot();
+                    toSave.saveToFile(file);
                     
                     JOptionPane.showMessageDialog(frame, MSG_LAB_STATE_SAVED,"Save File Confirmation",JOptionPane.INFORMATION_MESSAGE); 
                 } 
@@ -206,12 +207,13 @@ public class ControlPanel extends JPanel implements LabListener
                 try 
                 {
                     // Tell the monitor to read the state from the file
-                    this.monitor.loadLabState(file);
+                    LabSnapshot toLoad = LabSnapshot.loadFromFile(file);
+                    this.monitor.restoreSnapshot(toLoad);
                     
                     JOptionPane.showMessageDialog(frame,MSG_LAB_STATE_LOADED,"Load File Confirmation",JOptionPane.INFORMATION_MESSAGE);
                 } 
                 catch(IOException e){JOptionPane.showMessageDialog(frame, MSG_ERROR_DURING_LOAD + e.getMessage(),"Loading Error",JOptionPane.ERROR_MESSAGE);}
-                catch(ClassNotFoundException e){JOptionPane.showMessageDialog(frame,MSG_ERROR_IN_SELECTED_FILE + e.getMessage(),"File Selection Error",JOptionPane.ERROR_MESSAGE);}
+                catch(ClassNotFoundException | ClassCastException e){JOptionPane.showMessageDialog(frame,MSG_ERROR_IN_SELECTED_FILE + e.getMessage(),"File Selection Error",JOptionPane.ERROR_MESSAGE);}
             }
         });
 
@@ -239,8 +241,8 @@ public class ControlPanel extends JPanel implements LabListener
         pauseIndicator = new JLabel("\u2022");  // Unicode dot
 
         //  Size and font setting
-        pauseIndicator.setFont(new Font(pauseIndicator.getFont().getName(), Font.PLAIN,35));
-        pauseIndicator.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pauseIndicator.setFont(pauseIndicator.getFont().deriveFont(Font.PLAIN,35));
+        pauseIndicator.setHorizontalAlignment(JLabel.CENTER);
         pauseIndicator.setPreferredSize(INDICATOR_DIMENSION);
         pauseIndicator.setMinimumSize(INDICATOR_DIMENSION);
         pauseIndicator.setMaximumSize(INDICATOR_DIMENSION);
