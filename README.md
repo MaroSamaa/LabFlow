@@ -21,11 +21,11 @@ git clone https://github.com/MaroSamaa/LabFlow
 ### CLI
 ⚠️ Make sure to be in the project's ('LabFlow') root directory (check by seeing if the 'src', 'bin' and 'lib' folders are directly in the directory you moved to) before doing any of the following.
 
-#### WINDOWS
+#### WINDOWS (CMD)
 
 Compile the source code:
 ```
-javac -cp "lib/*" -d bin src/**/*.java
+dir /s /b src\*.java > sources.txt && javac -cp "lib/*" -d bin @sources.txt && del sources.txt
 ```
 Run:
 ```
