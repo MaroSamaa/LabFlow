@@ -213,7 +213,7 @@ public class ControlPanel extends JPanel implements LabListener
                     JOptionPane.showMessageDialog(frame,MSG_LAB_STATE_LOADED,"Load File Confirmation",JOptionPane.INFORMATION_MESSAGE);
                 } 
                 catch(IOException e){JOptionPane.showMessageDialog(frame, MSG_ERROR_DURING_LOAD + e.getMessage(),"Loading Error",JOptionPane.ERROR_MESSAGE);}
-                catch(ClassNotFoundException e){JOptionPane.showMessageDialog(frame,MSG_ERROR_IN_SELECTED_FILE + e.getMessage(),"File Selection Error",JOptionPane.ERROR_MESSAGE);}
+                catch(ClassNotFoundException | ClassCastException e){JOptionPane.showMessageDialog(frame,MSG_ERROR_IN_SELECTED_FILE + e.getMessage(),"File Selection Error",JOptionPane.ERROR_MESSAGE);}
             }
         });
 
