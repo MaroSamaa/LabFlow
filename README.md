@@ -14,7 +14,11 @@
 
 ## 🎬 Demo
 
-![Project Demo](Docs/Demo/DemoVideo.gif)
+<p align="center">
+  <img src="Docs/Demo/DemoVideo.gif" width="100%">
+</p>
+
+You can run this demo by loading the Demo save file found in Docs/Demo
 
 ## 🚀 Compile and Run
 Download the repository ZIP file and extract it or clone the repositry directly in the CLI by typing:
