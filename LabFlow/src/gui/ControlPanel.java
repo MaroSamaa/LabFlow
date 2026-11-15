@@ -238,10 +238,9 @@ public class ControlPanel extends JPanel implements LabListener
         //--------PAUSE INDICATOR--------
 
         //  Initialization
-        pauseIndicator = new JLabel("\u2022");  // Unicode dot
+        pauseIndicator = new JLabel("\u25CF");  // Unicode dot
 
         //  Size and font setting
-        pauseIndicator.setFont(pauseIndicator.getFont().deriveFont(Font.PLAIN,35));
         pauseIndicator.setHorizontalAlignment(JLabel.CENTER);
         pauseIndicator.setPreferredSize(INDICATOR_DIMENSION);
         pauseIndicator.setMinimumSize(INDICATOR_DIMENSION);

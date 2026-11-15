@@ -229,18 +229,18 @@ public class RequestPanel extends JPanel implements LabListener
         switch (status)
         {
             case RequestStatus.ACTIVE:      //  Green
-                return "<html><center><font color='#27AE60'>●</font></center></html>";
+                return "<html><center><font color='#27AE60'>\u25CF</font></center></html>";
         
             case RequestStatus.PENDING:     //  Amber
-                return "<html><center><font color='#E6A822'>●</font></center></html>";
+                return "<html><center><font color='#E6A822'>\u25CF</font></center></html>";
 
             case RequestStatus.CLOSED:      //  Gray
-                return "<html><center><font color='#D3D3D3'>●</font></center></html>";
+                return "<html><center><font color='#D3D3D3'>\u25CF</font></center></html>";
 
             case RequestStatus.CANCELLED:   //  Red
-                return "<html><center><font color='#FF0000'>●</font></center></html>";
+                return "<html><center><font color='#FF0000'>\u25CF</font></center></html>";
             default:                        //  Gray
-                return "<html><center><font color='#D3D3D3'>●</font></center></html>";
+                return "<html><center><font color='#D3D3D3'>\u25CF</font></center></html>";
         }
     } 
 
