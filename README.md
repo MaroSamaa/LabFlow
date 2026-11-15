@@ -62,8 +62,9 @@ Open the project folder then navigate to
 Src->Main.java and run the program.
 
 ## 📜 Documentation
-The documentation is found under Docs.
+The required documentation is found under Docs.
 
+In Docs you can also find:
 * Docs/Demo includes the material used in the demo and the demo video;
 * Docs/Javadoc includes the javadoc for the program
 
