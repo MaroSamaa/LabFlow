@@ -175,10 +175,10 @@ public class EquipmentPanel extends JPanel implements LabListener
     {
         switch (status)
         {
-            case EquipmentStatus.AVAILABLE:      //  Green
+            case AVAILABLE:      //  Green
                 return "<html><center><font color='#27AE60'>\u25CF</font></center></html>";
         
-            case EquipmentStatus.IN_USE:         //  Amber
+            case IN_USE:         //  Amber
                 return "<html><center><font color='#E6A822'>\u25CF</font></center></html>";
 
             default:                        //  Gray
