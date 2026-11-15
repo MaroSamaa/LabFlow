@@ -83,7 +83,7 @@ public class RequestTask implements Runnable
     /**
      * Setter method for workTime parameter
      * @param newWorkTime the wanted workTime
-     * @throws IllegalArgumentException if the new value is <= 0
+     * @throws IllegalArgumentException if the new value is less or equal 0
      */
     public static void setWorkTime(int newWorkTime) throws IllegalArgumentException
     {
@@ -97,7 +97,7 @@ public class RequestTask implements Runnable
     /**
      * Setter method for workTimeIntervall parameter
      * @param newWorkTimeIntervall the wanted workTimeIntervall
-     * @throws IllegalArgumentException if the new value is <= 0
+     * @throws IllegalArgumentException if the new value is less or equal 0
      */
     public static void setWorkTimeIntervall(int newWorkTimeIntervall) throws IllegalArgumentException
     {
