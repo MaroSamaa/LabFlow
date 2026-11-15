@@ -217,7 +217,7 @@ public class LabMonitor
     /**
      * This method allows for a user to be registered to the lab
      * @param toAdd the user to be registered to the lab
-     * @throws DuplicateUserNameException if the user is already registered to the lab
+     * @throws DuplicateUserCodeException if the user is already registered to the lab
      */
     public synchronized void addUser(User toAdd) throws DuplicateUserCodeException
     {
