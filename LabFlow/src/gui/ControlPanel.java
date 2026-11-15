@@ -249,7 +249,17 @@ public class ControlPanel extends JPanel implements LabListener
         //--------ASSEMBLY OF THE CONTROL PANEL--------
 
         //  Put the settingsBtn to the left
-        add(settingsBtn, BorderLayout.WEST);    
+        JPanel westPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+
+        //  Ghost spacer to center the center panel
+        JPanel ghostSpacer = new JPanel();
+        ghostSpacer.setPreferredSize(saveBtn.getPreferredSize());
+        ghostSpacer.setOpaque(false);   //  Transparent
+
+        westPanel.add(settingsBtn);
+        westPanel.add(ghostSpacer);
+
+        add(westPanel, BorderLayout.WEST);    
 
         //  Put the Save and Load Buttons together to the right
         JPanel saveAndLoadPanel = new JPanel();
