@@ -202,7 +202,7 @@ public class LabMonitor
     /**
      * Setter method for the max equip storable in the lab
      * @param newMaxEquip the new wanted value for maxEquip
-     * @throws IllegalArgumentException if the new value is < 0 or the new value does not have room to accomodate all the equipment now stored
+     * @throws IllegalArgumentException if the new value is less than 0 or the new value does not have room to accomodate all the equipment now stored
      */
     public synchronized void setMaxEquip(int newMaxEquip) throws IllegalArgumentException
     {
