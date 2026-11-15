@@ -20,8 +20,8 @@ public class Main
         //  Set global ui manager preferences
         try 
         {
-            UIManager.setLookAndFeel(new FlatLightLaf());       //  Set L&F to flatlaf (Light theme)
-
+            FlatLightLaf.setup();   //  Set L&F to flatlaf (Light theme)
+            
             //  Buttons Ui Preferences
             UIManager.put("Button.arc", 10);                                 // Give all buttons rounded corners
             UIManager.put("Button.background", new Color(243, 238, 255));   // Button background color
