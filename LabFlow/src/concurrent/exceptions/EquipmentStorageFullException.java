@@ -3,6 +3,7 @@ package concurrent.exceptions;
 /**
  * Exception to address when the lab can't add more equipment due to de storage
  * being full.
+ * @author Marini Enrico
  */
 public class EquipmentStorageFullException extends RuntimeException
 {

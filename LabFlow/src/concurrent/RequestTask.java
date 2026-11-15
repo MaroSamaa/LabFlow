@@ -1,8 +1,8 @@
 package concurrent;
 
 /**
- * @author Marini Enrico
  * Class that makes requests "runnable"
+ * @author Marini Enrico
  */
 public class RequestTask implements Runnable
 {

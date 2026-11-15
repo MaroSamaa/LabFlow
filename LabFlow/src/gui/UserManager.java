@@ -11,10 +11,10 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * @author Visone Sara
  * JDialog to show the user all of the lab's users 
  * it also gives the possibility to add a new user by inserting the user's name 
  * in the textfield and pressing a confirm button 
+ * @author Visone Sara
  */
 public class UserManager extends JDialog 
 {

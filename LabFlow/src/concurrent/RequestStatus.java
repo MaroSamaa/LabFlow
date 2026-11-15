@@ -1,8 +1,8 @@
 package concurrent;
 
 /**
- * @author Marini Enrico
  * Represents the possible status of a request
+ * @author Marini Enrico
  */
 public enum RequestStatus 
 {

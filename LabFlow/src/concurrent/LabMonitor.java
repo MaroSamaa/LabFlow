@@ -5,14 +5,13 @@ import java.util.List;
 import concurrent.exceptions.*;
 
 /**
- *  @author Marini Enrico
  *  The lab monitor class is the monitor for the management of the resources (Equipment) requested by threads(RequestTaks).
  *  It ensures the resources get taken only when they are available (they aren't being used by anyone), if a request for a 
  *  non available equipment is's put in queue waiting for the resource to be available.
  *  It also implements a cap on the number of equipment that can be "stored" in the lab. 
  *  It communicates to the outside by notifying LabListeners. 
  *  It implements save and load features for it's state.
- * 
+ *  @author Marini Enrico
  */
 public class LabMonitor 
 {

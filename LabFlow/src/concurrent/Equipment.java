@@ -3,9 +3,9 @@ package concurrent;
 import java.io.Serializable;
 
 /**
- * @author Marini Enrico
  * Class that represets an equipment given a type and a code.
  * The equipment has a status representing it's possible statuses.
+ * @author Marini Enrico
  */
 public class Equipment implements Serializable
 {

@@ -1,8 +1,8 @@
 package concurrent;
 
 /**
- * @author Marini Enrico
  * Represents the possible status of an equipment
+ * @author Marini Enrico
  */
 public enum EquipmentStatus 
 {
