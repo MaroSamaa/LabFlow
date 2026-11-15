@@ -12,6 +12,14 @@
   <i>A Project by The Beauty And The Beast</i>
 </p>
 
+## 🎬 Demo
+
+<p align="center">
+  <img src="Docs/Demo/DemoVideo.gif" width="100%">
+</p>
+
+You can run this demo by loading the Demo save file found in Docs/Demo
+
 ## 🚀 Compile and Run
 Download the repository ZIP file and extract it or clone the repositry directly in the CLI by typing:
 ```
@@ -19,7 +27,7 @@ git clone https://github.com/MaroSamaa/LabFlow
 ```
 
 ### CLI
-⚠️ Make sure to be in the project's ('LabFlow') root directory (check by seeing if the 'src', 'bin' and 'lib' folders are directly in the directory you moved to) before doing any of the following.
+⚠️ Make sure to be in the project's ('LabFlow/LabFlow') root directory (check by seeing if the 'src', 'bin' and 'lib' folders are directly in the directory you moved to) before doing any of the following.
 
 #### WINDOWS (CMD)
 
@@ -45,3 +53,7 @@ Open the project folder then navigate to
 Src->Main.java and run the program.
 
 ## 📜 Documentation
+The documentation is found under Docs.
+
+- Docs/Demo includes the material used in the demo and the demo video;
+- Docs/Javadoc includes the javadoc for the program
