@@ -14,7 +14,7 @@
 
 ## 🎬 Demo
 
-<video src="Docs/Demo/DemoVideo.mp4" controls width="100%"></video>
+![Project Demo](Docs/Demo/DemoVideo.gif)
 
 ## 🚀 Compile and Run
 Download the repository ZIP file and extract it or clone the repositry directly in the CLI by typing:
