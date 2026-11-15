@@ -27,7 +27,16 @@ git clone https://github.com/MaroSamaa/LabFlow
 ```
 
 ### CLI
-⚠️ Make sure to be in the project's root directory by doing "cd LabFlow/LabFlow" (check by seeing if the 'src', 'bin' and 'lib' folders are directly in the directory you moved to) before doing any of the following.
+⚠️ Make sure to be in the project's root directory (check by seeing if the 'src', 'bin' and 'lib' folders are directly in the directory you moved to) before doing any of the following.
+
+On Windows:
+```
+cd LabFlow\LabFlow
+```
+On Linux/MacOS:
+```
+cd LabFlow/LabFlow
+```
 
 #### WINDOWS (CMD)
 
