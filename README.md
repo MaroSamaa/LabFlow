@@ -64,5 +64,17 @@ Src->Main.java and run the program.
 ## 📜 Documentation
 The documentation is found under Docs.
 
-- Docs/Demo includes the material used in the demo and the demo video;
-- Docs/Javadoc includes the javadoc for the program
+* Docs/Demo includes the material used in the demo and the demo video;
+* Docs/Javadoc includes the javadoc for the program
+
+## 💻 Compatibility & System Requirements
+
+* **Tested & Developed with:** JDK 17 (or higher)
+* **Minimum Requirement:** Java 11+ (due to UI library FlatLaf)
+
+> 💡 **Backward Compatibility:** While the project has been fully tested on modern JDK versions, it is designed to be compatible with older Java runtimes (JRE 11/17).
+
+LabFlow was verified to run on Windows 11 and Arch Linux (on KDE Plasma), it should run on MacOS but we didn't have any device to test it on.
+
+> ⚠️  High DPI displays may present scaling issues if the OS scales the content (like Windows does) so images and fonts may look a bit blurry.
+> For further details see [here](https://github.com/MaroSamaa/LabFlow/issues/19#issuecomment-6864183563).
