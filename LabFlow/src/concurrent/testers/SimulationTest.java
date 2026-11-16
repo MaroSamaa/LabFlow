@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import concurrent.*;
 
 /**
- *  @author Marini Enrico
  *  SimulationTest is a test class which checks if the expected behaviour of the program is correct
  *  it adds two resources and three users which all make a request for either one of the two resources
  *  this helps in checking that the resources get assigned to the fastest and if no resources are left 
  *  the thread goes awaits.
  *  After a fixed "simulated work time" the resources get returned and one of them gets assigned to 
  *  the still pending request.
+ *  @author Marini Enrico
 */
 public class SimulationTest 
 {
