@@ -2,10 +2,6 @@ package concurrent.testers;
 
 import java.util.ArrayList;
 
-import javax.swing.SwingUtilities;
-
-import org.w3c.dom.events.Event;
-
 import concurrent.*;
 
 /**
