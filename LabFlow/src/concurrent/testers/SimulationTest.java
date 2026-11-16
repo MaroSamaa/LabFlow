@@ -1,5 +1,11 @@
 package concurrent.testers;
 
+import java.util.ArrayList;
+
+import javax.swing.SwingUtilities;
+
+import org.w3c.dom.events.Event;
+
 import concurrent.*;
 
 /**
@@ -13,6 +19,7 @@ import concurrent.*;
 */
 public class SimulationTest 
 {
+
     public static void main(String[] args)
     {
         LabMonitor monitor = new LabMonitor();
@@ -23,21 +30,28 @@ public class SimulationTest
         monitor.addEquipment(new Equipment("Function Generator", "FGN-01"));
 
         //  Creating users
-        User u1 = new User("Maria","001");
-        User u2 = new User("Greta","002");
-        User u3 = new User("Alessia","003");
+        User u1 = new User("Maro","001");
+        User u2 = new User("Sara","002");
+        User u3 = new User("Lia","003");
+        User u4 = new User("Alessia","004");
+        User u5 = new User("Enea","005");
 
         //  Creating requests
         Request r1 = new Request(u1,"Oscilloscope");
         Request r2 = new Request(u2,"Oscilloscope");
         Request r3 = new Request(u3,"Oscilloscope");
-        Request r4 = new Request(u1,"Function Generator");
+        Request r4 = new Request(u4,"Function Generator");
+        Request r5 = new Request(u5,"Function Generator");
+
+        //  Set a smoller work time for faster testing
+        RequestTask.setWorkTime(1000);
 
         //  Creating threads (one for each request)
         Thread t1 = new Thread(new RequestTask(r1, monitor));
         Thread t2 = new Thread(new RequestTask(r2, monitor));
         Thread t3 = new Thread(new RequestTask(r3, monitor));
         Thread t4 = new Thread(new RequestTask(r4,monitor));
+        Thread t5 = new Thread(new RequestTask(r5, monitor));
 
         System.out.println("Starting Simulation");
 
@@ -46,6 +60,27 @@ public class SimulationTest
         t2.start();
         t3.start();
         t4.start();
+        t5.start();
+
+        monitor.play();
+
+        //  Wait until all threads end their execution
+        try
+        {
+            t1.join();
+            t2.join();
+            t3.join();
+            t4.join();
+            t5.join();
+        }catch(InterruptedException e) {System.out.println("Simulation error");}
+
+        //  Print the lab's event log
+        ArrayList<String> eventList = monitor.getEvents();
+        for(String s:eventList)
+        {
+            System.out.println(s);
+        }
 
     }
+
 }
