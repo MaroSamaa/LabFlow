@@ -505,7 +505,6 @@ public class LabMonitor
         {
             isPaused = true;
             addEvent("The simulation has been paused");
-            notifyListeners();
         }
     }
 
@@ -531,7 +530,6 @@ public class LabMonitor
         {
             isPaused = false;
             addEvent("The simulation has resumed");
-            notifyListeners();
             notifyAll();    //  Wake up all threads
         }
     }
